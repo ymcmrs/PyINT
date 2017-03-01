@@ -20,10 +20,7 @@ import re
 
 def main(argv):
     try:
-        Mslc = argv[1]
-        Mslc_par = argv[2]
-        Sslc = argv[3]
-        Sslc_par=argv[4]
+        templateFile= argv[1]
     except:
         print "*******************************"
         print "  not enough input parameters  "
