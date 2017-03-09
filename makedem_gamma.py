@@ -19,8 +19,8 @@ import array
 #########################################################################
 
 def usage():
-    print '''
-
+    print 
+    '''
 ******************************************************************************************************
  
    Make DEM in gamma format.    Python's GDAL module is required.
@@ -83,10 +83,8 @@ def main(argv):
     if os.path.isfile(Par):
         print "*** A Gamma-format DEM will be generated based on SLC-Par:  %s" % Par
     
-    print "*** DEM name:    %s" % Name
-        
-    print "*** Byteorder of the generated DEM:     %s-endien " % Byteorder  
-    
+    print "*** DEM name:    %s" % Name        
+    print "*** Byteorder of the generated DEM:     %s-endien " % Byteorder      
     print "*** DEM directory:     %s" % workdir  
         
 #    print "*** DEM type: %s" % DEM_TYPE
@@ -104,7 +102,7 @@ def main(argv):
     if os.path.isfile(Par):
         print "SLC_par file is provided:    %s" % Par
         print "SRTM1 over research region will be downloaded automatically based on %s" % Par
-        call_str = "SLC_corners "+ SLCpar + " > corners.txt"
+        call_str = "SLC_corners "+ Par + " > corners.txt"
         os.system(call_str)
         
         File = open("corners.txt","r")
@@ -122,10 +120,10 @@ def main(argv):
         west = MinLon - 0.15
 
         print 'The coverage area of DEM:   '    
-        print '*** minlat: '+str(north)
-        print '*** maxlat: '+str(south)
-        print '*** minlon: '+str(east)
-        print '*** maxlon: '+str(west)
+        print '*** maxlat: '+str(north)
+        print '*** minlat: '+str(south)
+        print '*** maxlon: '+str(east)
+        print '*** minlon: '+str(west)
     
         print 'Ready to download dem ......'
 
