@@ -85,7 +85,6 @@ def main(argv):
     
     templateContents=readfile.read_template(templateFile)
     coregCoarse = templateContents['Coreg_Coarse']
-    coregThreshold = templateContents['Coreg_Threshold']
     
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
@@ -134,11 +133,31 @@ def main(argv):
     rpos4cor = "-"
     azpos4cor = "-"
     patch4cor = "512"
-    thresh4cor = "0.3"
+    thresh4cor = "0.15"
     rwin4cor = "256"
     azwin4cor = "256"
     rfwin4cor = "128"
     azfwin4cor = "128"
+
+    if 'rlks4cor'          in templateContents: rlks4cor = templateContents['rlks4cor']                
+    else: rlks4cor = '4'
+    if 'azlks4cor'          in templateContents: azlks4cor = templateContents['rlks4cor']                
+    else: azlks4cor = '4'    
+    if 'rwin4cor'          in templateContents: rwin4cor = templateContents['rwin4cor']                
+    else: rlks4cor = '256'  
+    if 'azwin4cor'          in templateContents: azwin4cor = templateContents['azwin4cor']                
+    else: azwin4cor = '256'
+        
+    if 'rfwin4cor'          in templateContents: rfwin4cor = templateContents['rfwin4cor']                
+    else: rfwin4cor = '128'  
+    if 'azfwin4cor'          in templateContents: azfwin4cor = templateContents['azfwin4cor']                
+    else: azfwin4cor = '128'     
+        
+    if 'thresh4cor'          in templateContents: azfwin4cor = templateContents['thresh4cor']                
+    else: thresh4cor = '-'  
+        
+
+        
 
 
     if os.path.isfile(off):
@@ -173,16 +192,16 @@ def main(argv):
     call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 16 32"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + CoregThreshold +" 3" 
+    call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 3" 
     os.system(call_str)
     
 ########################  2nd time  #############################
 
 #    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 32 64"
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " 128 128 " + offsets + " 2 32 64" 
+    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + + offsets + " 2 32 64" 
     
     os.system(call_str)
-    call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + CoregThreshold +" 4 >" + off_std 
+    call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 4 >" + off_std 
     os.system(call_str)
     
 ######################## Resampling Slave Image ####################
