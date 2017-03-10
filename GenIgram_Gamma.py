@@ -188,8 +188,9 @@ def main(argv):
 
 ### start co-registartion of raw interferogram w.r.t. master scene  
 
-    call_str = "$INT_SCR/coregist_all_To_masterDate_gamma.py " + igramDir     ## after this step, all based on rslc
-    os.system(call_str)
+    if COREG_all_Flag == '1':
+        call_str = "Coregist_all_Gamma.py " + igramDir     ## after this step, all based on rslc
+        os.system(call_str)
 
 ### continue interferometric process with re-coregistered slc parameter w.r.t. master scene
 
