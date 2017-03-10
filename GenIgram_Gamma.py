@@ -194,14 +194,12 @@ def main(argv):
 ### continue interferometric process with re-coregistered slc parameter w.r.t. master scene
 
     call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
-    messageRsmas.log(call_str)
     os.system(call_str)    
 
     call_str = '$GAMMA_BIN/base_orbit '+ MrslcPar + ' ' + SrslcPar + ' ' + BASE
-    messageRsmas.log(call_str)
     os.system(call_str)
 
-    if flagTDM == 'Y':    ### shong 07/16 flag for TanDEM-X bistatic mode case to conside half length of baseline
+    if flagTDM == 'Y':    ### flag for TanDEM-X bistatic mode case to conside half length of baseline
         call_str = '$INT_SCR/halfbase.pl ' + BASE;
         os.system(call_str)
 
