@@ -46,9 +46,9 @@ def UseGamma(inFile, task, keyword):
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-    call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-    call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
 
@@ -134,7 +134,7 @@ def main(argv):
     else: flatteningIgram = 'orbit'
 #    else: flatteningIgram = 'fft'
     if 'Igram_FilterMethod' in templateContents: strFilterMethod = templateContents['Igram_FilterMethod']
-    else: strFilterMethod = 'adaptfilt'
+    else: strFilterMethod = 'adapt_filt'
     if 'Igram_FilterStrength' in templateContents: strFilterStrengeh = templateContents['Igram_FilterStrength']
     else: strFilterStrengeh = '0.8/4'
     fFiltLength = strFilterStrengeh.split('/')[0]
