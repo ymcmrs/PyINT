@@ -113,6 +113,9 @@ def main(argv):
     else: rLooksIgram = '4'
     if 'Igram_Alooks'          in templateContents: aLooksIgram = templateContents['Igram_Alooks']                
     else: aLooksIgram = '4'
+    if 'COREG_all_Flag'          in templateContents: COREG_all_Flag = templateContents['COREG_all_Flag']                
+    else: COREG_all_Flag = '0'
+    
     if 'Igram_Spsflg'       in templateContents: spsflgIgram = templateContents['Igram_Spsflg']
     else: spsflgIgram = '1'
     if 'Igram_Azfflg'       in templateContents: azfflgIgram = templateContents['Igram_Azfflg']
@@ -128,8 +131,8 @@ def main(argv):
     if 'Igram_Cor_Awin' in templateContents: aWinCor = templateContents['Igram_Cor_Awin']
     else: aWinCor = '5'
     if 'Igram_Flattening' in templateContents: flatteningIgram = templateContents['Igram_Flattening']
-#  else: flatteningIgram = 'orbit'
-    else: flatteningIgram = 'fft'
+    else: flatteningIgram = 'orbit'
+#    else: flatteningIgram = 'fft'
     if 'Igram_FilterMethod' in templateContents: strFilterMethod = templateContents['Igram_FilterMethod']
     else: strFilterMethod = 'adaptfilt'
     if 'Igram_FilterStrength' in templateContents: strFilterStrengeh = templateContents['Igram_FilterStrength']
@@ -169,10 +172,6 @@ def main(argv):
     CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
     BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
     BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
-
-
-    if flagIgram == 'Y':
-        print "Interferogram generation would be started on " + workDir
 
 ### start generation of interferogram with coregistered master and slave in each pair
 
