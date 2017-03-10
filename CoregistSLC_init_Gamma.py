@@ -145,7 +145,7 @@ def main(argv):
     else: azlks4cor = '4'  
         
     if 'rwin4cor'          in templateContents: rwin4cor = templateContents['rwin4cor']                
-    else: rlks4cor = '256'  
+    else: rwin4cor = '256'  
     if 'azwin4cor'          in templateContents: azwin4cor = templateContents['azwin4cor']                
     else: azwin4cor = '256'      
     if 'rsample4cor'          in templateContents: rsample4cor = templateContents['rsample4cor']                
