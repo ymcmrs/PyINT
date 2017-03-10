@@ -141,25 +141,31 @@ def main(argv):
 
     if 'rlks4cor'          in templateContents: rlks4cor = templateContents['rlks4cor']                
     else: rlks4cor = '4'
-    if 'azlks4cor'          in templateContents: azlks4cor = templateContents['rlks4cor']                
-    else: azlks4cor = '4'    
+    if 'azlks4cor'          in templateContents: azlks4cor = templateContents['azlks4cor']                
+    else: azlks4cor = '4'  
+        
     if 'rwin4cor'          in templateContents: rwin4cor = templateContents['rwin4cor']                
     else: rlks4cor = '256'  
     if 'azwin4cor'          in templateContents: azwin4cor = templateContents['azwin4cor']                
-    else: azwin4cor = '256'
+    else: azwin4cor = '256'      
+    if 'rsample4cor'          in templateContents: rsample4cor = templateContents['rsample4cor']                
+    else: rsample4cor = '16'  
+    if 'azsample4cor'          in templateContents: azsample4cor = templateContents['azsample4cor']                
+    else: azsample4cor = '32'  
+
         
     if 'rfwin4cor'          in templateContents: rfwin4cor = templateContents['rfwin4cor']                
-    else: rfwin4cor = '128'  
+    else: rfwin4cor = str(int(int(rwin4cor)/2))
     if 'azfwin4cor'          in templateContents: azfwin4cor = templateContents['azfwin4cor']                
-    else: azfwin4cor = '128'     
+    else: azfwin4cor = str(int(int(azwin4cor)/2))  
+    if 'rfsample4cor'          in templateContents: rfsample4cor = templateContents['rfsample4cor']                
+    else: rfsample4cor = str(2*int(rsample4cor))  
+    if 'azfsample4cor'          in templateContents: azfsample4cor = templateContents['azfsample4cor']                
+    else: azfsample4cor = str(2*int(azsample4cor))  
         
     if 'thresh4cor'          in templateContents: azfwin4cor = templateContents['thresh4cor']                
-    else: thresh4cor = '-'  
+    else: thresh4cor = ' - '  
         
-
-        
-
-
     if os.path.isfile(off):
         os.remove(off)
 
@@ -174,7 +180,7 @@ def main(argv):
         os.system(call_str)
 
         call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
-        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + 1 + ' ' + 1
+        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' 1 1'
         os.system(call_str)
 
     elif coregCoarse == 'orbit':
@@ -189,7 +195,7 @@ def main(argv):
         
 ######################## 1st time  ############################
 
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 16 32"
+    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 "+ rsample4cor + " " + azsample4cor
     os.system(call_str)
 
     call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 3" 
@@ -197,8 +203,7 @@ def main(argv):
     
 ########################  2nd time  #############################
 
-#    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 32 64"
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + + offsets + " 2 32 64" 
+    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
     
     os.system(call_str)
     call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 4 >" + off_std 
