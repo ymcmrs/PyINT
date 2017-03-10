@@ -124,8 +124,7 @@ def main(argv):
     if 'Igram_Cor_Awin' in templateContents: aWinCor = templateContents['Igram_Cor_Awin']
     else: aWinCor = '5'
         
-    if 'Diff_Flag'          in templateContents: flagDiff = templateContents['Diff_Flag']                
-    else: flagDiff = 'Y'
+
     if 'Diff_Method'          in templateContents: methodDiff = templateContents['Diff_Method']                
     else: methodDiff = 'subphase'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']                
@@ -195,8 +194,6 @@ def main(argv):
     DIFFMASKTHINlks  = CORFILTlks + 'maskt.bmp'
     DIFFMASKTHINlksonly = CORFILTlksonly + 'maskt.bmp'
 
-    if flagDiff == 'Y':
-        print "Differential interferogram generation would be started on " + workDir + "\n"
 
     if not (os.path.isdir(workDir)):
         print "Interferogram working directory is not found on " + workDir + "\n"
