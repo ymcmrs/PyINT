@@ -114,31 +114,33 @@ def main(argv):
     else: orbitType = 'HDR'
     if 'Igram_Flattening' in templateContents: flatteningIgram = templateContents['Igram_Flattening']
     else: flatteningIgram = 'orbit'
-    if 'Unwrap_Flag'          in templateContents: flagUnwrap = templateContents['Unwrap_Flag']                
-    else: flagUnwrap = 'Y'
+ 
     if 'Topo_Flag'          in templateContents: flagTopo = templateContents['Topo_Flag']           
     else: flagTopo = 'N'
 #  if 'Diff_Method'          in templateContents: methodDiff = templateContents['Diff_Method']                
 #  else: methodDiff = 'subphase'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']                
     else: flatteningDiff = 'orbit'
-#  if 'Diff_FilterMethod' in templateContents: strFilterMethod = templateContents['Diff_FilterMethod']
-#  strFilterMethodDiff = strFilterMethod
-#  if 'Diff_FilterStrength' in templateContents: strFilterStrengeh = templateContents['Diff_FilterStrength']
-#  fFiltLengthDiff = strFilterStrengeh.split('/')[0]
-#  nFiltWindowDiff = strFilterStrengeh.split('/')[1]
-#  if 'Diff_FFTLength' in templateContents: nAzfftDiff = templateContents['Diff_FFTLength']
-#  nAzfftDiff = '512'
 
-    if 'Igram_UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['Igram_UnwrappedThreshold']
+#    if 'Igram_UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['Igram_UnwrappedThreshold']
+#    else: unwrappedThreshold = '0.6'
+    if 'UnwrappedThreshold' in templateContents: UnwrappedThreshold = templateContents['UnwrappedThreshold']
     else: unwrappedThreshold = '0.6'
-    if 'Diff_UnwrappedThreshold' in templateContents: unwrappedThresholdDiff = templateContents['Diff_UnwrappedThreshold']
-    unwrappedThresholdDiff = '0.6'
-    if 'Diff_Unwrap_patr' in templateContents: unwrappatrDiff = templateContents['Diff_Unwrap_patr']
+    if 'Unwrap_patr' in templateContents: unwrappatrDiff = templateContents['Unwrap_patr']
     else: unwrappatrDiff = '1'
-    if 'Diff_Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Diff_Unwrap_pataz']
+    if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
-
+        
+    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
+    nLine = UseGamma(OFFlks, 'read', 'interferogram_azimuth_lines')
+    
+    nCenterWidth = str(int(nWidth) / 2)
+    nCenterLine = str(int(nLine) / 2)
+    
+    if 'Ref_Range' in templateContents: Ref_Range = templateContents['Ref_Range']
+    else: Ref_Range = nCenterWidth
+    if 'Ref_Azimuth' in templateContents: Ref_Azimuth = templateContents['Ref_Azimuth']
+    else: Ref_Azimuth = nCenterLine
 
 #  Definition of file
 
@@ -183,12 +185,6 @@ def main(argv):
     
     MASKTHINlks  = CORFILTlks + 'maskt.bmp'
     MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
-
-    if flagUnwrap == 'Y':
-        print "Unwrap interferogram generation would be started on " + workDir + "\n"
-
-    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    nLine = UseGamma(OFFlks, 'read', 'interferogram_azimuth_lines')
    
 
  ####  unwrapping differential interferogram ####
@@ -234,10 +230,7 @@ def main(argv):
     os.system(call_str)
 #################################################
 
-    nCenterWidth = str(int(nWidth) / 2)
-    nCenterLine = str(int(nLine) / 2)
-
-    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINDIFFlks + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + nCenterWidth + ' ' + nCenterLine   #choose the reference point center
+    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINDIFFlks + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
