@@ -1,9 +1,53 @@
-path_SLC         =  /scratch/projects/insarlab/yzhang1/KyushuT423F620_650AlosA/SLC
-Mdate            =  070610
-Sdate            =  070726
-DEM              =  /nethome/yxc773/insarlab/DEMDIR/Kasant10f122_Gamma/Kasant10f122_Gamma.dem
-path_process     =   /nethome/yxc773/yunmeng/PyGAMMA/TEST
+###################################################################
 
+DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem
+
+
+
+
+####################  Coregistration #############################
+
+rwin4cor           =   256       #  rfwin4cor = 1/2 * rwin4cor
+azwin4cor          =   256       #  azfwin4cor = 1/2 * azwin4cor
+rsample4cor        =   16        #  rfsample4cor = 2*rsample4cor
+azsample4cor       =   32        #  azfsample4cor = 2*azsample4cor
+thresh4cor         =   0.15      # 2016 GAMMA, for 2015 GAMMA should be SNR, not correlation
+
+coreCoarse         =  both       # [option: orbit, ampcor]
+coregMethod        =  DEM        # [option: DEM, init ]
+
+###################   Interferomery ############################
+
+Igram_Spsflg       = 1           # [option: 0, 1]   Range sprctral filtering  
+Igram_Azfflg       = 1           # [option: 0, 1]    Azimuth common band filtering
+
+Igram_Flattening   = orbit       #  [option: orbit, fft]    fft > orbit
+Igram_FilterMethod = adapt_filt  #  adapt filtering
+
+
+####################  Differential Interferometry ################
+
+UnwrappedThreshold = 0.4
+Diff_Flattening    = orbit [option: orbit, fft, quadfit]
+
+###################    Unwrapping   ################################
+
+Topo_Flag    = Y    #[option: Y,N] remove topography phases or not
+Unwrap_patr  = 1    # unwrap patch number in range direction
+Unwrap_pataz = 1    # unwrap patch number in azimuth direction
+
+#Ref_Range    = 
+#Ref_Azimuth  =
+
+####################  slc2ifg #####################################
+
+#COREG_Flag    =   1    #[defaul: 1]
+#INT_Flag      =   1   
+#DIFF_Flag     =   1
+#UNW_Flag      =   1
+#GEO_Flag      =   1 
+
+#####################################################################
 
 
 
