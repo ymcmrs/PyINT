@@ -43,7 +43,7 @@ def main(argv):
         else: igramDir=sys.argv[1]        
     else:
         usage();sys.exit(1)
-        
+    
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
     Mdate = IFGPair.split('-')[0]
@@ -53,6 +53,14 @@ def main(argv):
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateContents=readfile.read_template(templateFile)
+    
+    processDir = scratchDir + '/' + projectName + "/PROCESS"
+    workDir    = processDir + '/' + igramDir
+    
+    if not os.path.isdir(workDir):
+        call_str="mkdir "+ workDir
+        os.system(call_str)
+        
     
     if 'COREG_Flag'          in templateContents: COREG_Flag = templateContents['COREG_Flag']                
     else: COREG_Flag = '1'
