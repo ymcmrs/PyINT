@@ -3,13 +3,13 @@ Generating interferograms based on python and GAMMA
 
 Following rules should be obey:
 
-1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files
-    e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH
-          setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR
+1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files  
+    e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH  
+          setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR  
           
-2) The correct folders sequence should be: 
-     $SCRATCHDIR/PROJECTNAME/SLC       (SLC folder should be available!!!)
-     $SCRATCHDIR/PROJECTNAME/PROCESS/ifgramDir
+2) The correct folders sequence should be:   
+     $SCRATCHDIR/PROJECTNAME/SLC       (SLC folder should be available!!!)  
+     $SCRATCHDIR/PROJECTNAME/PROCESS/ifgramDir  
      ...
   
  3) pysar based _readfile.py  should be available.  So you'd better have pysar: 
