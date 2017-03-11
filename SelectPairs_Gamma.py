@@ -40,7 +40,7 @@ def main(argv):
     
     if len(sys.argv)==2:
         if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: ProjectName=sys.argv[1]        
+        else: projectName=sys.argv[1]        
     else:
         usage();sys.exit(1)
         
