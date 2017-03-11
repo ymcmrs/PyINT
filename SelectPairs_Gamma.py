@@ -63,6 +63,7 @@ def main(argv):
     ListSLC = os.listdir(slcDir)
     Datelist = []
     SLCfile = []
+    SLCParfile = []
     
     print "All of the available SAR acquisition date is :"  
     for kk in range(len(ListSLC)):
