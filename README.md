@@ -6,7 +6,7 @@ Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B..   All possible Sens
 
 If you want to make the scripts work smooth, you should obey the following rules :            
 
-####1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files         
+####1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:            
 e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH       
       setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR    
       ...    
