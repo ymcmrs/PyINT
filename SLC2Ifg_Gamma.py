@@ -95,7 +95,7 @@ def main(argv):
         os.system(call_str)
     
     if UNW_Flag == '1':
-        call_str = "UnwPhase_Gamma.py " + igramDir
+        call_str = "UnwrapPhase_Gamma.py " + igramDir
         os.system(call_str)    
     
     if GEO_Flag == '1':
