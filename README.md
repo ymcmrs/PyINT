@@ -1,6 +1,6 @@
 # PyGAMMA   
 
-Generating Interferograms based on python and GAMMA, for all of the popular SAR sensors. ERS, ASAR, ALOS-1/2, Sentinal-1A/B, ...       
+Generating Interferograms based on python and GAMMA, for all of the popular SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, ...       
 
 Following rules should be obey:     
 
