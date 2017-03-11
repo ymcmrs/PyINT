@@ -125,6 +125,9 @@ def main(argv):
     os.system(call_str)
 
     TS_Net=np.loadtxt(TS_Berp)
+    
+    print TS_Net[:][0]
+    print TS_Net[0][:]
     IFG_Flag=TS_Net[0][:]
     MDatelist=TS_Net[1][:]
     SDatelist=TS_Net[2][:]
@@ -133,12 +136,14 @@ def main(argv):
 ########################### Prepare Process directory #############################
     igramDir=[]
     
+    print "Star to create interferograms directory:"
     for kk in range(len(IFG_Flag)):
         str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(round(Berplist[kk]))+"_"+str(round(TBaselist[kk]))
         igramDir.append(str_dir)
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
             os.system(call_str)
+            print str_dir
     print "Selection of interferometric pairs is done! "
 
     sys.exit(1)
