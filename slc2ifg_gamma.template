@@ -24,6 +24,10 @@ Igram_Azfflg       = 1           # [option: 0, 1]    Azimuth common band filteri
 Igram_Flattening   = orbit       #  [option: orbit, fft]    fft > orbit
 Igram_FilterMethod = adapt_filt  #  adapt filtering
 
+#######################  Geocoding & Sim Phase ###################
+Simphase_Lat_Ovr  =  2   # should according to the resolution of DEM and multi-looked SAR
+Simphase_Lon_Ovr  =  2   
+
 
 ####################  Differential Interferometry ################
 
