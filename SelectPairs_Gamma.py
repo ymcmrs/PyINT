@@ -124,7 +124,26 @@ def main(argv):
     call_str = "base_calc " + SLC_Tab + " " + RefPar + " " + TS_Berp + " " + TS_Itab + " " + '1 0 ' + '- ' + MaxSB + ' - ' + MaxTB
     os.system(call_str)
 
-      
+    TS_Net=np.loadtxt(TS_Berp)
+    IFG_Flag=TS_Net[:][0]
+    MDatelist=TS_Net[:][1]
+    SDatelist=TS_Net[:][2]
+    Berplist=TS_Net[:][3]
+    TBaselist=TS_Net[:][4]
+########################### Prepare Process directory #############################
+    igramDir=[]
+    
+    for kk in range(len(IFG_Flag)):
+        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(round(Berplist[kk]))+"_"+str(round(TBaselist[kk]))
+        igramDir.append(str_dir)
+        if not os.path.isdir(str_dir):
+            call_str="mkdir " + igramDir
+            os.system(call_str)
+
+
+
+
+    
     sys.exit(1)
     
 if __name__ == '__main__':
