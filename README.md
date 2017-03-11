@@ -20,10 +20,10 @@ e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH
  4) ifgramDir should be named like:  IFGRAM_PacayaT120F107AlosA_20080101-20090101_0111-0123   
      
      
-If you set all the above OK, then these scripts shoul work for you! If you can share some advices or ideas about python, GAMMA, InSAR processing ..., I would be very grateful and glad to communicate with you!  Wish these scripts can help you for a good understand of GAMMA and InSAR processing!! Enjoy it!     
-
+If you set all the above OK, then these scripts shoul work for you! If you can share some advices or ideas about python, GAMMA, InSAR processing ..., I would be very grateful and glad to communicate with you!        
    
-Any advices or problems would be welcome!  Do not hesitate to contact: ymcmrs@gmail.com        
+   
+Wish these scripts can help you for InSAR processing!! Enjoy it!  Any advices or problems would be very welcomed!  Do not hesitate to contact me: ymcmrs@gmail.com        
  
    
    
