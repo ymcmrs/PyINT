@@ -33,7 +33,7 @@ Simphase_Lon_Ovr  =  2
 ####################  Differential Interferometry ################
 
 UnwrappedThreshold = 0.4
-Diff_Flattening    = orbit [option: orbit, fft, quadfit]
+Diff_Flattening    = orbit     # [option: orbit, fft, quadfit]
 
 ###################    Unwrapping   ################################
 
