@@ -20,6 +20,15 @@ import time
 import glob
 
 
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+    
+    
+
 def usage():
     print '''
 ******************************************************************************************************
@@ -51,11 +60,21 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     
-    os.chdir(processDir)
+    ListSLC = os.listdir(slcDir)
+    Datelist = []
+    SLCfile = []
     
-    SLCfile=glob.glob(slcDir+'/*/*.slc')           # remember to check SLC Dir is in a good way
-    SLCParfile =glob.glob(slcDir+'/*/*.slc.par')  
+    print "All of the available SAR acquisition date is :"  
+    for kk in range(len(ListSLC)):
+        if is_number(ListSLC[kk]):
+            Datelist.append(ListSLC[kk])
+            print ListSLC[kk]
+            str_slc = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc"
+            str_slc_par = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc.par"
+            SLCfile.append(str_slc)
+            SLCParfile.append(str_slc_par)
     
+
     File= open('base_calc_txt','w')
     
     for kk in range(len(SLCfile)):
