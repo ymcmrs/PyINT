@@ -51,6 +51,8 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     
+    os.chdir(processDir)
+    
     SLCfile=glob.glob(slcDir+'/*/*.slc')           # remember to check SLC Dir is in a good way
     SLCParfile =glob.glob(slcDir+'/*/*.slc.par')  
     
