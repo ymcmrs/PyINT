@@ -114,7 +114,7 @@ def main(argv):
 
     RefPar=slcDir + "/" + masterDate +"/" + masterDate + ".slc.par"
        
-    File= open(SLC_tab,'w')
+    File= open(SLC_Tab,'w')
     
     for kk in range(len(SLCfile)):
         File.write(str(SLCfile[kk])+ ' '+str(SLCParfile[kk])+'\n')
