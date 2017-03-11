@@ -138,7 +138,7 @@ def main(argv):
     
     print "Star to create interferograms directory:"
     for kk in range(len(IFG_Flag)):
-        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(int(Berplist[kk]))+"_"+str(int(TBaselist[kk]))
+        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(int(abs(Berplist[kk])))+"_"+str(int(abs(TBaselist[kk])))
         igramDir.append(str_dir)
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
