@@ -54,5 +54,14 @@ def main(argv):
     SLCfile=glob.glob(slcDir+'/*/*.slc')  
     SLCParfile =glob.glob(slcDir+'/*/*.slc.par')  
     
+    print SLCParfile
     
+    
+    
+    
+    sys.exit(1)
+    
+if __name__ == '__main__':
+    main(sys.argv[:])
+
     
