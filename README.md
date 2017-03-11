@@ -15,11 +15,12 @@ e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH
      $SCRATCHDIR/PROJECTNAME/PROCESS/ifgramDir  
      ...     
         
- ####3) pysar based _readfile.py  should be available.  So you'd better have pysar:       
+        
+####3) pysar based _readfile.py  should be available.  So you'd better have pysar:       
       git clone https://github.com/ymcmrs/PySAR.git    
       ...    
       
- ####4) ifgramDir should be named like:  IFGRAM_PacayaT120F107AlosA_20080101-20090101_0111-0123   
+####4) ifgramDir should be named like:  IFGRAM_PacayaT120F107AlosA_20080101-20090101_0111-0123   
      
      
 If you set all the above OK, then these scripts shoul work for you! If you can share some advices or ideas about python, GAMMA, InSAR processing ..., I would be very grateful and glad to communicate with you!        
