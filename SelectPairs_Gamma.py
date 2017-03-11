@@ -121,7 +121,7 @@ def main(argv):
         
     File.close()
      
-    call_str = "$GAMMA_BIN/base_calc " + SLC_tab + " " + RefPar + " " + TS_Berp + " " + TS_Itab + " " + '1 0 ' + '- ' + MaxSB + ' - ' + MaxTB
+    call_str = "$GAMMA_BIN/base_calc " + SLC_Tab + " " + RefPar + " " + TS_Berp + " " + TS_Itab + " " + '1 0 ' + '- ' + MaxSB + ' - ' + MaxTB
     os.system(call_str)
 
       
