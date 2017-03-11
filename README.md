@@ -1,10 +1,11 @@
 # PyGAMMA   
-Generating interferograms based on python and GAMMA   
 
-Following rules should be obey:   
+Generating Interferograms based on python and GAMMA, for all of the popular SAR sensors. ERS, ASAR, ALOS-1/2, Sentinal-1A/B, ...       
+
+Following rules should be obey:     
 
 1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files      
-    e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH    
+    e.g., setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH       
             setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR    
           
 2) The correct folders sequence should be:   
@@ -20,5 +21,8 @@ Following rules should be obey:
      
  If you set all the above OK, then these scripts shoul work for you!  Good luck.   
  Any problems, do not hesitate to contact: ymcmrs@gmail.com   
+ 
+ 
+ 
  
  March 10, 2017   Yunmeng    
