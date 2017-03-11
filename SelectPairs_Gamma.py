@@ -125,11 +125,11 @@ def main(argv):
     os.system(call_str)
 
     TS_Net=np.loadtxt(TS_Berp)
-    IFG_Flag=TS_Net[:][0]
-    MDatelist=TS_Net[:][1]
-    SDatelist=TS_Net[:][2]
-    Berplist=TS_Net[:][3]
-    TBaselist=TS_Net[:][4]
+    IFG_Flag=TS_Net[0][:]
+    MDatelist=TS_Net[1][:]
+    SDatelist=TS_Net[2][:]
+    Berplist=TS_Net[3][:]
+    TBaselist=TS_Net[4][:]
 ########################### Prepare Process directory #############################
     igramDir=[]
     
@@ -139,11 +139,8 @@ def main(argv):
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
             os.system(call_str)
+    print "Selection of interferometric pairs is done! "
 
-
-
-
-    
     sys.exit(1)
     
 if __name__ == '__main__':
