@@ -131,16 +131,6 @@ def main(argv):
     if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
         
-    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    nLine = UseGamma(OFFlks, 'read', 'interferogram_azimuth_lines')
-    
-    nCenterWidth = str(int(nWidth) / 2)
-    nCenterLine = str(int(nLine) / 2)
-    
-    if 'Ref_Range' in templateContents: Ref_Range = templateContents['Ref_Range']
-    else: Ref_Range = nCenterWidth
-    if 'Ref_Azimuth' in templateContents: Ref_Azimuth = templateContents['Ref_Azimuth']
-    else: Ref_Azimuth = nCenterLine
 
 #  Definition of file
 
@@ -186,8 +176,16 @@ def main(argv):
     MASKTHINlks  = CORFILTlks + 'maskt.bmp'
     MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
    
-
- ####  unwrapping differential interferogram ####
+    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
+    nLine = UseGamma(OFFlks, 'read', 'interferogram_azimuth_lines')
+    
+    nCenterWidth = str(int(nWidth) / 2)
+    nCenterLine = str(int(nLine) / 2)
+    
+    if 'Ref_Range' in templateContents: Ref_Range = templateContents['Ref_Range']
+    else: Ref_Range = nCenterWidth
+    if 'Ref_Azimuth' in templateContents: Ref_Azimuth = templateContents['Ref_Azimuth']
+    else: Ref_Azimuth = nCenterLine ####  unwrapping differential interferogram ####
 ### if topo case, it calls FLTFILTlks
 ### else if diff case, it calls DIFFINTFILTlks
 
