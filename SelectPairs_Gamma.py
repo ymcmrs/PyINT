@@ -27,7 +27,15 @@ def is_number(s):
     except ValueError:
         return False
     
-    
+def add_zero(s):
+    if len(s)==1:
+        s="000"+s
+    elif len(s)==2:
+        s="00"+s
+    elif len(s)==3:
+        s="0"+s
+    return s
+
 
 def usage():
     print '''
@@ -138,7 +146,12 @@ def main(argv):
     
     print "Star to create interferograms directory:"
     for kk in range(len(IFG_Flag)):
-        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(int(abs(Berplist[kk])))+"_"+str(int(abs(TBaselist[kk])))
+        str_sb=str(int(abs(Berplist[kk])))
+        str_sb=add_zero(str_sb)
+        str_tb=str(int(abs(TBaselist[kk])))
+        str_tb=add_zero(str_tb)
+        
+        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str_sb+"_"+str_tb
         igramDir.append(str_dir)
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
