@@ -211,7 +211,7 @@ def main(argv):
     
     CORFILTlksbmp = CORFILTlks + '_mask.bmp'
     
-    call_str = '$GAMMA_BIN/rascc_mask ' + CORFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThresholdDiff + ' 0.0 0.1 0.9 1. .35 1 ' + CORFILTlksbmp   # based on int coherence
+    call_str = '$GAMMA_BIN/rascc_mask ' + CORFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORFILTlksbmp   # based on int coherence
     os.system(call_str)
     
     call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORFILTlksbmp + ' ' + CORFILTlks + ' ' + nWidth + ' ' + MASKTHINlks + ' 5 0.3 0.4 0.5 0.6 0.7'
@@ -221,7 +221,7 @@ def main(argv):
 
     CORDIFFFILTlksbmp = CORDIFFFILTlks + '_mask.bmp'
     
-    call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThresholdDiff + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
+    call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
     os.system(call_str)
     
     call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
