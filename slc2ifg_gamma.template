@@ -14,6 +14,7 @@ azsample4cor       =   32        #  azfsample4cor = 2*azsample4cor
 thresh4cor         =   0.15      # 2016 GAMMA, for 2015 GAMMA should be SNR, not correlation
 
 coreCoarse         =  both       # [option: orbit, ampcor]
+COREG_all_Flag     =  0          # [option: 0, 1]  zero means not coregist all to one master
 coregMethod        =  DEM        # [option: DEM, init ]
 
 ###################   Interferomery ############################
