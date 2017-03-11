@@ -126,8 +126,8 @@ def main(argv):
 
     TS_Net=np.loadtxt(TS_Berp)
     
-    print TS_Net[:,0]
-    print TS_Net[:,1]
+#    print TS_Net[:,0]
+#    print TS_Net[:,1]
     IFG_Flag=TS_Net[:,0]
     MDatelist=TS_Net[:,1]
     SDatelist=TS_Net[:,2]
@@ -138,7 +138,7 @@ def main(argv):
     
     print "Star to create interferograms directory:"
     for kk in range(len(IFG_Flag)):
-        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(round(Berplist[kk]))+"_"+str(round(TBaselist[kk]))
+        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str(int(Berplist[kk]))+"_"+str(int(TBaselist[kk]))
         igramDir.append(str_dir)
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
