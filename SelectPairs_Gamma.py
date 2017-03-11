@@ -126,13 +126,13 @@ def main(argv):
 
     TS_Net=np.loadtxt(TS_Berp)
     
-    print TS_Net[:][0]
-    print TS_Net[0][:]
-    IFG_Flag=TS_Net[0][:]
-    MDatelist=TS_Net[1][:]
-    SDatelist=TS_Net[2][:]
-    Berplist=TS_Net[3][:]
-    TBaselist=TS_Net[4][:]
+    print TS_Net[:,0]
+    print TS_Net[:,1]
+    IFG_Flag=TS_Net[:,0]
+    MDatelist=TS_Net[:,1]
+    SDatelist=TS_Net[:,2]
+    Berplist=TS_Net[:,3]
+    TBaselist=TS_Net[:,4]
 ########################### Prepare Process directory #############################
     igramDir=[]
     
