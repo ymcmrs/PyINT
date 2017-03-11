@@ -54,6 +54,12 @@ def main(argv):
     SLCfile=glob.glob(slcDir+'/*/*.slc')           # remember to check SLC Dir is in a good way
     SLCParfile =glob.glob(slcDir+'/*/*.slc.par')  
     
+    File= open('base_calc_txt','w')
+    
+    for kk in range(len(SLCfile)):
+        File.write(str(SLCfile[kk])+ ' '+str(SLCParfile[kk])+'\n')
+        
+        
     print SLCfile[1]
     print SLCParfile[1]
     
