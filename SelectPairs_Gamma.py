@@ -54,7 +54,8 @@ def main(argv):
     SLCfile=glob.glob(slcDir+'/*/*.slc')  
     SLCParfile =glob.glob(slcDir+'/*/*.slc.par')  
     
-    print SLCParfile
+    print SLCfile[1]
+    print SLCParfile[1]
     
     
     
