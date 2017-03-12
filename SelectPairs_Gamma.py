@@ -151,7 +151,7 @@ def main(argv):
         str_tb=str(int(abs(TBaselist[kk])))
         str_tb=add_zero(str_tb)
         
-        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))+"-"+str(int(SDatelist[kk]))+"_"+str_sb+"_"+str_tb
+        str_dir=processDir + "/IFG_"+projectName+"_"+str(int(MDatelist[kk]))[2:]+"-"+str(int(SDatelist[kk]))[2:]+"_"+str_sb+"_"+str_tb
         igramDir.append(str_dir)
         if not os.path.isdir(str_dir):
             call_str="mkdir " + str_dir
