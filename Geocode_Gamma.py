@@ -177,7 +177,7 @@ def main(argv):
     SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '.coff'
     SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '.coffsets'
     UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '.UTM_TO_RDC'
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.hgt_sim'
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.rdc.dem'
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_unw'
 
     GEORAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '.raw.int'  
