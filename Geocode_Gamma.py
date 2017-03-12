@@ -125,6 +125,10 @@ def main(argv):
     else: flatteningIgram = 'orbit'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']      
     else: flatteningDiff = 'orbit'
+        
+    if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']      
+    else: flatteningUnwrap = 'No' 
+        
     if 'Topo_Flag'          in templateContents: flagTopo = templateContents['Topo_Flag']
     else: flagTopo = 'N'
 
@@ -180,14 +184,15 @@ def main(argv):
     HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.rdc.dem'
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_unw'
 
-    GEORAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '.raw.int'  
-    GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.int'
+    GEORAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '.int'  
+    GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.filt.int'
     GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.amp'
     GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.cor'
-    GEODIFFRAWINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.raw.int'
-    GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.int'
+    GEODIFFRAWINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.int'
+    GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff_filt.int'
     GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.unw'
-
+    GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '.quad_fit.unw'
+    
     if flagGeocode == 'Y':
         print "Geocoding process would be started on " + workDir + "\n"
 
@@ -216,7 +221,7 @@ def main(argv):
         WRAPlks = DIFFINTFILTlks
 
     UNWlks       = WRAPlks.replace('.int', '.unw')
-
+    QUADUNWlks   = UNWlks.replace('.unw','._quad_fit.unw')
 #    if flatteningIgram == 'fft':
 #      FLTlks = FLTFFTlks 
 
@@ -266,6 +271,17 @@ def main(argv):
 
     ras2jpg(GEOUNW, GEOUNW) 
 
+    
+    if flatteningUnwrap == 'quadfit':
+        geocode(QAUDUNWlks, GEOQUADUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+        os.system(call_str)
+
+        ras2jpg(GEOQUADUNW, GEOQUADUNW) 
+                
+    
+    
+    
     print "Geocoding is done!"
  
     sys.exit(1)
