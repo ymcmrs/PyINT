@@ -230,7 +230,7 @@ def main(argv):
     call_str = '$GAMMA_BIN/geocode ' + UTM2RDC + ' ' + SIMSARUTM + ' ' + nWidthUTMDEM + ' ' + SIMSARRDC + ' ' + nWidth + ' ' + nLinePWR1 + ' 0 0'
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/create_diff_par ' + MampParlks + ' ' + MampParlks + ' ' + SIMDIFFpar + ' 0 < ' + BLANK
+    call_str = '$GAMMA_BIN/create_diff_par ' + MampParlks + ' ' + MampParlks + ' ' + SIMDIFFpar + ' 1 < ' + BLANK
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/init_offsetm ' + SIMSARRDC + ' ' + MampImglks + ' ' + SIMDIFFpar + ' ' + rlksSimphase + ' ' + azlksSimphase + ' ' + rposSimphase + ' ' + azposSimphase + ' - - - ' + patchSimphase
