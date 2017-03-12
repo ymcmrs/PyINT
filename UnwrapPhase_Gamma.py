@@ -127,7 +127,7 @@ def main(argv):
         
 #    if 'Igram_UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['Igram_UnwrappedThreshold']
 #    else: unwrappedThreshold = '0.6'
-    if 'UnwrappedThreshold' in templateContents: UnwrappedThreshold = templateContents['UnwrappedThreshold']
+    if 'UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['UnwrappedThreshold']
     else: unwrappedThreshold = '0.6'
     if 'Unwrap_patr' in templateContents: unwrappatrDiff = templateContents['Unwrap_patr']
     else: unwrappatrDiff = '1'
