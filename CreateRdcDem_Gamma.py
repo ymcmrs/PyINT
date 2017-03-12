@@ -199,14 +199,11 @@ def main(argv):
     GEOPWR      = workDir + '/geo_' + igramDir.split(projectName+'_')[1] + '.amp'
     GEOCOR      = workDir + '/geo_' + igramDir.split(projectName+'_')[1] + '.cor'
 
-    if flagSimphase == 'Y':
-        print "Simulated interferogram generation would be started on " + workDir + "\n"
     
     if not (os.path.isdir(simDir)):
         os.makedirs(simDir)    
     createBlankFile(BLANK)
 
-    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
 
 ### remove DEM look up table if it existed for considering gamma overlapping
 
@@ -217,20 +214,20 @@ def main(argv):
     if os.path.isfile(UTM2RDC):   
         os.remove(UTM2RDC)
 
-#    call_str = "$GAMMA_BIN/multi_look " + MrslcImg + " " + MrslcPar + " " + MampImglks + " " + MampParlks + " " + rlks + " " + azlks
-#    messageRsmas.log(call_str)
-#    os.system(call_str)
+    call_str = "$GAMMA_BIN/multi_look " + MrslcImg + " " + MrslcPar + " " + MampImglks + " " + MampParlks + " " + rlks + " " + azlks
+    os.system(call_str)
 
-    call_str = '$GAMMA_BIN/gc_map ' + MrslcPar + ' ' + OFFlks + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
+    call_str = '$GAMMA_BIN/gc_map ' + MrslcPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
     os.system(call_str)
 
     nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
     nLinePWR1 = UseGamma(MampParlks, 'read', 'azimuth_lines')
+    nWidth = UseGamma(MampParlks, 'read', 'range_samples')
    
     call_str = '$GAMMA_BIN/geocode ' + UTM2RDC + ' ' + SIMSARUTM + ' ' + nWidthUTMDEM + ' ' + SIMSARRDC + ' ' + nWidth + ' ' + nLinePWR1 + ' 0 0'
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + SIMDIFFpar + ' 0 < ' + BLANK
+    call_str = '$GAMMA_BIN/create_diff_par ' + MampParlks + ' ' + MampParlks + ' ' + SIMDIFFpar + ' 0 < ' + BLANK
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/init_offsetm ' + SIMSARRDC + ' ' + MampImglks + ' ' + SIMDIFFpar + ' ' + rlksSimphase + ' ' + azlksSimphase + ' ' + rposSimphase + ' ' + azposSimphase + ' - - - ' + patchSimphase
