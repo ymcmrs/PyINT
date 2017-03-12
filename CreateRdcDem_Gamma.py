@@ -220,7 +220,7 @@ def main(argv):
     call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MampImglks + " " + MampParlks + " " + rlks + " " + azlks
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/gc_map ' + MslcPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
+    call_str = '$GAMMA_BIN/gc_map ' + MampParlks + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
     os.system(call_str)
 
     nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
