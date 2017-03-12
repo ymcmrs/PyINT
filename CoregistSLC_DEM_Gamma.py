@@ -191,7 +191,7 @@ def main(argv):
     call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " 128 128 " + offsets + " 2 32 64"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_fit " " " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
+    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
     os.system(call_str)
 
     call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MampPar + " " + SampPar + " " + off + " " + SrslcImg + " " + SrslcPar
