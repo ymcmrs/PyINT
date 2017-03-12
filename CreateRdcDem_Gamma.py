@@ -150,14 +150,17 @@ def main(argv):
     else: flagTDM = 'N'
 
 #  Definition of file
-
-    MslcImg     = workDir + '/' + Mdate + '.slc'
-    MslcPar     = workDir + '/' + Mdate + '.slc.par'
+    MslcDir     = slcDir  + '/' + Mdate
+    SslcDir     = slcDir  + '/' + Sdate
+    
+    
+    MslcImg     = MslcDir + '/' + Mdate + '.slc'
+    MslcPar     = MslcDir + '/' + Mdate + '.slc.par'
     MampImg     = workDir + '/' + Mdate + '.amp'
     MampPar     = workDir + '/' + Mdate + '.amp.par'
 
-    SslcImg     = workDir + '/' + Sdate + '.slc'
-    SslcPar     = workDir + '/' + Sdate + '.slc.par'
+    SslcImg     = SslcDir + '/' + Sdate + '.slc'
+    SslcPar     = SslcDir + '/' + Sdate + '.slc.par'
     SampImg     = workDir + '/' + Sdate + '.amp'
     SampPar     = workDir + '/' + Sdate + '.amp.par'
 
