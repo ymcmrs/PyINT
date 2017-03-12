@@ -163,7 +163,7 @@ def main(argv):
     if 'azfsample4cor'          in templateContents: azfsample4cor = templateContents['azfsample4cor']                
     else: azfsample4cor = str(2*int(azsample4cor))  
         
-    if 'thresh4cor'          in templateContents: azfwin4cor = templateContents['thresh4cor']                
+    if 'thresh4cor'          in templateContents: thresh4cor = templateContents['thresh4cor']                
     else: thresh4cor = ' - '  
         
     if os.path.isfile(off):
