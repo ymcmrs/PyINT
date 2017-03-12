@@ -93,7 +93,7 @@ def main(argv):
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
-    processtDir = scratchDir + '/' + projectName + "/PROCESS"
+    processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
     
