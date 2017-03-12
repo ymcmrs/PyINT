@@ -197,14 +197,14 @@ def main(argv):
             FLTFILTlks = FLTlks.replace('flat_', 'filt_')
         else :
             FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
-            WRAPlks = FLTFILTlks      
+        WRAPlks = FLTFILTlks      
     else:
         if flatteningDiff == 'orbit':
             DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
         else:
-            DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')
-    
-    WRAPlks = DIFFINTFILTlks
+            DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')  
+        WRAPlks = DIFFINTFILTlks
+        
     UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
     UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
     UNWlks       = WRAPlks.replace('.int', '.unw')
