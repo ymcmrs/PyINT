@@ -151,13 +151,13 @@ def main(argv):
 
 #  Definition of file
 
-    MrslcImg     = workDir + '/' + Mdate + '.rslc'
-    MrslcPar     = workDir + '/' + Mdate + '.rslc.par'
+    MslcImg     = workDir + '/' + Mdate + '.slc'
+    MslcPar     = workDir + '/' + Mdate + '.slc.par'
     MampImg     = workDir + '/' + Mdate + '.amp'
     MampPar     = workDir + '/' + Mdate + '.amp.par'
 
-    SrslcImg     = workDir + '/' + Sdate + '.rslc'
-    SrslcPar     = workDir + '/' + Sdate + '.rslc.par'
+    SslcImg     = workDir + '/' + Sdate + '.slc'
+    SslcPar     = workDir + '/' + Sdate + '.slc.par'
     SampImg     = workDir + '/' + Sdate + '.amp'
     SampPar     = workDir + '/' + Sdate + '.amp.par'
 
