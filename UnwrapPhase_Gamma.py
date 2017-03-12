@@ -121,7 +121,10 @@ def main(argv):
 #  else: methodDiff = 'subphase'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']                
     else: flatteningDiff = 'orbit'
-
+        
+    if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']                
+    else: flatteningUnwrap = 'No'
+        
 #    if 'Igram_UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['Igram_UnwrappedThreshold']
 #    else: unwrappedThreshold = '0.6'
     if 'UnwrappedThreshold' in templateContents: UnwrappedThreshold = templateContents['UnwrappedThreshold']
@@ -242,19 +245,20 @@ def main(argv):
 
     ras2jpg(UNWlks, UNWlks)
 
-    if flatteningDiff == 'quadfit':
+    if flatteningUnwrap == 'quadfit':
+        if os.path.isfile(DIFFpar):
+            os.remove(DIFFpar)
+            
         QUADFIT       = WRAPlks.replace('.int', '.quad_fit')
-
+        OUTUNWQUAD    = UNWlks.replace('.unw','.quad_fit.unw')
         call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
         os.system(call_str)
 
         call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORFILTlks + '_mask.bmp ' + QUADFIT + ' 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_sub ' + WRAPlks + ' ' + DIFFpar + ' ' + WRAPlks + '.tmp 1 0'
+        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 1 0'
         os.system(call_str)
-
-        os.rename(WRAPlks+'.tmp', WRAPlks)
 
 
     print "Uwrapping interferometric phase is done!"
