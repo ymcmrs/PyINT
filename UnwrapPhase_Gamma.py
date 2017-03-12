@@ -160,7 +160,7 @@ def main(argv):
     BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
     BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.hgt_sim'
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.rdc.dem'
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_unw'
 
     DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + '.diff.par'
