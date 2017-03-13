@@ -45,7 +45,7 @@ def UseGamma(inFile, task, keyword):
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
-    if inFile.rsplit('.')[1] == 'int':
+    if inFile.rsplit('.')[len(inFile.rsplit('.'))-1] == 'int':
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
@@ -83,7 +83,7 @@ def main(argv):
         else: igramDir=sys.argv[1]        
     else:
         usage();sys.exit(1)
-       
+        
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
     Mdate = IFGPair.split('-')[0]
