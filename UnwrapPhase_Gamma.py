@@ -83,7 +83,7 @@ def main(argv):
         else: igramDir=sys.argv[1]        
     else:
         usage();sys.exit(1)
-       
+        
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
     Mdate = IFGPair.split('-')[0]
@@ -104,7 +104,7 @@ def main(argv):
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
-  
+        
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
@@ -114,7 +114,7 @@ def main(argv):
     else: orbitType = 'HDR'
     if 'Igram_Flattening' in templateContents: flatteningIgram = templateContents['Igram_Flattening']
     else: flatteningIgram = 'orbit'
- 
+        
     if 'Topo_Flag'          in templateContents: flagTopo = templateContents['Topo_Flag']           
     else: flagTopo = 'N'
 #  if 'Diff_Method'          in templateContents: methodDiff = templateContents['Diff_Method']                
@@ -171,14 +171,11 @@ def main(argv):
     DIFFINTlks  = workDir + '/diff_' + orbitType + '_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'  
     DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
     DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')
-  
+    
     CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
     CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
     CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
     
-    MASKTHINlks  = CORFILTlks + 'maskt.bmp'
-    MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
-   
     nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
     nLine = UseGamma(OFFlks, 'read', 'interferogram_azimuth_lines')
     
@@ -191,47 +188,47 @@ def main(argv):
     else: Ref_Azimuth = nCenterLine ####  unwrapping differential interferogram ####
 ### if topo case, it calls FLTFILTlks
 ### else if diff case, it calls DIFFINTFILTlks
-
-    if flagTopo == 'Y':
+    MASKTHINlks  = CORFILTlks + 'maskt.bmp'
+    MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'    
+    
+    
+    if flagTopo == 'Y':    
         if flatteningIgram == 'orbit':
             FLTFILTlks = FLTlks.replace('flat_', 'filt_')
         else :
             FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
-        WRAPlks = FLTFILTlks      
+        WRAPlks = FLTFILTlks
+        MASKTHINbmp = MASKTHINlks
+        
+        CORFILTlksbmp = CORFILTlks + '_mask.bmp'    
+        call_str = '$GAMMA_BIN/rascc_mask ' + CORFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORFILTlksbmp   # based on int coherence
+        os.system(call_str)    
+        call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORFILTlksbmp + ' ' + CORFILTlks + ' ' + nWidth + ' ' + MASKTHINlks + ' 5 0.3 0.4 0.5 0.6 0.7'
+        os.system(call_str)  
+        
     else:
         if flatteningDiff == 'orbit':
             DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
         else:
             DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')  
         WRAPlks = DIFFINTFILTlks
+        MASKTHINbmp = MASKTHINDIFFlks
         
+        CORDIFFFILTlksbmp = CORDIFFFILTlks + '_mask.bmp'
+        call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
+        os.system(call_str)   
+        call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
+        os.system(call_str) 
+    
     UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
     UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
-    UNWlks       = WRAPlks.replace('.int', '.unw')
- 
-    
-#########################################################    
-    
-    CORFILTlksbmp = CORFILTlks + '_mask.bmp'
-    
-    call_str = '$GAMMA_BIN/rascc_mask ' + CORFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORFILTlksbmp   # based on int coherence
-    os.system(call_str)
-    
-    call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORFILTlksbmp + ' ' + CORFILTlks + ' ' + nWidth + ' ' + MASKTHINlks + ' 5 0.3 0.4 0.5 0.6 0.7'
-    os.system(call_str)    
+    UNWlks       = WRAPlks.replace('.int', '.unw') 
 
-###################################################   
 
-    CORDIFFFILTlksbmp = CORDIFFFILTlks + '_mask.bmp'
-    
-    call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MampImglks + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
-    os.system(call_str)
-    
-    call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
-    os.system(call_str)
+
 #################################################
 
-    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINDIFFlks + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
@@ -245,7 +242,7 @@ def main(argv):
 
     ras2jpg(UNWlks, UNWlks)
 
-    if flatteningUnwrap == 'quadfit':
+    if flatteningUnwrap == 'Y':
         if os.path.isfile(DIFFpar):
             os.remove(DIFFpar)
             
@@ -254,7 +251,7 @@ def main(argv):
         call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORFILTlks + '_mask.bmp ' + QUADFIT + ' 0'
+        call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + MASKTHINbmp  + QUADFIT + ' 0'
         os.system(call_str)
 
         call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 1 0'
