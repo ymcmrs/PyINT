@@ -205,7 +205,7 @@ def main(argv):
         os.system(call_str)    
         call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORFILTlksbmp + ' ' + CORFILTlks + ' ' + nWidth + ' ' + MASKTHINlks + ' 5 0.3 0.4 0.5 0.6 0.7'
         os.system(call_str)  
-        
+        CORMCF= CORFILTlks
     else:
         if flatteningDiff == 'orbit':
             DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
@@ -219,6 +219,7 @@ def main(argv):
         os.system(call_str)   
         call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
         os.system(call_str) 
+        CORMCF = CORDIFFFILTlks
     
     UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
     UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
@@ -228,7 +229,7 @@ def main(argv):
 
 #################################################
 
-    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+    call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMCF + ' ' + MASKTHINbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
@@ -251,10 +252,10 @@ def main(argv):
         call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + MASKTHINbmp  + QUADFIT + ' 0'
+        call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + MASKTHINbmp +' ' + QUADFIT + ' 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 1 0'
+        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
         os.system(call_str)
 
 
