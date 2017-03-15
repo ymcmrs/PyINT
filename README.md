@@ -15,13 +15,9 @@ Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...
      $SCRATCHDIR/PROJECTNAME/SLC       (SLC folder should be available!!!)     
      $SCRATCHDIR/PROJECTNAME/PROCESS/ifgramDir  
      ...     
-        
-        
-#####3) pysar based _readfile.py  is called.  So you'd better have pysar package:            
-      git clone https://github.com/ymcmrs/PySAR.git    
-      ...    
+    
       
-#####4) ifgramDir should be named like:     
+#####3) ifgramDir should be named like:     
 
     IFGRAM_PacayaT120F107AlosA_20080101-20090101_0111-0123   
      
