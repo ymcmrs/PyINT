@@ -17,6 +17,10 @@ coreCoarse         =  both       # [option: orbit, ampcor]
 COREG_all_Flag     =  0          # [option: 0, 1]  zero means not coregist all to one master
 coregMethod        =  DEM        # [option: DEM, init ]
 
+# swath = 2:3                     # swath 1~3   [not yet complete]
+# burst = 6:9                     # burst usually 1~ 9.   concrete number should be check from par file
+
+
 ###################   Interferomery ############################
 
 Igram_Spsflg       = 1           # [option: 0, 1]   Range sprctral filtering  
