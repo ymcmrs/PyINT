@@ -2,6 +2,14 @@
 memory_Coreg       =   3700
 walltime_Coreg     =   1:00
 
+Sensor             =  Sentinel
+
+Track              =  128
+Frame              =  2
+Startdate          =  2014-01-01
+Enddate            =  2017-04-01
+
+
 
 DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem
 
