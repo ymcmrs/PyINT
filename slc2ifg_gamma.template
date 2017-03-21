@@ -61,8 +61,12 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #UNW_Flag      =   1
 #GEO_Flag      =   1 
 
-#####################################################################
+###################### Time series processing #####################################
+
 JOB = IFG # [option: IFG, MAI, RSI ]
+COREG_TS_Flag = 1   # [option: 0, 1]
+COREG_IFG_Flag = 1  #  [option: 0, 1] 
+
 
 
 
