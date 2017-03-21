@@ -5,7 +5,8 @@ walltime_Coreg     =   1:00
 
 DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem
 
-
+Range_Looks       =  4
+Azimuth_Looks     =  16
 
 
 ####################  Coregistration #############################
