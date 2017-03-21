@@ -1,4 +1,7 @@
 ###################################################################
+memory_Coreg       =   3700
+walltime_Coreg     =   1:00
+
 
 DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem
 
@@ -58,6 +61,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #GEO_Flag      =   1 
 
 #####################################################################
+JOB = IFG # [option: IFG, MAI, RSI ]
 
 
 
