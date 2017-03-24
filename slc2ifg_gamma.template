@@ -75,8 +75,8 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 ###################### Time series processing #####################################
 
 JOB = IFG # [option: IFG, MAI, RSI ]
-COREG_TS_Flag = 1   # [option: 0, 1]
-COREG_IFG_Flag = 1  #  [option: 0, 1] 
+COREG_TS_Flag = 1   # [option: 0, 1] If 1, all of the SAR images will be coregistated to one master date firstly!
+IFG_TS_Flag = 1  #  [option: 0, 1]      
 
 
 
