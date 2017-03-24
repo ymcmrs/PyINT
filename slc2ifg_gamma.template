@@ -2,6 +2,9 @@
 memory_Coreg       =   3700
 walltime_Coreg     =   1:00
 
+memory_Ifg       =   3700
+walltime_Ifg     =   1:00
+
 Sensor             =  Sentinel
 
 Track              =  128
