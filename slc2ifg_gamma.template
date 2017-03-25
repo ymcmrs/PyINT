@@ -56,6 +56,12 @@ Diff_Flattening    = orbit     # [option: orbit, fft]
 
 ###################    Unwrapping   ################################
 
+Start_Range_Unw      = 0           # bounding box for unwrapping      
+Start_Azimuth_Unw    = 0           # bounding box for unwrapping
+
+Range_Samples_Unw    = 500         #  bounding box for unwrapping
+Azimuth_Samples_Unw  = 500         #  bounding box for unwrapping
+
 unwrapMethod         =  branch_cut   # [option: mcf,  branch_cut]
 branch_length        =  32            # maximum branch length for unwrap
 
