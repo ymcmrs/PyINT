@@ -84,6 +84,9 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #GEO_Flag      =   1 
 
 ###################### Time series processing #####################################
+Max_Spacial_Baseline = 500      # spatial baseline threshold for selecting pairs
+Max_Temporal_Baseline = 500      # temporal baseline threshold for selecting pairs
+
 
 JOB = IFG # [option: IFG, MAI, RSI ]
 COREG_TS_Flag = 1   # [option: 0, 1] If 1, all of the SAR images will be coregistated to one master date firstly!
