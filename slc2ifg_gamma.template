@@ -55,7 +55,6 @@ UnwrappedThreshold = 0.4
 Diff_Flattening    = orbit     # [option: orbit, fft]
 
 ###################    Unwrapping   ################################
-
 Start_Range_Unw      = 0           # bounding box for unwrapping      
 Start_Azimuth_Unw    = 0           # bounding box for unwrapping
 
@@ -81,6 +80,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #INT_Flag      =   1   
 #DIFF_Flag     =   1
 #UNW_Flag      =   1
+#UNW_SUB_Flag  =   1
 #GEO_Flag      =   1 
 
 ###################### Time series processing #####################################
