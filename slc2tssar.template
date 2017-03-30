@@ -84,8 +84,11 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #GEO_Flag      =   1 
 
 ###################### Time series processing #####################################
-Max_Spacial_Baseline = 500      # spatial baseline threshold for selecting pairs
-Max_Temporal_Baseline = 500      # temporal baseline threshold for selecting pairs
+Add_Date             =           #  add some new SAR data into original one
+Remove_Date          =           # remove some SAR data from the original data sets 
+
+Max_Spacial_Baseline =   500      # spatial baseline threshold for selecting pairs
+Max_Temporal_Baseline =  500      # temporal baseline threshold for selecting pairs
 
 
 JOB = IFG # [option: IFG, MAI, RSI ]
