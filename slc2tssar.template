@@ -84,7 +84,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #GEO_Flag      =   1 
 
 ###################### Time series processing #####################################
-Add_Date             =           #  add some new SAR data into original one
+Add_Date             =           #  add some new SAR data into original one     ------ process_tsifg.py -----SelectPairs.py   
 
 #Remove_Date          =   [20080102,20080506:20080801,20081201]          #  load subset for further processing, remove some SAR data from the original data sets 
 #Remove_Inf           =   [3,5,6,10,13:16]        #  load subset for further processing, remove interferograms, based on TS_Berp  
