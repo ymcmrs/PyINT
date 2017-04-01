@@ -87,7 +87,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 Add_Date             =           #  add some new SAR data into original one
 
 Remove_Date          =   [20080102,20080506:20080801,20081201]          #  load subset for further processing, remove some SAR data from the original data sets 
-Remove_Inf           =   [3,5,6,10]        #  load subset for further processing, remove interferograms, based on TS_Berp  
+Remove_Inf           =   [3,5,6,10,13:16]        #  load subset for further processing, remove interferograms, based on TS_Berp  
 
 Subset_Rdc           =     [100:1000,200:2000]            # az1:az2, rg1:rg2
 Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2
