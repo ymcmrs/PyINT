@@ -83,15 +83,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 #UNW_SUB_Flag  =   1
 #GEO_Flag      =   1 
 
-###################### Time series processing #####################################
-Add_Date             =           #  add some new SAR data into original one     ------ process_tsifg.py -----SelectPairs.py   
-
-#Remove_Date          =   [20080102,20080506:20080801,20081201]          #  load subset for further processing, remove some SAR data from the original data sets 
-#Remove_Inf           =   [3,5,6,10,13:16]        #  load subset for further processing, remove interferograms, based on TS_Berp  
-
-Subset_Rdc           =     [100:1000,200:2000]            # az1:az2, rg1:rg2
-Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2
-
+#######################################   Time series GAMMA      ######################################
 Max_Spacial_Baseline =   500      # spatial baseline threshold for selecting pairs
 Max_Temporal_Baseline =  500      # temporal baseline threshold for selecting pairs
 
@@ -100,7 +92,44 @@ JOB = IFG # [option: IFG, MAI, RSI ]
 COREG_TS_Flag = 1   # [option: 0, 1] If 1, all of the SAR images will be coregistated to one master date firstly!
 IFG_TS_Flag = 1      # [option: 0, 1]      
 
+
+###########################################   Time series processing  ###############################################
+Add_Date             =           #  add some new SAR data into original one     ------ process_tsifg.py -----SelectPairs.py   
+
+#Remove_Date          =   [20080102,20080506:20080801,20081201]          #  load subset for further processing, remove some SAR data from the original data sets 
+#Remove_Inf           =   [3,5,6,10,13:16]        #  load subset for further processing, remove interferograms, based on TS_Berp  
+
+Subset_Rdc           =     [100:1000,200:2000]            # az1:az2, rg1:rg2
+Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2
+
 Load_SubUnwrap_Flag = 1     #[option: 0, 1]  If 1, the loaded phase will be unwrapped based on small region.
+
+############ load data ##############
+DEM_dir              =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/SIM/sim_150108-150119
+
+IFG_list             =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.int
+UNW_list             =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.unw
+COR_list             =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.cor
+MASK_list            =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.unw
+
+######### 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
