@@ -105,7 +105,10 @@ Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2
 Load_SubUnwrap_Flag = 1     #[option: 0, 1]  If 1, the loaded phase will be unwrapped based on small region.
 
 ############ load data ##############
+
+Byte_order           =   big      # [option: big, little ]    Except GAMMA, usually it should be little
 DEM_dir              =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/SIM/sim_150108-150119
+TS_Par               =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/RSLC/150130_5rlks.ramp.par
 
 IFG_list             =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.int
 UNW_list             =  /scratch/projects/insarlab/yxc773/PichinchaSMT51TsxD/PROCESS/IFG*/diff_filt*.unw
