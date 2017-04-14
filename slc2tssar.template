@@ -100,7 +100,7 @@ Add_Date             =           #  add some new SAR data into original one     
 #Remove_Inf           =   [3,5,6,10,13:16]        #  load subset for further processing, remove interferograms, based on TS_Berp  
 
 Subset_Rdc           =     [100:1000,200:2000]            # az1:az2, rg1:rg2
-Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2
+Subset_Geo           =     [0.104:0.201, 78.28:78.40]     # lat1:lat2, lon1:lon2     # If Subset_Rdc exists, this will not work 
 
 Load_SubUnwrap_Flag = 1     #[option: 0, 1]  If 1, the loaded phase will be unwrapped based on small region.
 
