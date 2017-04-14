@@ -152,6 +152,7 @@ def main(argv):
         usage();sys.exit(1)
 
 #  Definition of file
+
     SslcDir = slcDir + "/" + Sdate
     MslcDir = slcDir + "/" + Mdate
 
@@ -159,14 +160,9 @@ def main(argv):
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
-    
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
-    
-    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
-    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"   
+
+    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".amp"
+    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".amp.par"   
 
     OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
 
@@ -174,9 +170,10 @@ def main(argv):
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
 
 ###################################  HGT in Radar Coordinates Generation #########################
-  
-    call_str = 'CreateRdcDem_Gamma.py ' + igramDir
-    os.system(call_str)
+
+    if not os.path.isfile(HGTSIM):
+        call_str = 'CreateRdcDem_Gamma.py ' + igramDir
+        os.system(call_str)
         
 ###################################  Phase Simulation  ###########################################
     
@@ -189,9 +186,9 @@ def main(argv):
     else: flagTDM = 'N'
 
     if flagTDM == 'N':
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
+        call_str = '$GAMMA_BIN/phase_sim_orb ' + MslcPar + ' ' + SslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
     else:
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
+        call_str = '$GAMMA_BIN/phase_sim_orb ' + MslcPar + ' ' + SslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
     os.system(call_str)
 
 

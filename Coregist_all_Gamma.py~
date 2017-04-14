@@ -395,11 +395,10 @@ def main(argv):
         fout.write(txtout)
         fin.close()
         fout.close()
-       
-        if (masterDate != Mdate):
-            call_str = "$GAMMA_BIN/SLC_interp " + INT + " " + Baseslc4Par + " " + INTpar + " " + Moff + " " + rINT + " " + rINTpar
-            os.system(call_str)
-            os.rename(rINT, INT)
+
+        call_str = "$GAMMA_BIN/SLC_interp " + INT + " " + Baseslc4Par + " " + INTpar + " " + Moff + " " + rINT + " " + rINTpar
+        os.system(call_str)
+        os.rename(rINT, INT)
 
     os.remove(snr)
     os.remove(offsets)

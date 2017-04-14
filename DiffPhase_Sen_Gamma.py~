@@ -4,9 +4,9 @@
 #                                                                                 #
 #            Author:   Yun-Meng Cao                                               #
 #            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
+#            Date  :   FMarch, 2017                                               #
 #                                                                                 #
-#   Coregistration of SAR images based on cross-correlation with DEM assisstance  #
+#         Generating differential interferograms for sentinel-1A/B                #
 #                                                                                 #
 ###################################################################################
 #'''
@@ -17,7 +17,6 @@ import subprocess
 import getopt
 import time
 import glob
-
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -91,16 +90,15 @@ def usage():
     print '''
 ******************************************************************************************************
  
-          Simulating Topography phase and flattening phase based on radar-coordinates' DEM
+              Generating the differential interferograms for Sentinel-1A/B
 
    usage:
    
-            SimPhase_Gamma.py igramDir
+            DiffPhase_Sen_Gamma.py igramDir
       
-      e.g.  SimPhase_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007          
-            
+      e.g.  DiffPhase_Sen_Gamma.py IFG_PacayaT163S1A_131021-131101_0011_-0007
+      e.g.  DiffPhase_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
+      e.g.  DiffPhase_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
     '''   
     
@@ -130,72 +128,64 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
+    
+    if not os.path.isdir(processDir):
+        call_str = 'mkdir ' + processDir
+        os.system(call_str)
+    
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
-  
+        os.system(call_str)
+        
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
+        os.system(call_str)
     
-    dem=templateContents['DEM']
-    demPar = dem + ".par"
 
-    if INF=='IFG':
-        Suffix=['']
-    elif INF=='MAI':
-        Suffix=['.F','.B']
-    elif INF=='RSI':
-        Suffix=['.HF','.LF']
-    else:
-        print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)
-
-#  Definition of file
-    SslcDir = slcDir + "/" + Sdate
-    MslcDir = slcDir + "/" + Mdate
-
-    MslcImg = MslcDir + "/" + Mdate + ".slc"
-    MslcPar = MslcDir + "/" + Mdate + ".slc.par"
-    SslcImg = SslcDir + "/" + Sdate + ".slc"
-    SslcPar = SslcDir + "/" + Sdate + ".slc.par"
-    
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
-    
-    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
-    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"   
-
-    OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
-
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
-
-###################################  HGT in Radar Coordinates Generation #########################
-  
-    call_str = 'CreateRdcDem_Gamma.py ' + igramDir
-    os.system(call_str)
         
-###################################  Phase Simulation  ###########################################
-    
-    if os.path.isfile(OFFlks):
-        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    else:
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples:')
-    
-    if 'Igram_Flag_TDM' in templateContents: flagTDM = templateContents['Igram_Flag_TDM']
-    else: flagTDM = 'N'
+    if 'Start_Swath' in templateContents: SW = templateContents['Start_Swath']
+    else: SW = '1'    
+    if 'End_Swath' in templateContents: EW = templateContents['End_Swath']
+    else: EW = '3' 
+    if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
+    else: SB = '1'            
+        
+#  Definition of file
+    MslcDir     = slcDir  + '/' + Mdate
+    SslcDir     = slcDir  + '/' + Sdate
 
-    if flagTDM == 'N':
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
-    else:
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
+    MslcTOP1     = MslcDir + '/' + Mdate + '.IW1.slc.TOPS_par'   # bursts number in all of TOPS are same ? If not, should modify
+    SslcTOP1     = SslcDir + '/' + Sdate + '.IW1.slc.TOPS_par'
+
+    NB_master = UseGamma(MslcTOP1 , 'read', 'number_of_bursts:')
+    NB_slave = UseGamma(SslcTOP1 , 'read', 'number_of_bursts:')    
+    
+    if 'End_Burst' in templateContents: EB = templateContents['End_Burst']
+    else: EB = str(min(int(NB_master),int(NB_slave)))    # using the minmun number as the end of the burst number
+    
+    MSLC_tab     = MslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
+    SSLC_tab     = SslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
+
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
+    
+    RSLC_tab = workDir + '/RSLC_tab' +  SW + EW + '_' + SB + EB
+    
+    for kk in range(int(EW)-int(SW)+1):
+        call_str = 'echo ' + workDir + '/' + Sdate+ '_'+ SB + EB +'.IW'+str(int(SW)+kk) + '.rslc' + ' ' + workDir + '/'+ Sdate + '_'+ SB + EB + '.IW'+str(int(SW)+kk) +'.rslc.par' + ' ' + workDir + '/'+ Date + '_'+ SB + EB + '.IW'+str(int(SW)+kk) + '.rslc.TOPS_par >>' + RSLC_tab
+        os.system(call_str)
+    
+    
+    os.chdir(workDir)
+    call_str = 'S1_coreg_TOPS ' + MSLC_tab + ' ' + Mdate + ' ' + SSLC_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.8 0.01 0.8 1'
     os.system(call_str)
 
 
-    print "Simulation interferometric phas with DEM is done!"
+
+
+
+    print "Create DEM in Radar Coordinates is done!"
     sys.exit(1)
 
 if __name__ == '__main__':

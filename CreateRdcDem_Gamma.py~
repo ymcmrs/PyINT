@@ -188,11 +188,6 @@ def main(argv):
     MslcPar     = MslcDir + '/' + Mdate + '.slc.par'
     SslcImg     = SslcDir + '/' + Sdate + '.slc'
     SslcPar     = SslcDir + '/' + Sdate + '.slc.par'
-    
-    MrslcImg     = workDir + '/' + Mdate + '.rslc'
-    MrslcPar     = workDir + '/' + Mdate + '.rslc.par'
-    SrslcImg     = workDir + '/' + Sdate + '.rslc'
-    SrslcPar     = workDir + '/' + Sdate + '.rslc.par'
 
 
     BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
@@ -256,15 +251,10 @@ def main(argv):
         call_str = 'cp ' + tmp_dem + ' ' + dem
         os.system(call_str)
 
-    if os.path.isfile(MrslcImg):
-        call_str = "$GAMMA_BIN/multi_look " + MrslcImg + " " + MrslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
-    else:
-        call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
-        
+    call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
+    os.system(call_str)
 
-    call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
+    call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
     os.system(call_str)
 
     nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')

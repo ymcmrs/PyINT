@@ -158,11 +158,15 @@ def main(argv):
     if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
 
-    SRU = '0'    
-    SAU = '0'  
-   
-    NR = '-'    
-    NA = '-'     
+    if 'Start_Range_Unw' in templateContents: SRU = templateContents['Start_Range_Unw']
+    else: SRU = '0'    
+    if 'Start_Azimuth_Unw' in templateContents: SAU = templateContents['Start_Azimuth_Unw']
+    else: SAU = '0'  
+        
+    if 'Range_Samples_Unw' in templateContents: NR = templateContents['Range_Samples_Unw']
+    else: NR = '-'    
+    if 'Azimuth_Samples_Unw' in templateContents: NA = templateContents['Azimuth_Samples_Unw']
+    else: NA = '-'     
 
 #  Definition of file
 
@@ -222,7 +226,7 @@ def main(argv):
                 FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
             WRAPlks = FLTFILTlks
             MASKTHIN = MASKTHINlks
-            CORMASK = CORFILTlks           # using the un-filtered image as mask file
+            CORMASK = CORlks           # using the un-filtered image as mask file
         else:
             if flatteningDiff == 'orbit':
                 DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
@@ -230,7 +234,7 @@ def main(argv):
                 DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')  
             WRAPlks = DIFFINTFILTlks
             MASKTHIN = MASKTHINDIFFlks
-            CORMASK = CORDIFFFILTlks       # using the un-filtered image as mask file
+            CORMASK = CORDIFFlks       # using the un-filtered image as mask file
             
         UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
         UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
@@ -241,9 +245,6 @@ def main(argv):
     
         CORMASKbmp = CORMASK + '_mask.bmp'
     
-        if os.path.isfile(CORMASKbmp):
-            os.remove(CORMASKbmp)
-            
         call_str = '$GAMMA_BIN/rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
         os.system(call_str)
     
@@ -251,7 +252,7 @@ def main(argv):
         os.system(call_str)    
 ##########################  Start to Unwrap  ###########################
 
-        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 ' + SRU + ' ' + SAU + ' ' + NR + ' ' + NA + ' ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' 0 ' + SRU + ' ' + SAU + ' ' + NR + ' ' + NA + ' ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
         os.system(call_str)
 
 #        call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
@@ -277,7 +278,7 @@ def main(argv):
             call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASKbmp + ' ' + QUADFIT + ' 0'
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
+            call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 1 0'
             os.system(call_str)
 
 

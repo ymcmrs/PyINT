@@ -6,7 +6,7 @@
 #            Email :   ymcmrs@gmail.com                                           #
 #            Date  :   February, 2017                                             #
 #                                                                                 #
-#         Unwrap interferograms based on GAMMA                                    #
+#         Unwrap interferograms based on Rounding box                             #
 #                                                                                 #
 ###################################################################################
 #'''
@@ -84,7 +84,24 @@ def createBlankFile(strFile):
         f.write('\n')
     f.close()    
     
-       
+def GetSubset(Subset):
+    KK = Subset.split('[')[1].split(']')[0]
+    if ':' in KK:    
+        Dx = Subset.split('[')[1].split(']')[0].split(',')[0]
+        Dy = Subset.split('[')[1].split(']')[0].split(',')[1]
+    
+        x1 = Dx.split(':')[0]
+        x2 = Dx.split(':')[1]
+    
+        y1 = Dy.split(':')[0]
+        y2 = Dy.split(':')[1]
+    else:
+        x1 = '-'
+        x2 = '-'
+        y1 = '-'
+        y2 = '-'
+        
+    return x1,x2,y1,y2      
 
 def usage():
     print '''
@@ -97,9 +114,9 @@ def usage():
    
             UnwrapPhase_Gamma.py igramDir
       
-      e.g.  UnwrapPhase_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  UnwrapPhase_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  UnwrapPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
+      e.g.  UnwrapPhase_Sub_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  UnwrapPhase_Sub_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  UnwrapPhase_Sub_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
     '''   
@@ -157,12 +174,25 @@ def main(argv):
     else: unwrappatrDiff = '1'
     if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
-
-    SRU = '0'    
-    SAU = '0'  
-   
-    NR = '-'    
-    NA = '-'     
+    
+    if 'Subset_Rdc' in templateContents: 
+        Subset = templateContents['Subset_Rdc']
+        XX = GetSubset(Subset)
+        if not XX[3] == '-':
+            SRU = XX[0]
+            NR = str(int(XX[1])-int(XX[0]))
+            SAU= XX[2]
+            NA = str(int(XX[3])-int(XX[2]))
+        else:
+            SRU = '-'
+            NR = '-'
+            SAU = '-'
+            NA = '-'   
+    else:
+        SRU = '-'
+        NR = '-'
+        SAU = '-'
+        NA = '-' 
 
 #  Definition of file
 
@@ -173,6 +203,7 @@ def main(argv):
         SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"   
         
         MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        MamprlksImg_Sub = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".sub.ramp"
         MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
         SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
         SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
@@ -232,14 +263,20 @@ def main(argv):
             MASKTHIN = MASKTHINDIFFlks
             CORMASK = CORDIFFFILTlks       # using the un-filtered image as mask file
             
-        UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
-        UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
-        UNWlks       = WRAPlks.replace('.int', '.unw')
+        UWNTHINlks   = WRAPlks.replace('.int', '.sub.unw_thinned.bmp')
+        UNWINTERPlks = WRAPlks.replace('.int', '.sub.unw_interp')
+        UNWlks       = WRAPlks.replace('.int', '.sub.unw')
+        
+        if os.path.isfile(UNWlks):
+            os.remove(UNWlks)
+
  
         # using the un-filtered image as mask file
 ###########################  Start to Mask   ##########################    
     
-        CORMASKbmp = CORMASK + '_mask.bmp'
+        CORMASKbmp = CORMASK + '.sub_mask.bmp'
+        if os.path.isfile(CORMASKbmp):
+            os.remove(CORMASKbmp)
     
         if os.path.isfile(CORMASKbmp):
             os.remove(CORMASKbmp)
@@ -247,24 +284,44 @@ def main(argv):
         call_str = '$GAMMA_BIN/rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
         os.system(call_str)
     
-        call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
-        os.system(call_str)    
-##########################  Start to Unwrap  ###########################
 
         call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 ' + SRU + ' ' + SAU + ' ' + NR + ' ' + NA + ' ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
         os.system(call_str)
+        
 
+        data = np.fromfile(UNWlks, '>f4', int(nLine)*int(nWidth)).reshape(int(nLine),int(nWidth))
+        data_sub = data[int(SAU):(int(SAU)+int(NA)),int(SRU):(int(SRU)+int(NR))]
+        
+#        if not sys.byteorder == 'big':
+#            data_sub.byteswap(True)       
+        data_sub.tofile(UNWlks)   
+        
+        
+        data = np.fromfile(MamprlksImg, '>f4', int(nLine)*int(nWidth)).reshape(int(nLine),int(nWidth))
+        data_sub = data[int(SAU):(int(SAU)+int(NA)),int(SRU):(int(SRU)+int(NR))]
+                 
+        data_sub.tofile(MamprlksImg_Sub)          
+
+        data = np.fromfile(CORMASKbmp, '>u1', int(nLine)*int(nWidth)).reshape(int(nLine),int(nWidth))
+        data_sub = data[int(SAU):(int(SAU)+int(NA)),int(SRU):(int(SRU)+int(NR))]           
+        data_sub.tofile(CORMASKbmp)  
+    
+        
+        WIDTH = NR 
 #        call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
 #        os.system(call_str)
 
 #        call_str = '$GAMMA_BIN/unw_model ' + WRAPlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
 #        os.system(call_str)
 
-        call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
+        call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg_Sub + ' ' + WIDTH + ' - - - - - - - - - - ' 
         os.system(call_str)
 
         ras2jpg(UNWlks, UNWlks)
-
+        
+        
+        
+        
         if flatteningUnwrap == 'Y':
             if os.path.isfile(DIFFpar):
                 os.remove(DIFFpar)
@@ -274,12 +331,14 @@ def main(argv):
             call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASKbmp + ' ' + QUADFIT + ' 0'
+            call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 - ' + QUADFIT + ' 0'
             os.system(call_str)
 
             call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
             os.system(call_str)
 
+        
+        
 
     print "Uwrapping interferometric phase is done!"
     sys.exit(1)

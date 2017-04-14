@@ -6,7 +6,7 @@
 #            Email :   ymcmrs@gmail.com                                           #
 #            Date  :   February, 2017                                             #
 #                                                                                 #
-#         Unwrap interferograms based on GAMMA                                    #
+#         Unwrap interferograms based on Branch-Cut Method                        #
 #                                                                                 #
 ###################################################################################
 #'''
@@ -90,16 +90,16 @@ def usage():
     print '''
 ******************************************************************************************************
  
-          Unwrap interferograms based on GAMMA.
+          Unwrap interferograms based on Branch-cut method.
        
 
    usage:
    
-            UnwrapPhase_Gamma.py igramDir
+            UnwrapPhase_BranchCut_Gamma.py igramDir
       
-      e.g.  UnwrapPhase_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  UnwrapPhase_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  UnwrapPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
+      e.g.  UnwrapPhase_BranchCut_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  UnwrapPhase_BranchCut_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  UnwrapPhase_BranchCut_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
     '''   
@@ -152,17 +152,15 @@ def main(argv):
     if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']                
     else: flatteningUnwrap = 'N'
     if 'UnwrappedThreshold' in templateContents: unwrappedThreshold = templateContents['UnwrappedThreshold']
-    else: unwrappedThreshold = '0.3'
+    else: unwrappedThreshold = '0.3'            
     if 'Unwrap_patr' in templateContents: unwrappatrDiff = templateContents['Unwrap_patr']
     else: unwrappatrDiff = '1'
     if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
-
-    SRU = '0'    
-    SAU = '0'  
-   
-    NR = '-'    
-    NA = '-'     
+        
+    if 'branch_length' in templateContents: mbl = templateContents['branch_length']
+    else: mbl = '32'
+        
 
 #  Definition of file
 
@@ -191,6 +189,7 @@ def main(argv):
         BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base_ref'
    
         DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.diff.par'
+        UNWFLAGlks  = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.unw_flag'
     
         DIFFINTlks  = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'  
         DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
@@ -222,7 +221,7 @@ def main(argv):
                 FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
             WRAPlks = FLTFILTlks
             MASKTHIN = MASKTHINlks
-            CORMASK = CORFILTlks           # using the un-filtered image as mask file
+            CORMASK = CORFILTlks 
         else:
             if flatteningDiff == 'orbit':
                 DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
@@ -230,35 +229,35 @@ def main(argv):
                 DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')  
             WRAPlks = DIFFINTFILTlks
             MASKTHIN = MASKTHINDIFFlks
-            CORMASK = CORDIFFFILTlks       # using the un-filtered image as mask file
+            CORMASK = CORDIFFFILTlks
             
         UWNTHINlks   = WRAPlks.replace('.int', '.unw_thinned.bmp')
         UNWINTERPlks = WRAPlks.replace('.int', '.unw_interp')
-        UNWlks       = WRAPlks.replace('.int', '.unw')
+        UNWlks       = WRAPlks.replace('.int', '.branch.unw')
  
-        # using the un-filtered image as mask file
-###########################  Start to Mask   ##########################    
     
-        CORMASKbmp = CORMASK + '_mask.bmp'
+#########################################################    
+        
+        if os.path.isfile(UNWlks):
+            os.remove(UNWlks)
+
+        if os.path.isfile(UNWFLAGlks):
+            os.remove(UNWFLAGlks)
     
-        if os.path.isfile(CORMASKbmp):
-            os.remove(CORMASKbmp)
-            
-        call_str = '$GAMMA_BIN/rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
+        CORFILTlksbmp = CORFILTlks + '_mask.bmp'
+    
+        call_str = '$GAMMA_BIN/corr_flag ' + CORDIFFlks + ' ' + UNWFLAGlks + ' ' + nWidth + ' ' + unwrappedThreshold
         os.system(call_str)
-    
-        call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
-        os.system(call_str)    
-##########################  Start to Unwrap  ###########################
-
-        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 ' + SRU + ' ' + SAU + ' ' + NR + ' ' + NA + ' ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+        
+        call_str = '$GAMMA_BIN/residue_cc ' + DIFFINTFILTlks + ' ' + UNWFLAGlks + ' ' + nWidth
         os.system(call_str)
-
-#        call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
-#        os.system(call_str)
-
-#        call_str = '$GAMMA_BIN/unw_model ' + WRAPlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
-#        os.system(call_str)
+        
+        call_str = '$GAMMA_BIN/tree_cc ' +  UNWFLAGlks + ' ' + nWidth + ' ' + mbl
+        os.system(call_str)
+        
+        call_str = '$GAMMA_BIN/grasses ' + DIFFINTFILTlks + ' ' + UNWFLAGlks  + ' ' + UNWlks + ' ' + nWidth + ' - - - - ' + Ref_Range + ' ' + Ref_Azimuth
+        os.system(call_str)
+        
 
         call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
         os.system(call_str)
@@ -274,14 +273,14 @@ def main(argv):
             call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASKbmp + ' ' + QUADFIT + ' 0'
+            call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASK + '_mask.bmp ' + QUADFIT + ' 0'
             os.system(call_str)
 
             call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
             os.system(call_str)
 
 
-    print "Uwrapping interferometric phase is done!"
+    print "Uwrapping interferometric phase based on Branch-cut is done!"
     sys.exit(1)
 
 if __name__ == '__main__':

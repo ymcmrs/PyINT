@@ -4,20 +4,20 @@
 #                                                                                 #
 #            Author:   Yun-Meng Cao                                               #
 #            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
+#            Date  :   March , 2017                                               #
 #                                                                                 #
-#   Coregistration of SAR images based on cross-correlation with DEM assisstance  #
+#         Range Split Spectrum for SAR complex data based on GAMMA                #
 #                                                                                 #
 ###################################################################################
 #'''
 import numpy as np
 import os
+import pysar._readfile as readfile
 import sys  
 import subprocess
 import getopt
 import time
 import glob
-
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -46,6 +46,7 @@ def read_template(File, delimiter='='):
             atrValue = check_variable_name(atrValue)
             template_dict[atrName] = atrValue
     return template_dict
+
 
 def ras2jpg(input, strTitle):
     call_str = "convert " + input + ".ras " + input + ".jpg"
@@ -79,27 +80,26 @@ def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
+
 def createBlankFile(strFile):
     f = open(strFile,'w')
     for i in range (10):
         f.write('\n')
-    f.close()    
-    
-       
+    f.close()
+
 
 def usage():
     print '''
 ******************************************************************************************************
  
-          Simulating Topography phase and flattening phase based on radar-coordinates' DEM
+         Split Spectrum on range direction to generate high-frequency- and low-frequency- SLCs
 
    usage:
    
-            SimPhase_Gamma.py igramDir
+            RSI_SLC_Gamma.py igramDir
       
-      e.g.  SimPhase_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007          
+      e.g.  RSI_SLC_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
+          
             
 *******************************************************************************************************
     '''   
@@ -111,7 +111,7 @@ def main(argv):
         else: igramDir=sys.argv[1]        
     else:
         usage();sys.exit(1)
-       
+    
     INF = igramDir.split('_')[0]
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
@@ -124,34 +124,24 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
-    workDir    = processDir + '/' + igramDir   
+    workdir    = processDir + '/' + igramDir   
     
     templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
-    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-  
-    simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-    
-    dem=templateContents['DEM']
-    demPar = dem + ".par"
-
-    if INF=='IFG':
-        Suffix=['']
-    elif INF=='MAI':
-        Suffix=['.F','.B']
-    elif INF=='RSI':
-        Suffix=['.HF','.LF']
-    else:
-        print "The folder name %s cannot be identified !" % igramDir
+    if INF!='RSI':
         usage();sys.exit(1)
 
-#  Definition of file
+    if not os.path.isdir(workdir):
+        call_str = 'mkdir ' + workdir
+        os.system(call_str)
+        
+    SslcDir = slcDir + "/" + Sdate
+    MslcDir = slcDir + "/" + Mdate
+
+# input slcs
+
     SslcDir = slcDir + "/" + Sdate
     MslcDir = slcDir + "/" + Mdate
 
@@ -159,44 +149,68 @@ def main(argv):
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
+
     
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
-    
-    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
-    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"   
-
-    OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
-
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
-
-###################################  HGT in Radar Coordinates Generation #########################
-  
-    call_str = 'CreateRdcDem_Gamma.py ' + igramDir
+    MHslcImg = workdir + '/'+Mdate + '.HF.slc'
+    MHslcPar = workdir + '/'+Mdate + '.HF.slc.par'
+    call_str = 'cp ' + MslcPar + ' '+ MHslcPar
     os.system(call_str)
-        
-###################################  Phase Simulation  ###########################################
     
-    if os.path.isfile(OFFlks):
-        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    else:
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples:')
+    SHslcImg = workdir + '/'+Sdate + '.HF.slc'
+    SHslcPar = workdir + '/'+Sdate + '.HF.slc.par'
+    call_str = 'cp ' + SslcPar + ' '+ SHslcPar
+    os.system(call_str)    
     
-    if 'Igram_Flag_TDM' in templateContents: flagTDM = templateContents['Igram_Flag_TDM']
-    else: flagTDM = 'N'
-
-    if flagTDM == 'N':
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
-    else:
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
+    MLslcImg = workdir + '/'+Mdate + '.LF.slc'
+    MLslcPar = workdir + '/'+Mdate + '.LF.slc.par'
+    call_str = 'cp ' + MslcPar + ' '+ MLslcPar
     os.system(call_str)
-
-
-    print "Simulation interferometric phas with DEM is done!"
+    
+    SLslcImg = workdir + '/'+Sdate + '.LF.slc'
+    SLslcPar = workdir + '/'+Sdate + '.LF.slc.par'
+    call_str = 'cp ' + SslcPar + ' '+ SLslcPar
+    os.system(call_str)
+    
+    nWidth = UseGamma(MslcPar, 'read','range_samples:')
+    
+    call_str= 'bpf ' + MslcImg + ' ' + MHslcImg + ' ' + nWidth + ' 0.25 0.5 0 1 0 0'
+    os.system(call_str)
+    
+    call_str= 'bpf ' + MslcImg + ' ' + MLslcImg + ' ' + nWidth + ' -0.25 0.5 0 1 0 0'   
+    os.system(call_str)
+    
+    nWidth = UseGamma(SslcPar, 'read','range_samples:')
+   
+    call_str= 'bpf ' + SslcImg + ' ' + SHslcImg + ' ' + nWidth + ' 0.25 0.5 0 1 0 0'
+    os.system(call_str)
+    
+    call_str= 'bpf ' + SslcImg + ' ' + SLslcImg + ' ' + nWidth + ' -0.25 0.5 0 1 0 0'   
+    os.system(call_str)
+    
+    
+    print "Split spectrum for both slave and master date is done!"
     sys.exit(1)
 
 if __name__ == '__main__':
-    main(sys.argv[:])
+    main(sys.argv[:])    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

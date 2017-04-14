@@ -4,20 +4,47 @@
 #                                                                                 #
 #            Author:   Yun-Meng Cao                                               #
 #            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
+#            Date  :   March, 2017                                                #
 #                                                                                 #
-#         Generating differential interferograms based on GAMMA                   #
+#     Removing topography and flattening phase from original interferogram.       #
 #                                                                                 #
 ###################################################################################
 #'''
 import numpy as np
 import os
-import pysar._readfile as readfile
 import sys  
 import subprocess
 import getopt
 import time
 import glob
+
+def check_variable_name(path):
+    s=path.split("/")[0]
+    if len(s)>0 and s[0]=="$":
+        p0=os.getenv(s[1:])
+        path=path.replace(path.split("/")[0],p0)
+    return path
+
+def read_template(File, delimiter='='):
+    '''Reads the template file into a python dictionary structure.
+    Input : string, full path to the template file
+    Output: dictionary, pysar template content
+    Example:
+        tmpl = read_template(KyushuT424F610_640AlosA.template)
+        tmpl = read_template(R1_54014_ST5_L0_F898.000.pi, ':')
+    '''
+    template_dict = {}
+    for line in open(File):
+        line = line.strip()
+        c = [i.strip() for i in line.split(delimiter, 1)]  #split on the 1st occurrence of delimiter
+        if len(c) < 2 or line.startswith('%') or line.startswith('#'):
+            next #ignore commented lines or those without variables
+        else:
+            atrName  = c[0]
+            atrValue = str.replace(c[1],'\n','').split("#")[0].strip()
+            atrValue = check_variable_name(atrValue)
+            template_dict[atrName] = atrValue
+    return template_dict
 
 def ras2jpg(input, strTitle):
     call_str = "convert " + input + ".ras " + input + ".jpg"
@@ -64,16 +91,16 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       With or without DEM assisstance can be chosen.
+         Romoving topography phase and flattening phase from original interferogram.
 
    usage:
    
             diffPhase_gamma.py igramDir
       
-      e.g.  diffPhase_gamma.py IFGRAM_PacayaT163TsxHhA_131021-131101_0011_-0007
-          
-            
+      e.g.  diffPhase_gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
+      e.g.  diffPhase_gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007          
+      e.g.  diffPhase_gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
+      
 *******************************************************************************************************
     '''   
     
@@ -85,6 +112,7 @@ def main(argv):
     else:
         usage();sys.exit(1)
        
+    INF = igramDir.split('_')[0]
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
     Mdate = IFGPair.split('-')[0]
@@ -98,26 +126,28 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
     
-    templateContents=readfile.read_template(templateFile)
+    templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
+    if INF=='IFG':
+        Suffix=['']
+    elif INF=='MAI':
+        Suffix=['.F','.B']
+    elif INF=='RSI':
+        Suffix=['.HF','.LF']
+    else:
+        print "The folder name %s cannot be identified !" % igramDir
+        usage();sys.exit(1)   
+    
 # subtract simulated interferometric phase process
 
 # Parameter setting for diffPhase
-    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-  
+    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM"   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
     
-
-    if 'raw2slc_OrbitType'          in templateContents: orbitType = templateContents['raw2slc_OrbitType']                
-    else: orbitType = 'HDR'
-    if 'Igram_Flattening' in templateContents: flatteningIgram = templateContents['Igram_Flattening']
-    else: flatteningIgram = 'orbit'
+    
+    
    
     if 'Igram_Cor_Rwin' in templateContents: rWinCor = templateContents['Igram_Cor_Rwin']
     else: rWinCor = '5'
@@ -125,8 +155,6 @@ def main(argv):
     else: aWinCor = '5'
         
 
-    if 'Diff_Method'          in templateContents: methodDiff = templateContents['Diff_Method']                
-    else: methodDiff = 'subphase'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']                
     else: flatteningDiff = 'orbit'
     if 'Diff_FilterMethod' in templateContents: strFilterMethod = templateContents['Diff_FilterMethod']
@@ -142,76 +170,68 @@ def main(argv):
         nFiltWindowDiff='-'
     if 'Diff_FFTLength' in templateContents: nAzfftDiff = templateContents['Diff_FFTLength']
     else: nAzfftDiff = '512'
-    if 'Diff_UnwrappedThreshold' in templateContents: unwrappedThresholdDiff = templateContents['Diff_UnwrappedThreshold']
-    else: unwrappedThresholdDiff = '0.1'
-    if 'Diff_Unwrap_patr' in templateContents: unwrappatrDiff = templateContents['Diff_Unwrap_patr']
-    else: unwrappatrDiff = '1'
-    if 'Diff_Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Diff_Unwrap_pataz']
-    else: unwrappatazDiff = '1'
 
 
-#  Definition of file
-
-    MrslcImg     = workDir + '/' + Mdate + '.rslc'
-    MrslcPar     = workDir + '/' + Mdate + '.rslc.par'
-    MampImg     = workDir + '/' + Mdate + '.amp'
-    MampPar     = workDir + '/' + Mdate + '.amp.par'
-
-    SrslcImg     = workDir + '/' + Sdate + '.rslc'
-    SrslcPar     = workDir + '/' + Sdate + '.rslc.par'
-    SampImg     = workDir + '/' + Sdate + '.amp'
-    SampPar     = workDir + '/' + Sdate + '.amp.par'
+########################   Start to process differential Interferometry ########################
 
     BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
-    OFF         = workDir + '/' + Mdate + '-' + Sdate + '.off'
-    INT         = workDir + '/' + Mdate + '-' + Sdate + '.int'
-    INTlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
-    OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
-    FLTlks      = workDir + '/flat_' + orbitType + '_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
-    FLTFFTlks   = FLTlks.replace('flat_', 'flat_sim_')
-
-    MampImglks  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampParlks  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    SampImglks  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampParlks  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
-    CORlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
-    BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
-
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_unw'
-
-    DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + '.diff.par'
-    GCP         = workDir + '/' + Mdate + '-' + Sdate + '.gcp'
-    DIFFINTlks  = workDir + '/diff_' + orbitType + '_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'  
-    DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
-    CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORFILTlksonly =workDir+ '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    
-    
-    DIFFMASKTHINlks  = CORFILTlks + 'maskt.bmp'
-    DIFFMASKTHINlksonly = CORFILTlksonly + 'maskt.bmp'
-
-
-    if not (os.path.isdir(workDir)):
-        print "Interferogram working directory is not found on " + workDir + "\n"
-
     createBlankFile(BLANK)
-    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-
-    if not (os.path.isfile(HGTSIM) or os.path.isfile(SIMUNW)):
-        print "Simulated height information is not found, please run phase simulation before diff \n" 
-        sys.exit(0)
     
-    call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' 0 0 '
-    os.system(call_str)        
+    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.sim_unw'   
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.rdc.dem'  
+    GCP         = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.gcp'  
     
-    call_str = '$GAMMA_BIN/extract_gcp ' + HGTSIM + ' ' + OFFlks + ' ' + GCP
-    os.system(call_str)   
+    for i in range(len(Suffix)):          
+        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
+        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
+        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
+        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"   
+        
+        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
+        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+        
+        OFF         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.off'
+        INT         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
+        INTlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
+        OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.off'
+        FLTlks      = workDir + '/flat_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
+        FLTFFTlks   = FLTlks.replace('flat_', 'flat_sim_')      
 
-    if methodDiff == 'subphase':
+        CORlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
+        CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
+
+        BASE        = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base'
+        BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base_ref'
+   
+        DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.diff.par'
+    
+        DIFFINTlks  = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'  
+        DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
+
+        CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' +  Suffix[i] + '.cor'
+        CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
+    
+    
+        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
+
+        if not (os.path.isfile(HGTSIM) or os.path.isfile(SIMUNW)):
+            print "Simulated height information is not found, please run phase simulation before diff \n" 
+            sys.exit(0)
+
+        if os.path.isfile(DIFFpar):
+            os.remove(DIFFpar)
+    
+        if os.path.isfile(OFFlks):    
+            call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' 0 0 '
+            os.system(call_str)  
+            call_str = '$GAMMA_BIN/extract_gcp ' + HGTSIM + ' ' + OFFlks + ' ' + GCP
+            os.system(call_str)             
+        else:
+            call_str = '$GAMMA_BIN/create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + DIFFpar + ' 1 0 '
+            os.system(call_str)     
+        
 
         call_str = '$GAMMA_BIN/sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1'
         os.system(call_str)   
@@ -222,47 +242,46 @@ def main(argv):
 
             call_str = '$GAMMA_BIN/ph_slope_base ' + DIFFINTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + DIFFINTFFTlks 
             os.system(call_str)
-
+            
             DIFFINTlks = DIFFINTFFTlks
             call_str = '$GAMMA_BIN/base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
             os.system(call_str)
 
             os.rename(BASE+'.tmp', BASE)
 
-        DIFFINTlksbmp = DIFFINTlks + '.bmp'
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTlks + ' ' + MampImglks + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' + DIFFINTlksbmp
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - '
         os.system(call_str)
-
         ras2jpg(DIFFINTlks, DIFFINTlks)
 
         DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')
-        
-        
         call_str = '$GAMMA_BIN/adf ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
         os.system(call_str)
       
         if strFilterMethodDiff == 'adapt_filt':
-            call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTFILTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
+            call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
             os.system(call_str)
         
 ################ calculate coherence based on differential interferogram ####################################
 
-        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTlks + ' ' + MampImglks + ' ' + SampImglks + ' ' + CORDIFFlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        os.system(call_str) 
+   
+        call_str = '$GAMMA_BIN/rascc ' + CORDIFFlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
         os.system(call_str)
-
-        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTFILTlks + ' ' + MampImglks + ' ' + SampImglks + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        ras2jpg(CORDIFFlks, CORDIFFlks)
+      
+        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
         os.system(call_str)
-        
-##############################################################################################################        
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTFILTlks + ' ' + MampImglks + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+       
+        call_str = '$GAMMA_BIN/rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        os.system(call_str)
+        ras2jpg(CORDIFFFILTlks, CORDIFFFILTlks)
+      
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
         os.system(call_str)
         ras2jpg(DIFFINTFILTlks, DIFFINTFILTlks)
-        sys.exit(1)
-
-    elif methodDiff == 'lsfit':
-        print call_str
         
-    print "Subtraction of Simulated interfergram phase is done"
+    print "Subtraction of topography and flattening phase is done!"
     sys.exit(1)
 
 if __name__ == '__main__':

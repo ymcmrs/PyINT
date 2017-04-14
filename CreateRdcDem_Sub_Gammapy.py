@@ -18,6 +18,18 @@ import getopt
 import time
 import glob
 
+def GetSubset(Subset):
+    Dx = Subset.split('[')[1].split(']')[0].split(',')[0]
+    Dy = Subset.split('[')[1].split(']')[0].split(',')[1]
+    
+    x1 = Dx.split(':')[0]
+    x2 = Dx.split(':')[1]
+    
+    y1 = Dy.split(':')[0]
+    y2 = Dy.split(':')[1]
+    
+    return x1,x2,y1,y2
+
 def check_variable_name(path):
     s=path.split("/")[0]
     if len(s)>0 and s[0]=="$":
@@ -90,16 +102,15 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       With or without DEM assisstance can be chosen.
+                 Generate Subset Lookup-table and RDC-DEM
 
    usage:
    
-            CreateRdcDem_Gamma.py igramDir
+            CreateRdcDem_Sub_Gamma.py igramDir
       
-      e.g.  CreateRdcDem_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CreateRdcDem_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007          
-      e.g.  CreateRdcDem_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007            
+      e.g.  CreateRdcDem_Sub_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
+      e.g.  CreateRdcDem_Sub_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007          
+      e.g.  CreateRdcDem_Sub_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007            
 *******************************************************************************************************
     '''   
     
@@ -193,36 +204,56 @@ def main(argv):
     MrslcPar     = workDir + '/' + Mdate + '.rslc.par'
     SrslcImg     = workDir + '/' + Sdate + '.rslc'
     SrslcPar     = workDir + '/' + Sdate + '.rslc.par'
+    
+    MrslcSubImg     = workDir + '/' + Mdate + '.sub.rslc'
+    MrslcSubPar     = workDir + '/' + Mdate + '.sub.rslc.par'    
+    
+    MslcSubImg     = workDir + '/' + Mdate + '.sub.slc'
+    MslcSubPar     = workDir + '/' + Mdate + '.sub.slc.par'     
 
 
     BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
+    
+    
+    MamprlksImg0  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MamprlksPar0  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    SamprlksImg0  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SamprlksPar0  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
 
-    MamprlksImg  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MamprlksPar  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    SamprlksImg  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SamprlksPar  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    MamprlksImg  = workDir + '/' + Mdate + '_' + rlks + 'rlks.sub.amp'
+    MamprlksPar  = workDir + '/' + Mdate + '_' + rlks + 'rlks.sub.amp.par'
+    SamprlksImg  = workDir + '/' + Sdate + '_' + rlks + 'rlks.sub.amp'
+    SamprlksPar  = workDir + '/' + Sdate + '_' + rlks + 'rlks.sub.amp.par'
     
     BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
     BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
 
-    UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm.dem.par'
-    UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm.dem'
-    UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm_to_rdc'
-    SIMSARUTM   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sim_sar_utm'
-    PIX         = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.pix'
-    LSMAP       = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.ls_map'
-    SIMSARRDC   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sim_sar_rdc'
-    SIMDIFFpar  = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.diff_par'
-    SIMOFFS     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.offs'
-    SIMSNR      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.snr'
-    SIMOFFSET   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.offset'
-    SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.coff'
-    SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.coffsets'
-    UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.UTM_TO_RDC'
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sim_unw'
+    UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.utm.dem.par'
+    UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.utm.dem'
+    UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.utm_to_rdc'
+    SIMSARUTM   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.sim_sar_utm'
+    PIX         = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.pix'
+    LSMAP       = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.ls_map'
+    SIMSARRDC   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.sim_sar_rdc'
+    SIMDIFFpar  = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.diff_par'
+    SIMOFFS     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.offs'
+    SIMSNR      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.snr'
+    SIMOFFSET   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.offset'
+    SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.coff'
+    SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.coffsets'
+    UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.UTM_TO_RDC'
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.rdc.dem'
+    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sub.sim_unw'
 
-
+    SubStr = templateContents['Subset_Rdc']
+    SubXY = GetSubset(SubStr)
+    Rg1 = SubXY[0]
+    Rg2 = SubXY[1]
+    Az1 = SubXY[2]
+    Az2 = SubXY[3]
+    
+    NR = str(int(Rg2) - int(Rg1))
+    NA = str(int(Az2) - int(Az1))
     
     if not (os.path.isdir(simDir)):
         os.makedirs(simDir)
@@ -256,13 +287,14 @@ def main(argv):
         call_str = 'cp ' + tmp_dem + ' ' + dem
         os.system(call_str)
 
-    if os.path.isfile(MrslcImg):
-        call_str = "$GAMMA_BIN/multi_look " + MrslcImg + " " + MrslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
-    else:
-        call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
         
+####################################  Copy MLI  #######################################        
+
+    call_str= '$GAMMA_BIN/MLI_copy ' + MamprlksImg0 + ' ' + MamprlksPar0 + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + Rg1 + ' ' + NR + ' ' + Az1 + ' ' + NA
+    os.system(call_str)
+#######################################################################################
+
+
 
     call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
     os.system(call_str)
@@ -273,14 +305,18 @@ def main(argv):
    
     call_str = '$GAMMA_BIN/geocode ' + UTM2RDC + ' ' + SIMSARUTM + ' ' + nWidthUTMDEM + ' ' + SIMSARRDC + ' ' + nWidth + ' ' + nLinePWR1 + ' 0 0'
     os.system(call_str)
+    
+    if os.path.isfile(SIMDIFFpar):
+        os.remove(SIMDIFFpar)
 
+    
     call_str = '$GAMMA_BIN/create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + SIMDIFFpar + ' 1 < ' + BLANK
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/init_offsetm ' + SIMSARRDC + ' ' + MamprlksImg + ' ' + SIMDIFFpar + ' ' + rlksSimphase + ' ' + azlksSimphase + ' ' + rposSimphase + ' ' + azposSimphase + ' - - - ' + patchSimphase
+    call_str = '$GAMMA_BIN/init_offsetm ' + SIMSARRDC + ' ' + MamprlksImg + ' ' + SIMDIFFpar + ' ' + rlksSimphase + ' ' + azlksSimphase + ' ' + rposSimphase + ' ' + azposSimphase + ' - - - 64 '
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/offset_pwrm ' + SIMSARRDC + ' ' + MamprlksImg + ' ' + SIMDIFFpar + ' ' + SIMOFFS + ' ' + SIMSNR + ' ' + rwinSimphase + ' ' + azwinSimphase + ' ' + SIMOFFSET # + ' 1 - - ' + threshSimphase 
+    call_str = '$GAMMA_BIN/offset_pwrm ' + SIMSARRDC + ' ' + MamprlksImg + ' ' + SIMDIFFpar + ' ' + SIMOFFS + ' ' + SIMSNR + ' ' + ' 64 64 ' + SIMOFFSET # + ' 1 - - ' + threshSimphase 
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/offset_fitm ' + SIMOFFS + ' ' + SIMSNR + ' ' + SIMDIFFpar + ' ' + SIMCOFF + ' ' + SIMCOFFSETS + ' 0.5'

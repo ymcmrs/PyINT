@@ -305,7 +305,7 @@ def main(argv):
             f_slc2ifg.write(str_scrip)      
             STR_FLAG = INF + '_' + projectName+"_"+str(int(MDatelist[kk]))[2:]+"-"+str(int(SDatelist[kk]))[2:]
             KK= glob.glob(processDir + '/' + STR_FLAG + '*')
-            print len(KK)
+            
             if len(KK)< 1:
                 call_str="mkdir " + str_dir
                 os.system(call_str)

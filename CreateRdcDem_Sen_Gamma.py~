@@ -4,9 +4,9 @@
 #                                                                                 #
 #            Author:   Yun-Meng Cao                                               #
 #            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
+#            Date  :   FMarch, 2017                                               #
 #                                                                                 #
-#   Coregistration of SAR images based on cross-correlation with DEM assisstance  #
+#         Create DEM in Radar coordinates for Sentinel-1 date                     #
 #                                                                                 #
 ###################################################################################
 #'''
@@ -90,16 +90,15 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       With or without DEM assisstance can be chosen.
+              Create DEM in Radar coordinates for Sentinel-1 date
 
    usage:
    
-            CreateRdcDem_Gamma.py igramDir
+            CreateRdcDem_Sen_Gamma.py igramDir
       
-      e.g.  CreateRdcDem_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CreateRdcDem_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007          
-      e.g.  CreateRdcDem_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007            
+      e.g.  CreateRdcDem_Sen_Gamma.py IFG_PacayaT163S1A_131021-131101_0011_-0007
+      e.g.  CreateRdcDem_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
+      e.g.  CreateRdcDem_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
     '''   
     
@@ -129,31 +128,29 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
+    
+    if not os.path.isdir(processDir):
+        call_str = 'mkdir ' + processDir
+        os.system(call_str)
+
+    if not os.path.isdir(workDir):
+        call_str = 'mkdir ' + workDir
+        os.system(call_str)
+    
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
-  
+        os.system(call_str)
+        
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
     if not os.path.isdir(simDir):
         call_str='mkdir ' + simDir  
+        os.system(call_str)
     
     dem=templateContents['DEM']
     demPar = dem + ".par"
-    
-    if INF=='IFG':
-        Suffix=['']
-    elif INF=='MAI':
-        Suffix=['.F','.B']
-    elif INF=='RSI':
-        Suffix=['.HF','.LF']
-    else:
-        print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)
-
 
 # Parameter setting for simPhase
-
-
 
     if 'Simphase_Lat_Ovr'          in templateContents: latovrSimphase = templateContents['Simphase_Lat_Ovr']                
     else: latovrSimphase = '2'
@@ -179,32 +176,44 @@ def main(argv):
 
     if 'Igram_Flag_TDM' in templateContents: flagTDM = templateContents['Igram_Flag_TDM']
     else: flagTDM = 'N'
-
+        
+    if 'Start_Swath' in templateContents: SW = templateContents['Start_Swath']
+    else: SW = '1'    
+    if 'End_Swath' in templateContents: EW = templateContents['End_Swath']
+    else: EW = '3' 
+    if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
+    else: SB = '1'            
+        
 #  Definition of file
     MslcDir     = slcDir  + '/' + Mdate
     SslcDir     = slcDir  + '/' + Sdate
-       
-    MslcImg     = MslcDir + '/' + Mdate + '.slc'
-    MslcPar     = MslcDir + '/' + Mdate + '.slc.par'
-    SslcImg     = SslcDir + '/' + Sdate + '.slc'
-    SslcPar     = SslcDir + '/' + Sdate + '.slc.par'
+        
+    MslcTOP1     = MslcDir + '/' + Mdate + '.IW1.slc.TOPS_par'   # bursts number in all of TOPS are same ? If not, should modify
+    SslcTOP1     = SslcDir + '/' + Sdate + '.IW1.slc.TOPS_par'
+
+    NB_master = UseGamma(MslcTOP1 , 'read', 'number_of_bursts:')
+    NB_slave = UseGamma(SslcTOP1 , 'read', 'number_of_bursts:')    
     
-    MrslcImg     = workDir + '/' + Mdate + '.rslc'
-    MrslcPar     = workDir + '/' + Mdate + '.rslc.par'
-    SrslcImg     = workDir + '/' + Sdate + '.rslc'
-    SrslcPar     = workDir + '/' + Sdate + '.rslc.par'
+    if 'End_Burst' in templateContents: EB = templateContents['End_Burst']
+    else: EB = str(min(int(NB_master),int(NB_slave)))    # using the minmun number as the end of the burst number
+ 
+    MSLC_tab     = MslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
+    SSLC_tab     = SslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
 
-
-    BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
-
-    MamprlksImg  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MamprlksPar  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    SamprlksImg  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SamprlksPar  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    if not os.path.isfile(MSLC_tab):
+        call_str= 'BurstExt_TOPS_Gamma.py ' + projectName + ' ' + Mdate + ' ' + SW + ' ' + EW + ' ' + SB + ' ' + EB
+        os.system(call_str)
     
-    BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
-    BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
-
+    if not os.path.isfile(SSLC_tab):
+        call_str= 'BurstExt_TOPS_Gamma.py ' + projectName + ' ' + Sdate + ' ' + SW + ' ' + EW + ' ' + SB + ' ' + EB
+        os.system(call_str) 
+        
+        
+        
+    MamprlksImg = MslcDir + '/'+Mdate + '.'+ SW + EW + '_' + SB + EB  + '_' + rlks + 'rlks' + '.amp'
+    MamprlksPar = MslcDir + '/'+Mdate + '.'+ SW + EW + '_' + SB + EB  + '_' + rlks + 'rlks' + '.amp.par' 
+    
+    
     UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm.dem.par'
     UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm.dem'
     UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm_to_rdc'
@@ -221,51 +230,19 @@ def main(argv):
     UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.UTM_TO_RDC'
     HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.sim_unw'
-
-
-    
-    if not (os.path.isdir(simDir)):
-        os.makedirs(simDir)
-        
-    createBlankFile(BLANK)
-
-
-### remove DEM look up table if it existed for considering gamma overlapping
+    BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blank'
 
     if os.path.isfile(UTMDEM):   
         os.remove(UTMDEM)
     if os.path.isfile(UTMDEMpar):   
         os.remove(UTMDEMpar)
     if os.path.isfile(UTM2RDC):   
-        os.remove(UTM2RDC)
-
-    nWidthUTMDEM0 = UseGamma(demPar, 'read', 'width')
-    DateFormat = UseGamma(demPar, 'read', 'data_format:')
+        os.remove(UTM2RDC)    
     
-    if DateFormat == 'INTEGER*2':
-        DF_type = '4'
-    else:
-        DF_type = '2'
-    
-        
-    tmp_dem = dem + '_tmp'
-    
-    if not os.path.isfile(tmp_dem):
-        call_str = '$GAMMA_BIN/replace_values ' + dem + ' -10000 0 ' + tmp_dem + ' ' + nWidthUTMDEM0 + ' 2 ' + DF_type
-        os.system(call_str)
-        call_str = 'cp ' + tmp_dem + ' ' + dem
-        os.system(call_str)
-
-    if os.path.isfile(MrslcImg):
-        call_str = "$GAMMA_BIN/multi_look " + MrslcImg + " " + MrslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
-    else:
-        call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-        os.system(call_str)
-        
-
-    call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
+    call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP
     os.system(call_str)
+        
+    createBlankFile(BLANK)
 
     nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
     nLinePWR1 = UseGamma(MamprlksPar, 'read', 'azimuth_lines')

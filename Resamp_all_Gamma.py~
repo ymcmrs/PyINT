@@ -6,7 +6,7 @@
 #            Email :   ymcmrs@gmail.com                                           #
 #            Date  :   February, 2017                                             #
 #                                                                                 #
-#   Coregistration of SAR images based on cross-correlation with DEM assisstance  #
+#        Coregistrate all SAR or interferograms to a master one                   #
 #                                                                                 #
 ###################################################################################
 #'''
@@ -17,7 +17,7 @@ import subprocess
 import getopt
 import time
 import glob
-
+import re
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -79,27 +79,28 @@ def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
+    
 def createBlankFile(strFile):
     f = open(strFile,'w')
     for i in range (10):
         f.write('\n')
     f.close()    
     
-       
+    
 
 def usage():
     print '''
 ******************************************************************************************************
  
-          Simulating Topography phase and flattening phase based on radar-coordinates' DEM
+          Coregistrate all SAR or interferograms to one master data
 
    usage:
    
-            SimPhase_Gamma.py igramDir
+            Coregist_all_Gamma.py igramDir
       
-      e.g.  SimPhase_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  SimPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007          
+      e.g.  Coregist_all_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  Coregist_all_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007      
+      e.g.  Coregist_all_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
     '''   
@@ -118,29 +119,28 @@ def main(argv):
     Mdate = IFGPair.split('-')[0]
     Sdate = IFGPair.split('-')[1]
     
+    
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
     
+    if not os.path.isdir(rslcDir):
+        call_str = 'mkdir ' + rslcDir
+        os.system(call_str)
+        
     templateContents=read_template(templateFile)
+    masterDate   =  templateContents['masterDate']    
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
-
-    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-  
-    simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
+ 
+    Moff = rslcDir +"/"+ masterDate + '-' + Mdate + '.off'
+    Soff = rslcDir +"/"+ masterDate + '-' + Sdate + '.off'        
     
-    dem=templateContents['DEM']
-    demPar = dem + ".par"
-
     if INF=='IFG':
         Suffix=['']
     elif INF=='MAI':
@@ -149,9 +149,14 @@ def main(argv):
         Suffix=['.HF','.LF']
     else:
         print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)
+        usage();sys.exit(1)  
+# definition of intermediate and output file variables for slc images and parameters
 
-#  Definition of file
+    BaseslcDir = slcDir + "/" + masterDate
+    BaseslcImg = BaseslcDir + '/' + masterDate + '.slc'
+    BaseslcPar = BaseslcDir + '/' + masterDate + '.slc.par'
+    Baseslc4Par = workDir + '/' + masterDate + '.slc4.par'
+    
     SslcDir = slcDir + "/" + Sdate
     MslcDir = slcDir + "/" + Mdate
 
@@ -159,44 +164,84 @@ def main(argv):
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
-    
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
-    
-    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
-    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"   
+ 
+    offs = workDir + "/offs"
+    snr = workDir + "/snr"
+    offsets = workDir + "/offsets"
+    coffs = workDir + "/coffs"
+    coffsets = workDir + "/coffsets"
 
-    OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
+##############################################  Resampling #####################################################
 
-###################################  HGT in Radar Coordinates Generation #########################
-  
-    call_str = 'CreateRdcDem_Gamma.py ' + igramDir
-    os.system(call_str)
+    for i in range(len(Suffix)):
+        if not INF=='IFG':
+            MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
+            MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
+            SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
+            SslcPar = workDir + "/" + Sdate + Suffix[i]+".slc.par"
+ 
+        INT      = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
+        INTpar   = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int.par'
         
-###################################  Phase Simulation  ###########################################
+        rINT     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint'
+        rINTpar  = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint.par'
+        
+        MrslcImg = rslcDir + "/" + Mdate + Suffix[i]+".rslc"
+        MrslcPar = rslcDir + "/" + Mdate + Suffix[i]+".rslc.par"
+        SrslcImg = rslcDir + "/" + Sdate + Suffix[i]+".rslc"
+        SrslcPar = rslcDir + "/" + Sdate + Suffix[i]+".rslc.par"
+
+        MamprlksImg = rslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        MamprlksPar = rslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+        
+        SamprlksImg = rslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        SamprlksPar = rslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+
+####   detect the choice for resampling #######      
+
+        call_str = 'cp ' + MamprlksImg + ' ' + workDir
+        os.system(call_str)
+        call_str = 'cp ' + MamprlksPar + ' ' + workDir
+        os.system(call_str)
+        
+        call_str = 'cp ' + SamprlksImg + ' ' + workDir
+        os.system(call_str)
+        call_str = 'cp ' + SamprlksPar + ' ' + workDir
+        os.system(call_str)
+        
+        call_str = 'cp ' + MrslcPar + ' ' + workDir
+        os.system(call_str)
+        call_str = 'cp ' + SrslcPar + ' ' + workDir
+        os.system(call_str)
+        
+        
+### post coregistration for interferogram 
+
+        fin = open(BaseslcPar,"r")
+        fout = open(Baseslc4Par,"w")
+        txt = fin.read()
+        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+        fout.write(txtout)
+        fin.close()
+        fout.close()
+
+        fin = open(MrslcPar,"r")
+        fout = open(INTpar,"w")
+        txt = fin.read()
+        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+        fout.write(txtout)
+        fin.close()
+        fout.close()
+       
+        if ( masterDate != Mdate):
+            call_str = "$GAMMA_BIN/SLC_interp " + INT + " " + Baseslc4Par + " " + INTpar + " " + Moff + " " + rINT + " " + rINTpar
+            os.system(call_str)
+            os.rename(rINT, INT)
+
     
-    if os.path.isfile(OFFlks):
-        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    else:
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples:')
-    
-    if 'Igram_Flag_TDM' in templateContents: flagTDM = templateContents['Igram_Flag_TDM']
-    else: flagTDM = 'N'
-
-    if flagTDM == 'N':
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
-    else:
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
-    os.system(call_str)
-
-
-    print "Simulation interferometric phas with DEM is done!"
+    print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
     sys.exit(1)
-
+    
 if __name__ == '__main__':
     main(sys.argv[:])

@@ -12,12 +12,40 @@
 #'''
 import numpy as np
 import os
-import pysar._readfile as readfile
 import sys  
 import subprocess
 import getopt
 import time
 import glob
+
+def check_variable_name(path):
+    s=path.split("/")[0]
+    if len(s)>0 and s[0]=="$":
+        p0=os.getenv(s[1:])
+        path=path.replace(path.split("/")[0],p0)
+    return path
+
+def read_template(File, delimiter='='):
+    '''Reads the template file into a python dictionary structure.
+    Input : string, full path to the template file
+    Output: dictionary, pysar template content
+    Example:
+        tmpl = read_template(KyushuT424F610_640AlosA.template)
+        tmpl = read_template(R1_54014_ST5_L0_F898.000.pi, ':')
+    '''
+    template_dict = {}
+    for line in open(File):
+        line = line.strip()
+        c = [i.strip() for i in line.split(delimiter, 1)]  #split on the 1st occurrence of delimiter
+        if len(c) < 2 or line.startswith('%') or line.startswith('#'):
+            next #ignore commented lines or those without variables
+        else:
+            atrName  = c[0]
+            atrValue = str.replace(c[1],'\n','').split("#")[0].strip()
+            atrValue = check_variable_name(atrValue)
+            template_dict[atrName] = atrValue
+    return template_dict
+
 
 def ras2jpg(input, strTitle):
     call_str = "convert " + input + ".ras " + input + ".jpg"
@@ -45,7 +73,7 @@ def UseGamma(inFile, task, keyword):
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
-    if inFile.rsplit('.')[len(inFile.rsplit('.'))-1] == 'int':
+    if ( inFile.rsplit('.')[1] == 'int' or inFile.rsplit('.')[1] == 'diff' ):
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
         call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
@@ -70,8 +98,9 @@ def usage():
    
             Geocode_Gamma.py igramDir
       
-      e.g.  Geocode_Gamma.py IFGRAM_PacayaT163TsxHhA_131021-131101_0011_-0007
-          
+      e.g.  Geocode_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  Geocode_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  Geocode_Gamma.py SPI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
     '''   
@@ -83,7 +112,8 @@ def main(argv):
         else: igramDir=sys.argv[1]        
     else:
         usage();sys.exit(1)
-        
+    
+    INF = igramDir.split('_')[0]
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
     Mdate = IFGPair.split('-')[0]
@@ -97,7 +127,7 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
     
-    templateContents=readfile.read_template(templateFile)
+    templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
@@ -113,177 +143,175 @@ def main(argv):
     if not os.path.isdir(geoDir):
         str_call="mkdir " + geoDir
         os.system(str_call)
-    
+
+    if INF=='IFG':
+        Suffix=['']
+    elif INF=='MAI':
+        Suffix=['.F','.B']
+    elif INF=='RSI':
+        Suffix=['.HF','.LF']
+    else:
+        print "The folder name %s cannot be identified !" % igramDir
+        usage();sys.exit(1)          
     
     ### geocode process
 
-    if 'raw2slc_OrbitType'          in templateContents: orbitType = templateContents['raw2slc_OrbitType']                
-    else: orbitType = 'HDR'
-    if 'Geocode_Flag'          in templateContents: flagGeocode = templateContents['Geocode_Flag']                
-    else: flagGeocode = 'Y'
+    if 'Topo_Flag'          in templateContents: flagTopo = templateContents['Topo_Flag']
+    else: flagTopo = 'N'
     if 'Igram_Flattening' in templateContents: flatteningIgram = templateContents['Igram_Flattening']
     else: flatteningIgram = 'orbit'
     if 'Diff_Flattening'          in templateContents: flatteningDiff = templateContents['Diff_Flattening']      
-    else: flatteningDiff = 'orbit'
-        
+    else: flatteningDiff = 'orbit'     
     if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']      
-    else: flatteningUnwrap = 'No' 
-        
-    if 'Topo_Flag'          in templateContents: flagTopo = templateContents['Topo_Flag']
-    else: flagTopo = 'N'
-
+    else: flatteningUnwrap = 'N'       
+    
+    if 'unwrapMethod'          in templateContents: unwrapMethod = templateContents['unwrapMethod']                
+    else: unwrapMethod = 'mcf'
 
 #  Definition of file
 
-    MRSLCImg     = workDir + '/' + Mdate + '.RSLC'
-    MRSLCPar     = workDir + '/' + Mdate + '.RSLC.par'
-    MampImg     = workDir + '/' + Mdate + '.amp'
-    MampPar     = workDir + '/' + Mdate + '.amp.par'
+    UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm.dem.par'
+    UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm.dem'
+    UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm_to_rdc'
+    SIMSARUTM   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_sar_utm'
+    PIX         = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.pix'
+    LSMAP       = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.ls_map'
+    SIMSARRDC   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_sar_rdc'
+    SIMDIFFpar  = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.diff_par'
+    SIMOFFS     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.offs'
+    SIMSNR      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.snr'
+    SIMOFFSET   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.offset'
+    SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.coff'
+    SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.coffsets'
+    UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.UTM_TO_RDC'
+    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.rdc.dem'
+    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_unw'
 
-    SRSLCImg     = workDir + '/' + Sdate + '.RSLC'
-    SRSLCPar     = workDir + '/' + Sdate + '.RSLC.par'
-    SampImg     = workDir + '/' + Sdate + '.amp'
-    SampPar     = workDir + '/' + Sdate + '.amp.par'
 
-    BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
-    OFF         = workDir + '/' + Mdate + '-' + Sdate + '.off'
-    INT         = workDir + '/' + Mdate + '-' + Sdate + '.int'
-    INTlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
-    OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
-    FLTlks      = workDir + '/flat_' + orbitType + '_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
-    FLTFFTlks   = FLTlks.replace('flat_', 'flat_sim_')
-    FLTFILTlks = FLTlks.replace('flat_', 'filt_')
-    DIFFINTlks  = workDir + '/diff_' + orbitType + '_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'  
-    DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
+    for i in range(len(Suffix)):          
+        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
+        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
+        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
+        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"   
+        
+        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
+        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+        
+        OFF         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.off'
+        INT         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
+        INTlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
+        OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.off'
+        FLTlks      = workDir + '/flat_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
+        FLTFFTlks   = FLTlks.replace('flat_', 'flat_sim_')      
 
-    MampImglks  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampParlks  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    SampImglks  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampParlks  = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
-    CORlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
-    BASE        = workDir + '/' + Mdate + '-' + Sdate + '.bas'
-    BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + '.bas_ref'
+        CORlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
+        CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
 
-    UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '.utm.dem.par'
-    UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.utm.dem'
-    UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '.utm_to_rdc'
-    SIMSARUTM   = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_sar_utm'
-    PIX         = simDir + '/sim_' + Mdate + '-' + Sdate + '.pix'
-    LSMAP       = simDir + '/sim_' + Mdate + '-' + Sdate + '.ls_map'
-    SIMSARRDC   = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_sar_rdc'
-    SIMDIFFpar  = simDir + '/sim_' + Mdate + '-' + Sdate + '.diff_par'
-    SIMOFFS     = simDir + '/sim_' + Mdate + '-' + Sdate + '.offs'
-    SIMSNR      = simDir + '/sim_' + Mdate + '-' + Sdate + '.snr'
-    SIMOFFSET   = simDir + '/sim_' + Mdate + '-' + Sdate + '.offset'
-    SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '.coff'
-    SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '.coffsets'
-    UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '.UTM_TO_RDC'
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '.sim_unw'
-
-    GEORAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '.int'  
-    GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.filt.int'
-    GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.amp'
-    GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.cor'
-    GEODIFFRAWINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff.int'
-    GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.diff_filt.int'
-    GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '.unw'
-    GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '.quad_fit.unw'
+        BASE        = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base'
+        BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base_ref'
+   
+        DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.diff.par'
     
-    if flagGeocode == 'Y':
-        print "Geocoding process would be started on " + workDir + "\n"
+        DIFFINTlks  = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'  
+        DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
 
-    if not (os.path.isfile(UTMDEMpar) or os.path.isfile(UTMTORDC)):
-        print "Look-up table for geocoding is not found, please run phase simulation before geocode \n" 
-        logger.info("Look-up table for geocoding is not found, please run phase simulation before geocode \n" )
-        sys.exit(0)
+        CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' +  Suffix[i] + '.cor'
+        CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
+        
+        MASKTHINlks  = CORFILTlks + 'maskt.bmp'
+        MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
+ 
+        GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.int'  
+        GEOFILTINT  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.filt.int'
+        GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.amp'
+        GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff.cor'
+        
+        GEODIFFRAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff.int'
+        GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff_filt.int'
+        GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.unw'
+        GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.quad_fit.unw'
+ 
+        if flatteningIgram == 'orbit':
+            FLTFILTlks = FLTlks.replace('flat_', 'filt_')
+        else :
+            FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
 
-    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-    nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
-    nLineUTMDEM = UseGamma(UTMDEMpar, 'read', 'nlines')
+        if flatteningDiff == 'orbit':
+            DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
+        else:
+            DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')
 
-    if flatteningIgram == 'orbit':
-        FLTFILTlks = FLTlks.replace('flat_', 'filt_')
-    else :
-        FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
+        if flagTopo == 'Y':
+            WRAPlks = FLTFILTlks      
+        else:
+            WRAPlks = DIFFINTFILTlks
 
-    if flatteningDiff == 'orbit':
-        DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
-    else:
-        DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')
+        if unwrapMethod == "mcf":    
+            UNWlks       = WRAPlks.replace('.int', '.unw')
+        else:
+            UNWlks       = WRAPlks.replace('.int', '.branch.unw')
+            
+        QUADUNWlks   = UNWlks.replace('.unw','.quad_fit.unw')
 
-    if flagTopo == 'Y':
-        WRAPlks = FLTFILTlks      
-    else:
-        WRAPlks = DIFFINTFILTlks
 
-    UNWlks       = WRAPlks.replace('.int', '.unw')
-    QUADUNWlks   = UNWlks.replace('.unw','._quad_fit.unw')
+        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
+        nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
+        nLineUTMDEM = UseGamma(UTMDEMpar, 'read', 'nlines')
+
+
 #    if flatteningIgram == 'fft':
 #      FLTlks = FLTFFTlks 
 
 #    FLTFILTlks = FLTlks.replace('flat_', 'filt_')
 
-    geocode(MampImglks, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-    geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-    geocode(FLTlks, GEORAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-    geocode(FLTFILTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(FLTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(FLTFILTlks, GEOFILTINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
-    call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
-    os.system(call_str)
-
-    ras2jpg(GEOPWR, GEOPWR)
-
-    call_str = '$GAMMA_BIN/raspwr ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - ' 
-    os.system(call_str)
-
-    ras2jpg(GEOCOR, GEOCOR) 
-
-    call_str = '$GAMMA_BIN/rasmph_pwr ' + GEORAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-    os.system(call_str)
-
-    ras2jpg(GEORAWINT, GEORAWINT)
-
-    call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-    os.system(call_str)
-
-    ras2jpg(GEOINT, GEOINT)
- 
-    geocode(DIFFINTlks, GEODIFFRAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-    geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-    geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-
-    call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFRAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-    os.system(call_str)
-
-    ras2jpg(GEODIFFRAWINT, GEODIFFRAWINT)
-
-    call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-    os.system(call_str)
-
-    ras2jpg(GEODIFFINT, GEODIFFINT) 
-
-    call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
-    os.system(call_str)
-
-    ras2jpg(GEOUNW, GEOUNW) 
-
-    
-    if flatteningUnwrap == 'quadfit':
-        geocode(QAUDUNWlks, GEOQUADUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+        call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
         os.system(call_str)
 
-        ras2jpg(GEOQUADUNW, GEOQUADUNW) 
+        ras2jpg(GEOPWR, GEOPWR)
+
+        call_str = '$GAMMA_BIN/rascc ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - - - -' 
+        os.system(call_str)
+        ras2jpg(GEOCOR, GEOCOR) 
+
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        os.system(call_str)
+        ras2jpg(GEOINT, GEOINT)
+
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOFILTINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        os.system(call_str)
+        ras2jpg(GEOFILTINT, GEOFILTINT)
+ 
+        geocode(DIFFINTlks, GEODIFFRAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFRAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        os.system(call_str)
+        ras2jpg(GEODIFFRAWINT, GEODIFFRAWINT)
+       
+        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        os.system(call_str)
+        ras2jpg(GEODIFFINT, GEODIFFINT) 
+
+        call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+        os.system(call_str)
+        ras2jpg(GEOUNW, GEOUNW) 
+   
+        if flatteningUnwrap == 'Y':
+            geocode(QUADUNWlks, GEOQUADUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+            call_str = '$GAMMA_BIN/rasrmg ' + GEOQUADUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+            os.system(call_str)
+            ras2jpg(GEOQUADUNW, GEOQUADUNW) 
                 
     
-    
-    
-    print "Geocoding is done!"
- 
+    print "Geocoding is done!" 
     sys.exit(1)
 
 if __name__ == '__main__':

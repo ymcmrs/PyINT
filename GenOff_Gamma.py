@@ -6,8 +6,7 @@
 #            Email :   ymcmrs@gmail.com                                          #
 #            Date  :   March, 2017                                               #
 #                                                                                #
-#           Coregistration of SAR images based on cross-correlation.             #
-#         Be suitable for conventional InSAR, MAI, Split-Spectrum InSAR          # 
+#           Estimating the offsets of two SAR images                             #
 #                                                                                #
 ##################################################################################
 #'''
@@ -77,44 +76,45 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+                 Estimating the offsets of two SAR images based on cross-correlation.
 
    usage:
    
-            CoregistSLC_init_Gamma.py igramDir
+            GenOff_Gamma.py ProjectName Mdate Sdate workDir
       
-      e.g.  CoregistSLC_init_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CoregistSLC_init_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CoregistSLC_init_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
-          
-            
+      e.g.  GenOff_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
+      
 *******************************************************************************************************
     '''   
     
 def main(argv):
     
-    if len(sys.argv)==2:
-        if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: igramDir=sys.argv[1]        
+    if len(sys.argv)>=4:
+        projectName = sys.argv[1]
+        Mdate = sys.argv[2]
+        Sdate = sys.argv[3]
+        if len(sys.argv)==5:
+            workDir = sys.argv[4]
+        else:
+            workDir = os.getcwd()
     else:
         usage();sys.exit(1)
-       
-    INF = igramDir.split('_')[0]
-    projectName = igramDir.split('_')[1]
-    IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
-    Mdate = IFGPair.split('-')[0]
-    Sdate = IFGPair.split('-')[1]
-    
-    
+         
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
-    workDir    = processDir + '/' + igramDir   
+    IFGPair    = Mdate + '-' + Sdate
 
+#################################  Define coregistration parameters ##########################
+    templateContents=read_template(templateFile)
+    
+    if 'JOB'          in templateContents: JOB = templateContents['JOB']                
+    else: JOB = 'IFG' 
+    
+    INF=JOB    
     if INF=='IFG':
         Suffix=['']
     elif INF=='MAI':
@@ -123,11 +123,9 @@ def main(argv):
         Suffix=['.HF','.LF']
     else:
         print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)
-
-#################################  Define coregistration parameters ##########################
-    templateContents=read_template(templateFile)
-
+        usage();sys.exit(1)  
+        
+        
     if 'Coreg_Coarse'          in templateContents: coregCoarse = templateContents['Coreg_Coarse']                
     else: coregCoarse = 'both' 
         
@@ -176,10 +174,20 @@ def main(argv):
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
     
+    MrslcImg = workDir + "/" + Mdate + ".rslc"
+    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
+    SrslcImg = workDir + "/" + Sdate + ".rslc"
+    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
+    
+    MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks.ramp'
+    MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks.ramp.par'
+        
+    SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks.ramp'
+    SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks.ramp.par'
     
 # output files of coregistration
 
-    off = workDir + "/" + IFGPair + ".init_off"
+    off = workDir + "/" + IFGPair + ".off"
     offs = workDir + "/" + IFGPair +".offs"
     snr = workDir + "/" + IFGPair +".snr"
     offsets = workDir + "/" + IFGPair + ".offsets"
@@ -242,13 +250,41 @@ def main(argv):
     os.remove(snr)
     os.remove(offsets)
     os.remove(coffs)
-    os.remove(coffsets)   
-    
-    
-###############################################   Resampling      ####################################
-     
-    for i in range(len(Suffix)):
-        if not INF=='IFG':
+    os.remove(coffsets)
+#############################################################################################################    
+ 
+   
+    call_str = "$GAMMA_BIN/SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
+    os.system(call_str)
+ 
+    call_str = "cp " + MslcImg + " " + MrslcImg
+    os.system(call_str)
+
+    call_str = "cp " + MslcPar + " " + MrslcPar
+    os.system(call_str)
+
+
+####################  multi-looking for RSLC #########################################
+
+    call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+    os.system(call_str)
+
+    call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+    os.system(call_str)
+
+    nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
+
+    call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+    os.system(call_str)  
+    ras2jpg(MamprlksImg, MamprlksImg) 
+        
+    call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+    os.system(call_str)
+    ras2jpg(SamprlksImg, SamprlksImg)        
+       
+###############################################################################################################    
+    if not INF == 'IFG':    
+        for i in range(len(Suffix)):
             MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
             MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
             SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
@@ -258,53 +294,57 @@ def main(argv):
                 call_str = INF + '_SLC_Gamma.py ' + igramDir
                 os.system(call_str)
                 
-        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"
+            MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
+            MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
+            SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
+            SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"
 
-        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+            MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+            MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
         
-        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+            SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+            SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
         
 ######################## Resampling Slave Image ####################
 
         
     
-        call_str = "$GAMMA_BIN/SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
-        os.system(call_str)
+            call_str = "$GAMMA_BIN/SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
+            os.system(call_str)
 
-        call_str = "cp " + MslcImg + " " + MrslcImg
-        os.system(call_str)
+            call_str = "cp " + MslcImg + " " + MrslcImg
+            os.system(call_str)
 
-        call_str = "cp " + MslcPar + " " + MrslcPar
-        os.system(call_str)
+            call_str = "cp " + MslcPar + " " + MrslcPar
+            os.system(call_str)
 
 
 ####################  multi-looking for RSLC #########################################
 
-        call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
+            call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+            os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
+            call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+            os.system(call_str)
 
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
+            nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
 
-        call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
-        os.system(call_str)  
-        ras2jpg(MamprlksImg, MamprlksImg) 
+            call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+            os.system(call_str)  
+            ras2jpg(MamprlksImg, MamprlksImg) 
         
-        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
-        os.system(call_str)
-        ras2jpg(SamprlksImg, SamprlksImg)
-
+            call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+            os.system(call_str)
+            ras2jpg(SamprlksImg, SamprlksImg)    
     
-
-    print "Coregistration without DEM is done!" 
+    print "Coregistrating for %s and %s images is done! " % ( Mdate, Sdate )
     sys.exit(1)
-
+    
 if __name__ == '__main__':
-    main(sys.argv[:])
+    main(sys.argv[:])    
+    
+    
+    
+    
+    
+    
