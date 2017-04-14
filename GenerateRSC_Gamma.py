@@ -124,6 +124,7 @@ def main(argv):
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
     TS_RSC     = workDir + '/' + IFGPair + '_' + rlks + 'rlks.rsc'
+    OFF_STD = workDir + '/' + Mdate + '-' + Sdate + '.off_std'
     
     MRSLCPAR = workDir + '/' + Mdate + Suffix[0] + '.rslc.par'
     MCORNER = workDir + '/' + Mdate + Suffix[0] + '.corner'
@@ -149,6 +150,8 @@ def main(argv):
     
 #    print 'FILE_LENGTH               ' + nLine
 #    print 'WIDTH                     ' + nWidth
+    wstr = 'PROJECT                   ' + projectName  + '\n'
+    f.write(wstr)
     
     wstr = 'FILE_LENGTH               ' + nLine  + '\n'
     f.write(wstr)
@@ -343,9 +346,32 @@ def main(argv):
 #    print 'V_BASELINE_RATE_HDR        ' + V_BASELINE_RATE_HDR
     wstr = 'V_BASELINE_RATE_HDR        ' + V_BASELINE_RATE_HDR + '\n'
     f.write(wstr)
+    
+    RR = UseGamma(OFF_STD,'read','final range offset poly. coeff.:')
+    cor_rg = RR.split(' ')[0]
+        
+    AA = UseGamma(OFF_STD,'read','final azimuth offset poly. coeff.:')
+    cor_az = AA.split(' ')[0]
+        
+    STDRR = UseGamma(OFF_STD,'read','final model fit std. dev. (samples) range:')
+    std_rg=STDRR.split(' ')[0]
+    
+    std_az = UseGamma2(OFF_STD,'read','final model fit std. dev. (samples) range:')  
+
+    wstr = 'RANGE_OFFSET               ' + cor_az + '\n'
+    f.write(wstr)
+    wstr = 'RANGE_OFFSET_STD           ' + std_rg + '\n'
+    f.write(wstr)
+    wstr = 'AZIMUTH_OFFSET             ' + cor_az + '\n'
+    f.write(wstr)
+    wstr = 'AZIMUTH_OFFSET_STD         ' + std_az + '\n'
+    f.write(wstr)
+    
     f.close()
     
     sys.exit(1)
+    
+    
 if __name__ == '__main__':
     main(sys.argv[1:])    
     
@@ -354,20 +380,3 @@ if __name__ == '__main__':
     
     
     
-    
-    
-    
-    
-    
-    
-    
-     
-    
-        
-        
-        
-
-
-##############################################################################
-if __name__ == '__main__':
-    main(sys.argv[1:])
