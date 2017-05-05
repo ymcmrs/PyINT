@@ -2,6 +2,7 @@
 ############################################################
 # Program is part of TSSAR v1.0                            #
 # Copyright(c) 2017, Yunmeng Cao                           #
+# E-mail: ymcmrs@gmail.com                                 #
 # Author:  Yunmeng Cao                                     #
 ############################################################
 
