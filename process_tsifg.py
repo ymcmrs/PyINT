@@ -150,8 +150,8 @@ def main(argv):
         call_str = 'COREG_ALL_Gamma.py ' + projectName
         os.system(call_str)
         
-#    call_str = 'SelectPairs_Gamma.py ' + projectName
-#    os.system(call_str)      
+    call_str = 'SelectPairs_Gamma.py ' + projectName
+    os.system(call_str)      
        
     #if IFG_TS_Flag=='1':    
     call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
