@@ -102,7 +102,7 @@ def main(argv):
     else: UNW_Flag = '1'
         
     if 'UNW_SUB_Flag'          in templateContents: UNW_SUB_Flag = templateContents['UNW_SUB_Flag']                
-    else: UNW_SUB_Flag = '1'
+    else: UNW_SUB_Flag = '0'
         
     if 'GEO_Flag'          in templateContents: GEO_Flag = templateContents['GEO_Flag']                
     else: GEO_Flag = '1'    
