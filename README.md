@@ -1,4 +1,4 @@
-# PyGAMMA   
+# PyINT (Python&GAMMA based interfermetry toolbox)  
 
 ###Bratch processing for generating Interferograms based on python and GAMMA.      
 
