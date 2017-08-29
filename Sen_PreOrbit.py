@@ -46,7 +46,7 @@ EXAMPLE = '''
 
 
 def cmdLineParse():
-    parser = argparse.ArgumentParser(description='Download precise orbital data automatically for Sentinel-1',\
+    parser = argparse.ArgumentParser(description='Geocode h5 file based on GAMMA.',\
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
@@ -67,6 +67,9 @@ def main(argv):
     inps = cmdLineParse()
     
     DATE = inps.date
+    
+    if len(DATE)==6:
+        DATE = '20' + DATE
     ST = inps.satellite
     YEAR = int(DATE[0:4])
     MON = int(DATE[4:6])
