@@ -178,27 +178,6 @@ def main(argv):
         
     SamprlksImg = rslcDir + "/" + Sdate + '_'+rlks+'rlks' + ".ramp"
     SamprlksPar = rslcDir + "/" + Sdate + '_'+rlks+'rlks' + ".ramp.par"
-    
-    if ( INF== 'MAI' or INF == 'RSI'):   
-        call_str = 'cp ' + MamprlksImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + MamprlksPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + SamprlksImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SamprlksPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + MrslcPar + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SrslcPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + MrslcImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SrslcImg + ' ' + workDir  
-        os.system(call_str)
 
 ##############################################  Resampling #####################################################
 
