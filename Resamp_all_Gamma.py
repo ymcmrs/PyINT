@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
-#                                                                                 #
-#        Coregistrate all SAR or interferograms to a master one                   #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -141,7 +138,7 @@ def main(argv):
     Moff = rslcDir +"/"+ masterDate + '-' + Mdate + '.off'
     Soff = rslcDir +"/"+ masterDate + '-' + Sdate + '.off'        
     
-    if INF=='IFG':
+    if INF=='IFG' or INF =='IFGRAM':
         Suffix=['']
     elif INF=='MAI':
         Suffix=['.F','.B']
@@ -218,6 +215,13 @@ def main(argv):
         rINT     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint'
         rINTpar  = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint.par'
         
+        MrslcImg0 = workDir + "/" + Mdate + Suffix[i]+".rslc"
+        MrslcPar0 = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
+        MrslcPar00 = workDir + "/" + Mdate + Suffix[i]+".rslc0.par"
+        
+        call_str = 'cp ' + MrslcPar0 + ' ' + MrslcPar00
+        os.system(call_str)
+        
         MrslcImg = rslcDir + "/" + Mdate + Suffix[i]+".rslc"
         MrslcPar = rslcDir + "/" + Mdate + Suffix[i]+".rslc.par"
         SrslcImg = rslcDir + "/" + Sdate + Suffix[i]+".rslc"
@@ -230,6 +234,26 @@ def main(argv):
         SamprlksPar = rslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
 
 ####   detect the choice for resampling #######      
+        
+        
+### post coregistration for interferogram 
+
+        fin = open(BaseslcPar,"r")
+        fout = open(Baseslc4Par,"w")
+        txt = fin.read()
+        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+        fout.write(txtout)
+        fin.close()
+        fout.close()
+
+        fin = open(MrslcPar0,"r")
+        fout = open(INTpar,"w")
+        txt = fin.read()
+        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+        fout.write(txtout)
+        fin.close()
+        fout.close()
+##################################################
 
         call_str = 'cp ' + MamprlksImg + ' ' + workDir
         os.system(call_str)
@@ -252,24 +276,8 @@ def main(argv):
         os.system(call_str)
         
         
-### post coregistration for interferogram 
+#######################################################        
 
-        fin = open(BaseslcPar,"r")
-        fout = open(Baseslc4Par,"w")
-        txt = fin.read()
-        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
-        fout.write(txtout)
-        fin.close()
-        fout.close()
-
-        fin = open(MrslcPar,"r")
-        fout = open(INTpar,"w")
-        txt = fin.read()
-        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
-        fout.write(txtout)
-        fin.close()
-        fout.close()
-       
         if ( masterDate != Mdate):
             call_str = "$GAMMA_BIN/SLC_interp " + INT + " " + Baseslc4Par + " " + INTpar + " " + Moff + " " + rINT + " " + rINTpar
             os.system(call_str)
