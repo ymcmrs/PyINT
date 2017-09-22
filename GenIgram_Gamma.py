@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
-#                                                                                 #
-#         Generating interferograms based on GAMMA                                #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -127,8 +124,9 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
-
-    if INF=='IFG':
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
+    
+    if INF=='IFG' or INF=='IFGRAM':
         Suffix=['']
     elif INF=='MAI':
         Suffix=['.F','.B']
@@ -209,6 +207,19 @@ def main(argv):
         if os.path.isfile(OFF):
             os.remove(OFF)
 
+        if not Coreg_Int=='1':
+            call_str = 'cp ' + rslcDir +'/' + os.path.basename(MrslcImg) + ' ' + MrslcImg
+            os.system(call_str)
+            
+            call_str = 'cp ' + rslcDir +'/' + os.path.basename(SrslcImg) + ' ' + SrslcImg
+            os.system(call_str)
+            
+            call_str = 'cp ' + rslcDir +'/' + os.path.basename(MrslcPar) + ' ' + MrslcPar
+            os.system(call_str)
+            
+            call_str = 'cp ' + rslcDir +'/' + os.path.basename(SrslcPar) + ' ' + SrslcPar
+            os.system(call_str)
+        
         call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
         os.system(call_str)
 

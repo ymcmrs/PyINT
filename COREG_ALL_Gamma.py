@@ -1,16 +1,12 @@
 #! /usr/bin/env python
-#'''
-##################################################################################
-#                                                                                #
-#            Author:   Yun-Meng Cao                                              #
-#            Email :   ymcmrs@gmail.com                                          #
-#            Date  :   March, 2017                                               #
-#                                                                                #
-#           Coregistrating all SAR images to one master date                     #
-#              OFFSET RSLC RSLCPar will be generated                             # 
-#                                                                                #
-##################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -18,6 +14,7 @@ import subprocess
 import getopt
 import time
 import glob
+import argparse
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -92,36 +89,53 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     f_coreg = open(run_coreg_all,'w')
     
     for kk in range(len(slavelist)):
-        str_coreg = "GenOff_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
+        str_coreg = "GenOff_DEM_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
         f_coreg.write(str_coreg)
     f_coreg.close()
-    
-    
-def usage():
-    print '''
-******************************************************************************************************
- 
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
 
-   usage:
+#########################################################################
+
+INTRODUCTION = '''
+#############################################################################
+   Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
+   Coregistrate all of SAR images to one master image based on cross-correlation.
+   Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+'''
+
+EXAMPLE = '''
+    Usage:
             COREG_ALL_Gamma.py projectName
-      
-      e.g.  COREG_ALL_Gamma.py PacayaT163TsxHhA
-           
-*******************************************************************************************************
-    '''   
+            
+    Examples:
+            COREG_ALL_Gamma.py PacayaT163TsxHhA
+##############################################################################
+'''
+
+
+def cmdLineParse():
+    parser = argparse.ArgumentParser(description='Batch processing pegasus jobs.',\
+                                     formatter_class=argparse.RawTextHelpFormatter,\
+                                     epilog=INTRODUCTION+'\n'+EXAMPLE)
+
+    parser.add_argument('project',help='Project name of coregistration.')
+    
+    inps = parser.parse_args()
+    
+    if not inps.project:
+        parser.print_usage()
+        sys.exit(os.path.basename(sys.argv[0])+': error: project name should be provided.')
+
+    return inps
+
+################################################################################    
+    
     
 def main(argv):
     
-    if len(sys.argv)==2:
-        if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: projectName=sys.argv[1]        
-    else:
-        usage();sys.exit(1)
-       
+    inps = cmdLineParse() 
     
+    projectName = inps.project   
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
@@ -143,7 +157,7 @@ def main(argv):
     if 'memory_Coreg' in templateContents :  memory_Coreg =  templateContents['memory_Coreg']
     else: memory_Coreg = '3700'
     if 'walltime_Coreg' in templateContents :  walltime_Coreg =  templateContents['walltime_Coreg']
-    else: walltime_Coreg = '2:00'
+    else: walltime_Coreg = '1:00'
     
 #####################  Extract SLC Date #################################  
 
