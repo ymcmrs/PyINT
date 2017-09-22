@@ -1,23 +1,26 @@
 
-memory_Coreg       =   3700
-walltime_Coreg     =   1:00
-
-memory_Ifg       =   3700
-walltime_Ifg     =   2:00
-
-
-
-DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem
-
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
 
+Coreg_all         =  1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
+Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
 
-####################  Coregistration #############################
+############################################################################################################
+memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
+walltime_Coreg_all     =   1:00          # walltime for the coregistration jobs
+
+memory_slc2ifg       =   3700            # memory for generating time series interferograms
+walltime_slc2ifg     =   2:00            # walltime for generating time series interferograms
+
+
+DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem                
+# If the DEM is not provided or the DEM file is not exsited, a 30 SRTM based dem will be generated autamatically.
+
+#################################################  Coregistration ############################################
 
 rwin4cor           =   256       #  rfwin4cor = 1/2 * rwin4cor
 azwin4cor          =   256       #  azfwin4cor = 1/2 * azwin4cor
-rsample4cor        =   16        #  rfsample4cor = 2*rsample4cor
+rsample4cor        =   32        #  rfsample4cor = 2*rsample4cor
 azsample4cor       =   32        #  azfsample4cor = 2*azsample4cor
 thresh4cor         =   0.15      # 2016 GAMMA, for 2015 GAMMA should be SNR, not correlation
 
@@ -38,21 +41,15 @@ Igram_Flattening   = orbit       #  [option: orbit, fft]    fft > orbit
 Igram_FilterMethod = adapt_filt  #  adapt filtering
 
 #######################  Geocoding & Sim Phase ###################
-Simphase_Lat_Ovr  =  0.6   # should according to the resolution of DEM and multi-looked SAR
-Simphase_Lon_Ovr  =  0.6   
+Simphase_Lat_Ovr  =  1   # should according to the resolution of DEM and multi-looked SAR
+Simphase_Lon_Ovr  =  1  
 
 
 ####################  Differential Interferometry ################
-
 UnwrappedThreshold = 0.4
 Diff_Flattening    = orbit     # [option: orbit, fft]
 
 ###################    Unwrapping   ################################
-#Start_Range_Unw      = 0           # bounding box for unwrapping      
-#Start_Azimuth_Unw    = 0           # bounding box for unwrapping
-
-#Range_Samples_Unw    = 500         #  bounding box for unwrapping
-#Azimuth_Samples_Unw  = 500         #  bounding box for unwrapping
 
 unwrapMethod         =  branch_cut   # [option: mcf,  branch_cut]
 branch_length        =  32            # maximum branch length for unwrap
@@ -64,7 +61,7 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 
 ####################  slc2ifg #####################################
 
-#COREG_Flag    =   1    #[defaul: 1]
+#Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
 #INT_Flag      =   1   
 #DIFF_Flag     =   1
 #UNW_Flag      =   1
