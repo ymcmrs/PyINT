@@ -1,16 +1,12 @@
 #! /usr/bin/env python
-#'''
-##################################################################################
-#                                                                                #
-#            Author:   Yun-Meng Cao                                              #
-#            Email :   ymcmrs@gmail.com                                          #
-#            Date  :   March, 2017                                               #
-#                                                                                #
-#           Coregistration of SAR images based on DEM.                           #
-#         Be suitable for conventional InSAR, MAI, Split-Spectrum InSAR          # 
-#                                                                                #
-##################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -18,6 +14,7 @@ import subprocess
 import getopt
 import time
 import glob
+import argparse
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -73,33 +70,50 @@ def UseGamma(inFile, task, keyword):
         print "Keyword " + keyword + " doesn't exist in " + inFile
         f.close()
 
-def usage():
-    print '''
-******************************************************************************************************
- 
-       Coregistration of SAR images based on DEM by using GAMMA.
-       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
 
-   usage:
+#########################################################################
+
+INTRODUCTION = '''
+#############################################################################
+   Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
+   Coregistrate all of SAR images to one master image based on cross-correlation.
+   Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+'''
+
+EXAMPLE = '''
+    Usage:
             CoregistSLC_DEM_Gamma.py igramDir
-      
-      e.g.  CoregistSLC_DEM_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CoregistSLC_DEM_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007
-      e.g.  CoregistSLC_DEM_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
-          
             
-*******************************************************************************************************
-    '''   
+    Examples:
+            CoregistSLC_DEM_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_-0007
+##############################################################################
+'''
+
+
+def cmdLineParse():
+    parser = argparse.ArgumentParser(description='Batch processing pegasus jobs.',\
+                                     formatter_class=argparse.RawTextHelpFormatter,\
+                                     epilog=INTRODUCTION+'\n'+EXAMPLE)
+
+    parser.add_argument('igramDir',help='Interferogram directory name.')
+    
+    inps = parser.parse_args()
+    
+    if not inps.igramDir:
+        parser.print_usage()
+        sys.exit(os.path.basename(sys.argv[0])+': error: Interferogram interferogram directory name should be provided.')
+
+    return inps
+
+################################################################################            
+        
     
 def main(argv):
     
-    if len(sys.argv)==2:
-        if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: igramDir=sys.argv[1]        
-    else:
-        usage();sys.exit(1)
-       
+    inps = cmdLineParse() 
+    igramDir = inps.igramDir
+    
     INF = igramDir.split('_')[0]
     projectName = igramDir.split('_')[1]
     IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
@@ -115,7 +129,7 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
 
-    if INF=='IFG':
+    if INF=='IFG' or INF ='IFGRAM':
         Suffix=['']
     elif INF=='MAI':
         Suffix=['.F','.B']
@@ -132,7 +146,32 @@ def main(argv):
     else: coregCoarse = 'both' 
 
     if 'thresh4cor'          in templateContents: thresh4cor = templateContents['thresh4cor']                
-    else: thresh4cor = ' - '      
+    else: thresh4cor = ' - '  
+        
+    if 'rwin4cor'          in templateContents: rwin4cor = templateContents['rwin4cor']                
+    else: rwin4cor = '256'  
+    if 'azwin4cor'          in templateContents: azwin4cor = templateContents['azwin4cor']                
+    else: azwin4cor = '256'      
+    if 'rsample4cor'          in templateContents: rsample4cor = templateContents['rsample4cor']                
+    else: rsample4cor = '32'  
+    if 'azsample4cor'          in templateContents: azsample4cor = templateContents['azsample4cor']                
+    else: azsample4cor = '32'  
+        
+    if ' rpos4cor'          in templateContents:  rpos4cor = templateContents[' rpos4cor']                
+    else:  rpos4cor = ' - '  
+    if 'azpos4cor'          in templateContents: azpos4cor = templateContents['azpos4cor']                
+    else: azpos4cor = ' - '  
+        
+
+        
+    if 'rfwin4cor'          in templateContents: rfwin4cor = templateContents['rfwin4cor']                
+    else: rfwin4cor = str(int(int(rwin4cor)/2))
+    if 'azfwin4cor'          in templateContents: azfwin4cor = templateContents['azfwin4cor']                
+    else: azfwin4cor = str(int(int(azwin4cor)/2))  
+    if 'rfsample4cor'          in templateContents: rfsample4cor = templateContents['rfsample4cor']                
+    else: rfsample4cor = str(2*int(rsample4cor))  
+    if 'azfsample4cor'          in templateContents: azfsample4cor = templateContents['azfsample4cor']                
+    else: azfsample4cor = str(2*int(azsample4cor))    
     
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
@@ -217,7 +256,7 @@ def main(argv):
     call_str = "$GAMMA_BIN/init_offsetm " + mli0 + " " + SamprlksImg + " " + diff0 + " 1 1"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " 256 256 " + offsets0 + " 2 16 16"
+    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " 256 256 " + offsets0 + " 2 32 32"
     os.system(call_str)
   
     call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
@@ -227,7 +266,7 @@ def main(argv):
     os.system(call_str)
     
     
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    call_s tr = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
     os.system(call_str)
 
 
@@ -236,10 +275,22 @@ def main(argv):
     call_str = "$GAMMA_BIN/create_offset " + MslcPar + " " + Srslc0Par + " " + off + " 1 - - 0"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " 128 128 " + offsets + " 2 32 64"
+    #call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " 128 128 " + offsets + " 2 32 64"
+    #os.system(call_str)
+
+    #call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
+    #os.system(call_str)
+    
+    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
 
     call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
+    os.system(call_str)
+    
+    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
+    os.system(call_str)
+
+    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
     os.system(call_str)
     
 ############################################     Resampling     ############################################    
