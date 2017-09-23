@@ -74,8 +74,8 @@ Max_Temporal_Baseline =  500      # temporal baseline threshold for selecting pa
 
 
 JOB = IFG # [option: IFG, MAI, RSI ]
-COREG_TS_Flag = 1   # [option: 0, 1] If 1, all of the SAR images will be coregistated to one master date firstly!
-IFG_TS_Flag = 1      # [option: 0, 1]      
+
+Select_pairs    =  1              # select pairs and generate interferograms directory  
 
 ############ load data ##############
 
