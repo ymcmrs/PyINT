@@ -138,6 +138,7 @@ def main(argv):
     projectName = inps.project   
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
+    DEMDIR = os.getenv('DEMDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
     projectDir = scratchDir + '/' + projectName
@@ -199,6 +200,9 @@ def main(argv):
         
     SLAVElist = Datelist
     del SLAVElist[Datelist.index(masterDate)]
+    rlks = templateContents['Range_Looks']
+    azlks = templateContents['Azimuth_Looks']
+
     
     if 'DEM' in templateContents :  
         DEM =  templateContents['DEM']
