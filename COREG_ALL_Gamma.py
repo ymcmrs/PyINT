@@ -200,6 +200,27 @@ def main(argv):
     SLAVElist = Datelist
     del SLAVElist[Datelist.index(masterDate)]
     
+    if 'DEM' in templateContents :  
+        DEM =  templateContents['DEM']
+        if not os.path.isfile(DEM):
+            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
+            call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+            os.system(call_str)
+            
+            call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
+            os.system(call_str)
+    else:
+        print 'DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.'
+        call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+        os.system(call_str)
+            
+        call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
+        os.system(call_str)
+    
+    masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
+    if not os.path.isfile(masterRdcDEM):
+        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
+        os.system(call_str)
     
     run_coreg_all  = projectDir + "/run_coreg_all"
     if os.path.isfile(run_coreg_all):

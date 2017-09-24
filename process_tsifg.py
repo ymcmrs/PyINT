@@ -100,7 +100,8 @@ def usage():
     print '''
 ******************************************************************************************************
  
-            Generating time series interferograms based on GAMMA.
+       Coregistration of SAR images based on cross-correlation by using GAMMA.
+       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
 
    usage:
    
@@ -122,12 +123,14 @@ def main(argv):
     
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
+    DEMDIR = os.getenv('DEMDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
     projectDir = scratchDir + '/' + projectName
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
+ 
     
     if not os.path.isdir(rslcDir):
         call_str = 'mkdir ' + rslcDir
@@ -140,21 +143,60 @@ def main(argv):
     else: walltime_Ifg = '1:00'
         
         
-    if 'COREG_TS_Flag' in templateContents :  COREG_TS_Flag =  templateContents['COREG_TS_Flag']
-    else: COREG_TS_Flag = '1'
-    if 'IFG_TS_Flag' in templateContents :  IFG_TS_Flag =  templateContents['IFG_TS_Flag']
-    else: IFG_TS_Flag = '1'  
+    if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
+    else: Coreg_all = '1'
+        
+    if 'Select_pairs' in templateContents :  Select_pairs =  templateContents['Select_pairs']
+    else: Select_pairs = '1'
 
+    if 'GenRdcDem_Rslc_all' in templateContents :  GenRdcDem_Rslc_all =  templateContents['GenRdcDem_Rslc_all']
+    else: GenRdcDem_Rslc_all = '1'
 
-    if COREG_TS_Flag== '1':    
+##########################    Check DEM   ###############################################
+
+    if 'DEM' in templateContents :  
+        DEM =  templateContents['DEM']
+        if not os.path.isfile(DEM):
+            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
+            call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+            os.system(call_str)
+            
+            call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
+            os.system(call_str)
+    else:
+        print 'DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.'
+        call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+        os.system(call_str)
+            
+        call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
+        os.system(call_str)
+ 
+    
+    if Coreg_all== '1':    
         call_str = 'COREG_ALL_Gamma.py ' + projectName
         os.system(call_str)
+    
+    if GenRdcDem_Rslc_all =='1':
+        call_str = 'Generate_RdcDEM_Rslc_ALL.py ' + projectName
+        os.system(call_str)
+#################################################################################
+
+    if Select_pairs =='1':
+        call_str = 'SelectPairs_Gamma.py ' + projectName
+        os.system(call_str)      
+         
+    IFGLIST = glob.glob(processDir+'/*_' +projectName + '_*') 
+    
+    run_slc2ifg_gamma = processDir+'/run_slc2ifg_gamma'
+    if os.path.isfile(run_slc2ifg_gamma):
+        os.remove(run_slc2ifg_gamma)
         
-    call_str = 'SelectPairs_Gamma.py ' + projectName
-    os.system(call_str)      
-       
-    #if IFG_TS_Flag=='1':    
-    call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
+    for kk in IFGLIST:
+        call_str = 'echo SLC2Ifg_Gamma.py ' + os.path.basename(kk) + ' >>' + run_slc2ifg_gamma
+        os.system(call_str)
+    
+    
+    call_str='$INT_SCR/createBatch.pl ' + run_slc2ifg_gamma + ' memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
     os.system(call_str)
 
     print "Time series interferograms processing is done! "    
