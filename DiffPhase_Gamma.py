@@ -145,7 +145,7 @@ def main(argv):
 # Parameter setting for diffPhase
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM"   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-    
+    demDir = scratchDir + '/' + projectName + "/PROCESS" + "/DEM"   
     
     
    
@@ -178,7 +178,7 @@ def main(argv):
     createBlankFile(BLANK)
     
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.sim_unw'   
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.rdc.dem'  
+    HGTSIM      = demDir + '/sim_' + Mdate +'_' + rlks + 'rlks.rdc.dem'  
     GCP         = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.gcp'  
     
     for i in range(len(Suffix)):          
@@ -215,10 +215,6 @@ def main(argv):
     
     
         nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-
-        if not (os.path.isfile(HGTSIM) or os.path.isfile(SIMUNW)):
-            print "Simulated height information is not found, please run phase simulation before diff \n" 
-            sys.exit(0)
 
         if os.path.isfile(DIFFpar):
             os.remove(DIFFpar)
