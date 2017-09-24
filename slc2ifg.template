@@ -2,8 +2,9 @@
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
 
-Coreg_all         =  1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
-Coreg_int         =  0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
+Coreg_int            = 0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
       
 ############################################################################################################
 memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
