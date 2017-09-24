@@ -4,8 +4,7 @@ Azimuth_Looks     =  5
 
 Coreg_all         =  1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
 Coreg_int         =  0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
-
-Unify_master      =  1      # unify to one same master coordinates          
+      
 ############################################################################################################
 memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
 walltime_Coreg_all     =   1:00          # walltime for the coregistration jobs
