@@ -1,15 +1,13 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
-#                                                                                 #
-#         Unwrap interferograms based on GAMMA                                    #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
+
 import numpy as np
 import os
 import sys  
@@ -157,13 +155,7 @@ def main(argv):
     else: unwrappatrDiff = '1'
     if 'Unwrap_pataz' in templateContents: unwrappatazDiff = templateContents['Unwrap_pataz']
     else: unwrappatazDiff = '1'
-
-    SRU = '0'    
-    SAU = '0'  
-   
-    NR = '-'    
-    NA = '-'     
-
+        
 #  Definition of file
 
     for i in range(len(Suffix)):          
@@ -247,11 +239,11 @@ def main(argv):
         call_str = '$GAMMA_BIN/rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
         os.system(call_str)
     
-        call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
-        os.system(call_str)    
+        #call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
+        #os.system(call_str)    
 ##########################  Start to Unwrap  ###########################
 
-        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 ' + SRU + ' ' + SAU + ' ' + NR + ' ' + NA + ' ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' - - - - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
         os.system(call_str)
 
 #        call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth

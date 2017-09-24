@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
-#                                                                                 #
-#   Coregistration of SAR images based on cross-correlation with DEM assisstance  #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -132,14 +129,15 @@ def main(argv):
 
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
     if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
+        call_str='mkdir ' + simDir 
+        os.system(call_str)
   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
     if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
+        call_str='mkdir ' + simDir 
+        os.system(call_str)
     
-    dem=templateContents['DEM']
-    demPar = dem + ".par"
+    demDir = scratchDir + '/' + projectName + "/PROCESS" + "/DEM" 
 
     if INF=='IFG':
         Suffix=['']
@@ -167,16 +165,27 @@ def main(argv):
     
     MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
     MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"   
-
     OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.rdc.dem'
+    #if 'masterDate'          in templateContents: 
+    #    masterDate = templateContents['masterDate']   
+    #    HGTSIM      = demDir + '/sim_' + masterDate + '_' + rlks +'rlks' + '.rdc.dem'          
+    #    if not os.path.isfile(HGTSIM):
+    #        HGTSIM      = demDir + '/sim_' + Mdate + '_' + rlks +'rlks' + '.rdc.dem'
+    #else:
+    #    HGTSIM = demDir + '/sim_' + Mdate + '_' + rlks +'rlks' + '.rdc.dem'
+        
+    #if not os.path.isfile(HGTSIM):       
+    #   call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + Mdate
+    #    os.system(call_str)
+  
+    HGTSIM = demDir + '/sim_' + Mdate + '_' + rlks +'rlks' + '.rdc.dem'
+    if not os.path.isfile(HGTSIM):       
+        call_str = 'Generate_RdcDEM_Rslc_Gamma.py ' + projectName + ' ' + Mdate
+        os.system(call_str)
+    
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
 
-###################################  HGT in Radar Coordinates Generation #########################
-  
-    call_str = 'CreateRdcDem_Gamma.py ' + igramDir
-    os.system(call_str)
         
 ###################################  Phase Simulation  ###########################################
     

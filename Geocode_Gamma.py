@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   February, 2017                                             #
-#                                                                                 #
-#         GEOCODING GAMMA FILES: INT, SLC, MLI, UNW, COR, ...                     #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -126,10 +123,12 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
+    demDir     = processDir + '/DEM'
     
     templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
+    masterDate = templateContents['masterDate']
 
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM"   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
@@ -169,23 +168,25 @@ def main(argv):
     else: unwrapMethod = 'mcf'
 
 #  Definition of file
-
-    UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm.dem.par'
-    UTMDEM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm.dem'
-    UTM2RDC     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.utm_to_rdc'
-    SIMSARUTM   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_sar_utm'
-    PIX         = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.pix'
-    LSMAP       = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.ls_map'
-    SIMSARRDC   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_sar_rdc'
-    SIMDIFFpar  = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.diff_par'
-    SIMOFFS     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.offs'
-    SIMSNR      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.snr'
-    SIMOFFSET   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.offset'
-    SIMCOFF     = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.coff'
-    SIMCOFFSETS = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.coffsets'
-    UTMTORDC    = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.UTM_TO_RDC'
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks +'rlks.sim_unw'
+    simDir = demDir
+    
+    masterDate = Mdate
+    UTMDEMpar   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem.par'
+    UTMDEM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem'
+    UTM2RDC     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm_to_rdc'
+    SIMSARUTM   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_utm'
+    PIX         = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.pix'
+    LSMAP       = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.ls_map'
+    SIMSARRDC   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_rdc'
+    SIMDIFFpar  = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.diff_par'
+    SIMOFFS     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offs'
+    SIMSNR      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.snr'
+    SIMOFFSET   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offset'
+    SIMCOFF     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coff'
+    SIMCOFFSETS = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coffsets'
+    UTMTORDC    = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.UTM_TO_RDC'
+    HGTSIM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.rdc.dem'
+    SIMUNW      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_unw'
 
 
     for i in range(len(Suffix)):          
