@@ -1,16 +1,13 @@
 #! /usr/bin/env python
-#'''
-##################################################################################
-#                                                                                #
-#            Author:   Yun-Meng Cao                                              #
-#            Email :   ymcmrs@gmail.com                                          #
-#            Date  :   March, 2017                                               #
-#                                                                                #
-#           Coregistration of SAR images based on cross-correlation.             #
-#         Be suitable for conventional InSAR, MAI, Split-Spectrum InSAR          # 
-#                                                                                #
-##################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
+
 import numpy as np
 import os
 import sys  
@@ -113,9 +110,10 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
 
-    if INF=='IFG':
+    if INF=='IFG' or INF =='IFGRAM':
         Suffix=['']
     elif INF=='MAI':
         Suffix=['.F','.B']
@@ -171,10 +169,10 @@ def main(argv):
     SslcDir = slcDir + "/" + Sdate
     MslcDir = slcDir + "/" + Mdate
 
-    MslcImg = MslcDir + "/" + Mdate + ".slc"
-    MslcPar = MslcDir + "/" + Mdate + ".slc.par"
-    SslcImg = SslcDir + "/" + Sdate + ".slc"
-    SslcPar = SslcDir + "/" + Sdate + ".slc.par"
+    MslcImg = rslcDir +'/'+ Mdate + ".rslc"
+    MslcPar = rslcDir +'/'+ Mdate + ".rslc.par"
+    SslcImg = rslcDir +'/'+ Sdate + ".rslc"
+    SslcPar = rslcDir +'/'+ Sdate + ".rslc.par"
     
     
 # output files of coregistration

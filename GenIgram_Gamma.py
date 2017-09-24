@@ -147,8 +147,8 @@ def main(argv):
     else: rLooksIgram = '4'
     if 'Igram_Alooks'          in templateContents: aLooksIgram = templateContents['Igram_Alooks']                
     else: aLooksIgram = '4'
-    if 'COREG_all_Flag'          in templateContents: COREG_all_Flag = templateContents['COREG_all_Flag']                
-    else: COREG_all_Flag = '0'
+    if 'Unify_master '          in templateContents: Unify_master  = templateContents['Unify_master']                
+    else: Unify_master  = '0'
     
     if 'Igram_Spsflg'       in templateContents: spsflgIgram = templateContents['Igram_Spsflg']
     else: spsflgIgram = '1'
@@ -174,6 +174,9 @@ def main(argv):
     nFiltWindow = strFilterStrengeh.split('/')[1]
     if 'Igram_FFTLength' in templateContents: nAzfft = templateContents['Igram_FFTLength']
     else: nAzfft = '512'
+        
+    if 'Coreg_int'          in templateContents: Coreg_int = templateContents['Coreg_int']                
+    else: Coreg_int = '1'
 
 ###############################  Interferometry Processing ####################################################
     BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
@@ -207,18 +210,11 @@ def main(argv):
         if os.path.isfile(OFF):
             os.remove(OFF)
 
-        if not Coreg_Int=='1':
-            call_str = 'cp ' + rslcDir +'/' + os.path.basename(MrslcImg) + ' ' + MrslcImg
-            os.system(call_str)
-            
-            call_str = 'cp ' + rslcDir +'/' + os.path.basename(SrslcImg) + ' ' + SrslcImg
-            os.system(call_str)
-            
-            call_str = 'cp ' + rslcDir +'/' + os.path.basename(MrslcPar) + ' ' + MrslcPar
-            os.system(call_str)
-            
-            call_str = 'cp ' + rslcDir +'/' + os.path.basename(SrslcPar) + ' ' + SrslcPar
-            os.system(call_str)
+        if not Coreg_int=='1':
+            MrslcImg = rslcDir + "/" + Mdate + Suffix[i]+".rslc"
+            MrslcPar = rslcDir + "/" + Mdate + Suffix[i]+".rslc.par"
+            SrslcImg = rslcDir + "/" + Sdate + Suffix[i]+".rslc"
+            SrslcPar = rslcDir + "/" + Sdate + Suffix[i]+".rslc.par" 
         
         call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
         os.system(call_str)
@@ -228,17 +224,17 @@ def main(argv):
 
 ### start co-registartion of raw interferogram w.r.t. master scene  
 
-        if COREG_all_Flag == '1':
-            call_str = "Resamp_all_Gamma.py " + igramDir     ## after this step, all based on rslc
-            os.system(call_str)
+        #if Unify_master  == '1':
+        #    call_str = "Resamp_all_Gamma.py " + igramDir     ## after this step, all based on rslc
+        #    os.system(call_str)
 
 ### continue interferometric process with re-coregistered slc parameter w.r.t. master scene
 
-        if os.path.isfile(OFF):
-            os.remove(OFF)
+        #if os.path.isfile(OFF):
+        #    os.remove(OFF)
             
-        call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
-        os.system(call_str)    ## update the OFF file, if do the last step "COREG_all_Flag"
+        #call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
+        #os.system(call_str)    ## update the OFF file, if do the last step "COREG_all_Flag"
 
         call_str = '$GAMMA_BIN/base_orbit '+ MrslcPar + ' ' + SrslcPar + ' ' + BASE
         os.system(call_str)

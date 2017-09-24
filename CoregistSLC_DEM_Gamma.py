@@ -127,9 +127,11 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
-
-    if INF=='IFG' or INF ='IFGRAM':
+    demDir = processDir + '/DEM'
+    
+    if INF=='IFG' or INF =='IFGRAM':
         Suffix=['']
     elif INF=='MAI':
         Suffix=['.F','.B']
@@ -175,16 +177,16 @@ def main(argv):
     
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
-    
+    masterDate  = templateContents['masterDate']
 # input slcs
 
     SslcDir = slcDir + "/" + Sdate
     MslcDir = slcDir + "/" + Mdate
 
-    MslcImg = MslcDir + "/" + Mdate + ".slc"
-    MslcPar = MslcDir + "/" + Mdate + ".slc.par"
-    SslcImg = SslcDir + "/" + Sdate + ".slc"
-    SslcPar = SslcDir + "/" + Sdate + ".slc.par"
+    MslcImg = rslcDir + "/" + Mdate + ".rslc"
+    MslcPar = rslcDir + "/" + Mdate + ".rslc.par"
+    SslcImg = rslcDir + "/" + Sdate + ".rslc"
+    SslcPar = rslcDir + "/" + Sdate + ".rslc.par"
 
 # output slcs
 
@@ -201,15 +203,16 @@ def main(argv):
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
     
+    OFFSTD = workDir + "/" + Mdate + "-" + Sdate + ".off_std"
+    
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+rlks+'rlks.rdc.dem'
-    
-    if not os.path.isfile(HGTSIM):
-        call_str= "CreateRdcDem_Gamma.py " + igramDir
+    HGTSIM      = demDir + '/sim_' + masterDate + '_'+rlks+'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):       
+        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
         os.system(call_str)
-
+    
     lt0 = workDir + "/lt0" 
     lt1 = workDir + "/lt1"
     mli0 = workDir + "/mli0" 
@@ -266,7 +269,7 @@ def main(argv):
     os.system(call_str)
     
     
-    call_s tr = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
     os.system(call_str)
 
 
@@ -290,6 +293,8 @@ def main(argv):
     call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
 
+    
+    
     call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
     os.system(call_str)
     
