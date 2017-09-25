@@ -1,0 +1,11 @@
+################  template for Sentinel data processing based on GAMMA ##############
+
+Track  = 71
+Frame  = 479
+Startdate = 2017-01-01
+Enddate   = 2100-01-01
+
+
+DOWN2SLC_S1_FLAG  = 1   # [option: 0,1]    Sentinel-1 Download to SLC  for all of datasets
+EXTRACT_SB_ALL    = 1   # [option: 0,1]    Extract Swamth and Burst for all of datasets.
+
