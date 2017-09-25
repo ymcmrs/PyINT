@@ -115,15 +115,27 @@ def main(argv):
     templateContents=read_template(templateFile)
     Track = templateContents['Track']
     Frame = templateContents['Frame']
-    Startdate = templateContents['Startdate'] 
-    Enddate = templateContents['Enddate']    
+    
+    if Startdate in templateContents: 
+        Startdate = templateContents['Startdate'] 
+        STARTSTR = ' -s ' + Startdate
+    else:
+        STARTSTR = ''
+        
+        
+    if Enddate in templateContents: 
+        Enddate = templateContents['Enddate']  
+        ENDSTR = ' -e ' + Enddate
+    else:
+        ENDSTR = ''
+
     
     
-    SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + ' -s ' +Startdate +' -e '+ Enddate + ' --print --download'  
+    SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR + ' --print --download --parallel=2'  
     os.system(SSARA_STRA)
     
     
-    SSARA_STRB = 'ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + ' -s ' +Startdate +' -e '+ Enddate + ' --print --download'  
+    SSARA_STRB = 'ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + + STARTSTR + ENDSTR  + ' --print --download --parallel=2'  
     os.system(SSARA_STRB)   
     
     
