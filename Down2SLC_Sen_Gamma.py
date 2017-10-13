@@ -89,9 +89,6 @@ def usage():
     
 def main(argv):
     
-    
-def main(argv):
-    
     if len(sys.argv)==3:
         projectName = sys.argv[1]
         Date  = sys.argv[2]
