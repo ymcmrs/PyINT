@@ -89,38 +89,74 @@ def usage():
     
 def main(argv):
     
+    
+def main(argv):
+    
     if len(sys.argv)==3:
         projectName = sys.argv[1]
-        downName   = sys.argv[2]
+        Date  = sys.argv[2]
     else:
         usage();sys.exit(1)
          
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
-    templateFile = templateDir + "/" + projectName + ".template"
     
     projectDir = scratchDir + '/' + projectName 
     downDir    = scratchDir + '/' + projectName + "/DOWNLOAD"
     slcDir     = scratchDir + '/' + projectName + '/SLC'
     
     if not os.path.isdir(slcDir):
-        call_str = 'mkdir ' + slcDir
+        call_str= 'mkdir ' +slcDir
         os.system(call_str)
     
-    FileDir = downDir + '/' + downName
-    RAWNAME = downName.split('.')[0]+'.SAFE'  
-    RAWFILEDir = downDir + '/'+RAWNAME    
+    os.chdir(downDir)
     
-    if not os.path.isdir(RAWFILEDir):
-        os.chdir(downDir)
-        call_str = 'unzip '+ FileDir
-        os.system(call_str)
     
-  
+    t0 = 't0_' + Date
+    call_str = 'ls  >' + t0
+    os.system(call_str)
 
+    tt = 'tt_' + Date
+    call_str = "grep " + Date + ' ' + t0 + '> ' + tt
+    os.system(call_str)
     
-    templateContents=read_template(templateFile)
-   
+    ts = 'ts_' + Date
+    call_str = "grep SAFE " + tt + ' >' + ts 
+    os.system(call_str)
+    
+    tz = 'tz_' + Date
+    call_str = "grep zip " + tt + " > " + tz 
+    os.system(call_str)
+    
+    A1= np.loadtxt(ts,dtype=np.str)
+    Na1 = A1.size
+
+    A2= np.loadtxt(tz,dtype=np.str)
+    Na2 = A2.size
+    
+    rm(t0);rm(tt);rm(ts);rm(tz)
+    
+    if Na1 == 0:
+        if Na2 > 0:
+            if Na2 == 1:
+                downName = str(A2)
+            else:
+                downName = str(A2[0])
+            FileDir = downDir + '/' + downName
+            RAWNAME = downName.split('.')[0]+'.SAFE'  
+            call_str = 'unzip '+ FileDir
+            os.system(call_str)
+            
+    else:
+        if Na1 == 1:
+            RAWNAME = str(A1)
+        else:
+            RAWNAME = str(A1[0])
+    
+    print RAWNAME
+    RAWFILEDir = downDir + '/'+str(RAWNAME)    
+
+     
     Date = RAWNAME[19:25]
     DateDir = slcDir + '/'+Date
     
