@@ -70,7 +70,11 @@ def UseGamma(inFile, task, keyword):
                 value = strtemp[1].strip()
                 return value
         print "Keyword " + keyword + " doesn't exist in " + inFile
-        f.close()
+        f.close
+        
+def rm(TXT):
+    call_str = 'rm ' + TXT
+    os.system(call_str)        
 
 def usage():
     print '''
