@@ -148,7 +148,10 @@ def main(argv):
             SLC    = DateDir + '/' + Date + '.IW' + str(kk+1)+'.slc'
             SLCPar = DateDir + '/' + Date + '.IW' + str(kk+1)+'.slc.par'
             TOPPar = DateDir + '/' + Date + '.IW' + str(kk+1)+'.slc.TOPS_par'
+            BURST = DateDir + '/' + Date + '.IW' + str(kk+1)+'.burst.par'
         
+            if os.path.isfile(BURST):
+                os.remove(BURST)
             call_str = 'echo ' + SLC + ' ' + SLCPar + ' ' + TOPPar + '>>' + SLC_Tab
             os.system(call_str)
         
@@ -157,6 +160,9 @@ def main(argv):
             CALIBRA = glob.glob(calibraDir+'/calibration*'+ 'iw' + str(kk+1) + '*vv*') 
             NOISE = glob.glob(calibraDir+'/noise*' + 'iw' + str(kk+1) + '*vv*')
         
+            call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
+            os.system(call_str)
+            
             call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
             os.system(call_str)
         
