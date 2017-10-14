@@ -98,6 +98,9 @@ def common_burst(La_M,La_S):
     S_Index_min = S_min.index(min(S_min)) + 1 
     S_Index_max = S_max.index(min(S_max)) + 1
     Sindex =[S_Index_min,S_Index_max]
+    #print La_M
+    #print La_S
+    #print min(M_min),min(M_max),min(S_min),min(S_max)
     return min(Mindex) , max(Mindex), min(Sindex),max(Sindex)
     
     
@@ -184,10 +187,10 @@ def main(argv):
         fs.close()
         
         MM = np.loadtxt(Mtt,dtype=str)
-        La_M = MM[:,9]
+        La_M = MM[:,2]
         
         SM = np.loadtxt(Stt,dtype=str)
-        La_S = SM[:,9]
+        La_S = SM[:,2]
         
         PP = common_burst(La_M,La_S)
         
