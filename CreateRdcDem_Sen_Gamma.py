@@ -185,33 +185,9 @@ def main(argv):
     else: SB = '1'            
         
 #  Definition of file
-    MslcDir     = slcDir  + '/' + Mdate
-    SslcDir     = slcDir  + '/' + Sdate
-        
-    MslcTOP1     = MslcDir + '/' + Mdate + '.IW1.slc.TOPS_par'   # bursts number in all of TOPS are same ? If not, should modify
-    SslcTOP1     = SslcDir + '/' + Sdate + '.IW1.slc.TOPS_par'
-
-    NB_master = UseGamma(MslcTOP1 , 'read', 'number_of_bursts:')
-    NB_slave = UseGamma(SslcTOP1 , 'read', 'number_of_bursts:')    
-    
-    if 'End_Burst' in templateContents: EB = templateContents['End_Burst']
-    else: EB = str(min(int(NB_master),int(NB_slave)))    # using the minmun number as the end of the burst number
- 
-    MSLC_tab     = MslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
-    SSLC_tab     = SslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
-
-    if not os.path.isfile(MSLC_tab):
-        call_str= 'BurstExt_TOPS_Gamma.py ' + projectName + ' ' + Mdate + ' ' + SW + ' ' + EW + ' ' + SB + ' ' + EB
-        os.system(call_str)
-    
-    if not os.path.isfile(SSLC_tab):
-        call_str= 'BurstExt_TOPS_Gamma.py ' + projectName + ' ' + Sdate + ' ' + SW + ' ' + EW + ' ' + SB + ' ' + EB
-        os.system(call_str) 
-        
-        
-        
-    MamprlksImg = MslcDir + '/'+Mdate + '.'+ SW + EW + '_' + SB + EB  + '_' + rlks + 'rlks' + '.amp'
-    MamprlksPar = MslcDir + '/'+Mdate + '.'+ SW + EW + '_' + SB + EB  + '_' + rlks + 'rlks' + '.amp.par' 
+     
+    MamprlksImg = workDir + '/'+Mdate +  '_' + rlks + 'rlks' + '.amp'
+    MamprlksPar = workDir + '/'+Mdate + '_' + rlks + 'rlks' + '.amp.par' 
     
     
     UTMDEMpar   = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.utm.dem.par'
