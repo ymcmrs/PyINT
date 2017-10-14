@@ -197,10 +197,13 @@ def main(argv):
             CALIBRA = glob.glob(calibraDir+'/calibration*'+ 'iw' + str(kk+1) + '*vv*') 
             NOISE = glob.glob(calibraDir+'/noise*' + 'iw' + str(kk+1) + '*vv*')
         
-            call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
-            os.system(call_str)
+            #call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
+            #os.system(call_str)
             
             call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+            os.system(call_str)
+            
+            call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
             os.system(call_str)
         
     TSLC = DateDir + '/' + Date + '.slc'
