@@ -149,36 +149,34 @@ def main(argv):
     else: SW = '1'    
     if 'End_Swath' in templateContents: EW = templateContents['End_Swath']
     else: EW = '3' 
-    if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
-    else: SB = '1'            
-        
+
 #  Definition of file
     MslcDir     = slcDir  + '/' + Mdate
     SslcDir     = slcDir  + '/' + Sdate
 
-    MslcTOP1     = MslcDir + '/' + Mdate + '.IW1.slc.TOPS_par'   # bursts number in all of TOPS are same ? If not, should modify
-    SslcTOP1     = SslcDir + '/' + Sdate + '.IW1.slc.TOPS_par'
-
-    NB_master = UseGamma(MslcTOP1 , 'read', 'number_of_bursts:')
-    NB_slave = UseGamma(SslcTOP1 , 'read', 'number_of_bursts:')    
     
-    if 'End_Burst' in templateContents: EB = templateContents['End_Burst']
-    else: EB = str(min(int(NB_master),int(NB_slave)))    # using the minmun number as the end of the burst number
-    
-    MSLC_tab     = MslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
-    SSLC_tab     = SslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
+    SLC1_INF_tab = workDir + '/' + Mdate + '_SLC_Tab'
+    SLC2_INF_tab = workDir + '/' + Sdate + '_SLC_Tab'
 
     HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
     
-    RSLC_tab = workDir + '/RSLC_tab' +  SW + EW + '_' + SB + EB
+    RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
+    if os.path.isfile(RSLC_tab):
+        os.remove(RSLC_tab)
+    
+    BURST = processDir + '/' + igramDir + '/' + Mdate + '_' + Sdate + '.common_burst'
+    AA = np.loadtxt(BURST)
     
     for kk in range(int(EW)-int(SW)+1):
-        call_str = 'echo ' + workDir + '/' + Sdate+ '_'+ SB + EB +'.IW'+str(int(SW)+kk) + '.rslc' + ' ' + workDir + '/'+ Sdate + '_'+ SB + EB + '.IW'+str(int(SW)+kk) +'.rslc.par' + ' ' + workDir + '/'+ Sdate + '_'+ SB + EB + '.IW'+str(int(SW)+kk) + '.rslc.TOPS_par >>' + RSLC_tab
+        ii = kk+1
+        SB2=AA[ii-1,2]
+        EB2=AA[ii-1,3]
+        call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.rslc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.rslc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.rslc.TOPS_par >>' + RSLC_tab
         os.system(call_str)
     
     
     os.chdir(workDir)
-    call_str = 'S1_coreg_TOPS ' + MSLC_tab + ' ' + Mdate + ' ' + SSLC_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.8 0.01 0.8 1'
+    call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
     os.system(call_str)
 
 
