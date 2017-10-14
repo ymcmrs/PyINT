@@ -117,6 +117,11 @@ def main(argv):
 
 ########################################################################
 
+    call_str = 'Check_Common_Burst.py ' + igramDir
+    os.system(call_str)
+    
+    call_str = 'Extract_Common_Burst.py ' + igramDir
+    os.system(call_str)
 
     call_str = 'CreateRdcDem_Sen_Gamma.py ' + igramDir
     os.system(call_str)
