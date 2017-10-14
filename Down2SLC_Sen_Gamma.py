@@ -86,7 +86,7 @@ def usage():
    
             Down2SLC_Sen_Gamma.py ProjectName DownName 
       
-      e.g.  Down2SLC_Sen_Gamma.py CotopaxiT120SenVVA S1A_IW_SLC__1SSV_20170118T232841_20170118T232911_014892_0184B8_7F54.zip
+      e.g.  Down2SLC_Sen_Gamma.py CotopaxiT120SenVVA 170118
       
 *******************************************************************************************************
     '''   
