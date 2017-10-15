@@ -255,7 +255,7 @@ def main(argv):
         call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORDIFFFILTlks + '_mask.bmp ' + QUADFIT + ' 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 1 0'
+        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
         os.system(call_str)
 
         call_str = '$GAMMA_BIN/rasrmg ' + OUTUNWQUAD + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
