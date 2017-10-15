@@ -215,7 +215,7 @@ def main(argv):
 
 ####################  Unwrap ##########################
 
-    call_str= '$GAMMA_BIN/cc_wave ' + DIFFFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+    call_str= '$GAMMA_BIN/cc_wave ' + DIFFFILTlks + ' ' + MamprlksImg + ' - ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
     os.system(call_str)
 
     call_str = '$GAMMA_BIN/rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
