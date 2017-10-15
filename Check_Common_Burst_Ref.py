@@ -177,7 +177,7 @@ def main(argv):
     MslcDir    = slcDir + '/' + Mdate
     SslcDir    = slcDir + '/' + Sdate
     #MBurst_Par = slcDir + '/' + Mdate + '/' + 
-    BURST = workDir + '/' + Mdate + '_' + Sdate + '.common_burst'
+    BURST = workDir + '/' + Mdate + '_' + Sdate + '.common_burst_ref'
     if os.path.isfile(BURST):
         os.remove(BURST)
 
