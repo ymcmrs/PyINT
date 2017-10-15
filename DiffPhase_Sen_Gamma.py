@@ -159,6 +159,9 @@ def main(argv):
     SLC2_INF_tab = workDir + '/' + Sdate + '_SLC_Tab'
 
     HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):
+        call_str = 'CreateRdcDem_Sen_Gamma.py ' + igramDir
+        os.system(call_str)
     
     RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
     if os.path.isfile(RSLC_tab):
