@@ -113,7 +113,7 @@ def common_burst_Ref(La_M,La_S):
         M1=1
         
     
-    if M2 =len(La_M): S2 = S2
+    if M2 ==len(La_M): S2 = S2
     else: 
         S2 = S2 + len(La_M) - M2 
         M2 = len(La_M)
