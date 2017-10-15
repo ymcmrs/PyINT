@@ -109,7 +109,7 @@ def common_burst_Ref(La_M,La_S):
     
     if M1==1: S1 = S1
     else: 
-        S1=1-M1
+        S1=1-M1+1
         M1=1
         
     
