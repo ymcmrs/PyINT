@@ -107,16 +107,16 @@ def common_burst_Ref(La_M,La_S):
     S1 = min(Sindex)
     S2 = max(Sindex)
     
-    if M1==1: S1 = S1
-    else: 
-        S1=1-M1
-        M1=1
+    #if M1==1: S1 = S1
+    #else: 
+    #    S1=1-M1
+    #    M1=1
         
     
-    if M2 ==len(La_M): S2 = S2
-    else: 
-        S2 = S2 + len(La_M) - M2 
-        M2 = len(La_M)
+    #if M2 ==len(La_M): S2 = S2
+    #else: 
+    #    S2 = S2 + len(La_M) - M2 
+    #    M2 = len(La_M)
         
     
     return M1 , M2, S1, S2
