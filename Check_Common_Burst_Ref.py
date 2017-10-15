@@ -71,7 +71,7 @@ def UseGamma(inFile, task, keyword):
         print "Keyword " + keyword + " doesn't exist in " + inFile
         f.close()
 
-def common_burst(La_M,La_S):
+def common_burst_Ref(La_M,La_S):
     Min = max(min(La_M),min(La_S))
     Max = min(max(La_M),max(La_S))
     
@@ -101,7 +101,25 @@ def common_burst(La_M,La_S):
     #print La_M
     #print La_S
     #print min(M_min),min(M_max),min(S_min),min(S_max)
-    return min(Mindex) , max(Mindex), min(Sindex),max(Sindex)
+    M1 = min(Mindex)
+    M2 = max(Mindex)
+    
+    S1 = min(Sindex)
+    S2 = max(Sindex)
+    
+    if M1==1: S1 = S1
+    else: 
+        S1=1-M1
+        M1=1
+        
+    
+    if M2 =len(La_M): S2 = S2
+    else: 
+        S2 = S2 + len(La_M) - M2 
+        M2 = len(La_M)
+        
+    
+    return M1 , M2, S1, S2
     
     
 #########################################################################
@@ -115,10 +133,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            Common_Burst_check.py igramDir
+            Common_Burst_check_Ref.py projectName Mdate Sdate
             
     Examples:
-            Check_Common_Burst.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+            Check_Common_Burst_Ref.py PacayaT163TsxHhA 131021 131101
 ##############################################################################
 '''
 
@@ -128,7 +146,10 @@ def cmdLineParse():
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
-    parser.add_argument('igramDir',help='Interferogram directory name.')
+    parser.add_argument('projectName',help='Name of project.')
+    parser.add_argument('RefDate',help='Referred date, i.e., master date.')
+    parser.add_argument('SlaveDate',help='Slave date.')
+    parser.add_argument('--dir',dset='workdir', help='work directory.')
 
     inps = parser.parse_args()
 
@@ -140,26 +161,23 @@ def cmdLineParse():
 def main(argv):
     
     inps = cmdLineParse() 
-    igramDir = inps.igramDir
+    projectName = inps.projectName
+    Mdate = inps.RefDate
+    Sdate = inps.SlaveDate
     
-    INF = igramDir.split('_')[0]
-    projectName = igramDir.split('_')[1]
-    IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
-    Mdate = IFGPair.split('-')[0]
-    Sdate = IFGPair.split('-')[1]
-    
-    
+    if inps.workdir: workDir =inps.workdir
+    else: workDir = os.getcwd()
+        
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
-    slcDir     = scratchDir + '/' + projectName + "/SLC"
-    workDir    = processDir + '/' + igramDir   
+    slcDir     = scratchDir + '/' + projectName + "/SLC" 
     MslcDir    = slcDir + '/' + Mdate
     SslcDir    = slcDir + '/' + Sdate
     #MBurst_Par = slcDir + '/' + Mdate + '/' + 
-    BURST = processDir + '/' + igramDir + '/' + Mdate + '_' + Sdate + '.common_burst'
+    BURST = workDir + '/' + Mdate + '_' + Sdate + '.common_burst'
     if os.path.isfile(BURST):
         os.remove(BURST)
 
@@ -192,7 +210,7 @@ def main(argv):
         SM = np.loadtxt(Stt,dtype=str)
         La_S = SM[:,2]
         
-        PP = common_burst(La_M,La_S)
+        PP = common_burst_Ref(La_M,La_S)
         
         print 'Common bursts of swath' + str(kk+1) + ' : (master) ' + str(PP[0]) + ' ' + str(PP[1]) + ' (slave) ' + str(PP[2]) + ' ' + str(PP[3])
         call_str = 'echo ' + str(PP[0]) + ' ' + str(PP[1]) + ' ' + str(PP[2]) + ' ' + str(PP[3]) + ' >>' +  BURST
