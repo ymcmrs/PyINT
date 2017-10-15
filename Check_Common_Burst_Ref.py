@@ -149,7 +149,7 @@ def cmdLineParse():
     parser.add_argument('projectName',help='Name of project.')
     parser.add_argument('RefDate',help='Referred date, i.e., master date.')
     parser.add_argument('SlaveDate',help='Slave date.')
-    parser.add_argument('--dir',dset='workdir', help='work directory.')
+    parser.add_argument('--dir',dest='workdir', help='work directory.')
 
     inps = parser.parse_args()
 
