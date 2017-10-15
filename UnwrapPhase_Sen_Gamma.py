@@ -166,11 +166,11 @@ def main(argv):
     MSLC_tab     = MslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
     SSLC_tab     = SslcDir + '/SLC_Tab2_' + SW + EW + '_' + SB + EB 
     
-    MamprlksImg = MslcDir + '/' + Mdate + '.' + SW + EW + '_' + SB + EB +'_'+rlks +'rlks.amp'
-    MamprlksPar = MslcDir + '/' + Mdate + '.' + SW + EW + '_' + SB + EB +'_'+rlks +'rlks.amp.par'
+    MamprlksImg = workDir + '/' + Mdate + '_' + rlks +'rlks.amp'
+    MamprlksPar = workDir + '/' + Mdate + '_' + rlks +'rlks.amp.par'
 
-    SamprlksImg = SslcDir + '/' + Sdate + '.' + SW + EW + '_' + SB + EB +'_'+rlks +'rlks.amp'
-    SamprlksPar = SslcDir + '/' + Sdate + '.' + SW + EW + '_' + SB + EB +'_'+rlks +'rlks.amp.par'
+    SamprlksImg = workDir + '/' + Sdate  + '_' + rlks +'rlks.amp'
+    SamprlksPar = workDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
 
     
     RSLC_tab = workDir + '/RSLC_tab' +  SW + EW + '_' + SB + EB
