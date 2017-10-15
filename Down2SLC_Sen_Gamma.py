@@ -189,7 +189,7 @@ def main(argv):
         
             if os.path.isfile(BURST):
                 os.remove(BURST)
-            call_str = 'echo ' + SLC + ' ' + SLCPar + ' ' + TOPPar + '>>' + SLC_Tab
+            call_str = 'echo ' + SLC + ' ' + SLCPar + ' ' + TOPPar + ' >> ' + SLC_Tab
             os.system(call_str)
         
             MEASURE = glob.glob(measureDir + '/*iw' + str(kk+1) + '*vv*tiff')
