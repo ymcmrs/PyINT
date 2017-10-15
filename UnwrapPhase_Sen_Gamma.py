@@ -227,17 +227,17 @@ def main(argv):
     call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
     os.system(call_str)
     
-    call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
+    #call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
+    #os.system(call_str)
+
+    call_str = '$GAMMA_BIN/mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + CORDIFFFILTlksbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + MASKTHINDIFFlks + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
-    os.system(call_str)
+    #call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
+    #os.system(call_str)
 
-    call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
-    os.system(call_str)
-
-    call_str = '$GAMMA_BIN/unw_model ' + DIFFFILTlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
-    os.system(call_str)
+    #call_str = '$GAMMA_BIN/unw_model ' + DIFFFILTlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
+    #os.system(call_str)
 
     call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
     os.system(call_str)
