@@ -179,6 +179,7 @@ def main(argv):
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
+    templateContents=read_template(templateFile)
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC" 
