@@ -208,6 +208,8 @@ def main(argv):
         
     #SLC1_INF_tab = workDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = workDir + '/' + Sdate + '_SLC_Tab'
+    SLC2_RSLC_tab = workDir + '/' + Sdate + '_RSLC_Tab'
+    
     
     #BURST1_tab = workDir + '/' + Mdate + '_Burst_Tab'
     BURST2_tab = workDir + '/' + Sdate + '_Burst_Tab'
@@ -222,6 +224,9 @@ def main(argv):
     #    os.remove(SLC1_INF_tab)
     
     if os.path.isfile(SLC2_INF_tab):
+        os.remove(SLC2_INF_tab)
+        
+    if os.path.isfile(SLC2_RSLC_tab):
         os.remove(SLC2_INF_tab)
         
     #if os.path.isfile(BURST1_tab):
@@ -254,6 +259,9 @@ def main(argv):
         
         
         call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC2_INF_tab
+        os.system(call_str)
+        
+        call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.rslc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.rslc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.rslc.TOPS_par >>' + SLC2_RSLC_tab
         os.system(call_str)
         
         #call_str = 'echo ' + str(int(SB1)) + ' '  + str(int(EB1)) + ' >>' + BURST1_tab
