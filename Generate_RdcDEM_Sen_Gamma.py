@@ -117,6 +117,7 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC" 
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC" 
     
     templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
@@ -178,7 +179,7 @@ def main(argv):
     else: flagTDM = 'N'
 
 #  Definition of file
-    MslcDir     = slcDir  + '/' + Mdate
+    MslcDir     = rslcDir  + '/' + Mdate
 
        
     MslcImg     = MslcDir + '/' + Mdate + '.slc'
@@ -188,8 +189,8 @@ def main(argv):
 
     BLANK       = workDir + '/' + Mdate + '.blk'
 
-    MamprlksImg  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MamprlksPar  = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    MamprlksImg  = MslcDir+ '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MamprlksPar  = MslcDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
 
 
     UTMDEMpar   = simDir + '/sim_' + Mdate + '_'+ rlks + 'rlks.utm.dem.par'
@@ -243,8 +244,9 @@ def main(argv):
         call_str = 'cp ' + tmp_dem + ' ' + dem
         os.system(call_str)
 
-    call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-    os.system(call_str)
+    if not os.path.isfile(MslcImg):
+        call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
+        os.system(call_str)
         
 
     #call_str = '$GAMMA_BIN/gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
