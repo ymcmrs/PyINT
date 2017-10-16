@@ -188,8 +188,8 @@ def main(argv):
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
     
-    SramprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp"
-    SramprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp.par"
+    #SramprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp"
+    #SramprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp.par"
     OFFSTD = workDir + "/" + Mdate + '-' + Sdate +".off_std"	
     
     demDir = scratchDir + '/' + projectName  + "/PROCESS/DEM" 
@@ -332,18 +332,18 @@ def main(argv):
         #call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
         #os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SramprlksImg + ' ' + SramprlksPar + ' ' + rlks + ' ' + azlks
+        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
         os.system(call_str)
 
-        nWidth = UseGamma(SramprlksPar, 'read', 'range_samples')
+        nWidth = UseGamma(SamprlksPar, 'read', 'range_samples')
 
         #call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
         #os.system(call_str)  
         #ras2jpg(MamprlksImg, MamprlksImg) 
         
-        call_str = '$GAMMA_BIN/raspwr ' + SramprlksImg + ' ' + nWidth 
+        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
         os.system(call_str)
-        ras2jpg(SramprlksImg, SramprlksImg)
+        ras2jpg(SamprlksImg, SamprlksImg)
         
         SS = glob.glob(workDir + '/*.rslc*')
         for kk in SS:
