@@ -227,7 +227,7 @@ def main(argv):
         os.remove(SLC2_INF_tab)
         
     if os.path.isfile(SLC2_RSLC_tab):
-        os.remove(SLC2_INF_tab)
+        os.remove(SLC2_RSLC_tab)
         
     #if os.path.isfile(BURST1_tab):
     #    os.remove(BURST1_tab)
