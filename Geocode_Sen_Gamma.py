@@ -122,8 +122,11 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
     demDir     = processDir + '/DEM'
+    MslcDir = rslcDir + '/' + Mdate
+    SslcDir = rslcDir + '/' + Sdate
     
     templateContents=read_template(templateFile)
     rlks = templateContents['Range_Looks']
@@ -195,10 +198,10 @@ def main(argv):
         SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
         SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"   
         
-        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
-        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+        MamprlksImg = MslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        MamprlksPar = MslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
+        SamprlksImg = SslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        SamprlksPar = SslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
         
         OFF         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.off'
         INT         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
@@ -269,8 +272,8 @@ def main(argv):
 
         geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        geocode(FLTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        geocode(FLTFILTlks, GEOFILTINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        #geocode(FLTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        #geocode(FLTFILTlks, GEOFILTINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
         call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
         os.system(call_str)
@@ -281,21 +284,21 @@ def main(argv):
         os.system(call_str)
         ras2jpg(GEOCOR, GEOCOR) 
 
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(GEOINT, GEOINT)
+        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        #os.system(call_str)
+        #ras2jpg(GEOINT, GEOINT)
 
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOFILTINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(GEOFILTINT, GEOFILTINT)
+        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOFILTINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        #os.system(call_str)
+        #ras2jpg(GEOFILTINT, GEOFILTINT)
  
-        geocode(DIFFINTlks, GEODIFFRAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        #geocode(DIFFINTlks, GEODIFFRAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFRAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(GEODIFFRAWINT, GEODIFFRAWINT)
+        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFRAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+        #os.system(call_str)
+        #ras2jpg(GEODIFFRAWINT, GEODIFFRAWINT)
        
         call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
         os.system(call_str)
