@@ -78,9 +78,9 @@ def usage():
 
    usage:
    
-            GenOff_DEM_Gamma.py ProjectName Mdate Sdate workDir
+            GenOff_DEM_Sen_Gamma.py ProjectName Mdate Sdate workDir
       
-      e.g.  GenOff_DEM_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
+      e.g.  GenOff_DEM_Sen_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
       
 *******************************************************************************************************
     '''   
@@ -111,7 +111,7 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
-
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
 
     INF = 'IFG'
     if INF=='IFG' or INF =='IFGRAM':
@@ -165,8 +165,8 @@ def main(argv):
     
 # input slcs
 
-    SslcDir = slcDir + "/" + Sdate
-    MslcDir = slcDir + "/" + Mdate
+    SslcDir = rslcDir + "/" + Sdate
+    MslcDir = rslcDir + "/" + Mdate
 
     MslcImg = MslcDir + "/" + Mdate + ".slc"
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
