@@ -120,6 +120,22 @@ def common_burst_Ref(La_M,La_S):
         
     
     return M1 , M2, S1, S2
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+    
+def add_zero(s):
+    if len(s)==1:
+        s="000"+s
+    elif len(s)==2:
+        s="00"+s
+    elif len(s)==3:
+        s="0"+s
+    return s
     
     
 #########################################################################
