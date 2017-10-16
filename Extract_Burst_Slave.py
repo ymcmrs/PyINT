@@ -197,6 +197,18 @@ def main(argv):
         
     AA = np.loadtxt(BURST)
     
+    if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
+    else: 
+        SB = '1'
+        STR = 'Start_Burst     = ' + SB + '\n'
+        write_template(templateFile,STR)
+        
+    if 'End_Burst' in templateContents: EB = templateContents['End_Burst']
+    else: 
+        EB = '20' 
+        #STR = 'End_Burst      = ' + EB + '\n'
+        #write_template(templateFile,STR)
+    
     #SLC1_tab = workDir + '/' + Mdate + '_SLC_Tab0'
     SLC2_tab = workDir + '/' + Sdate + '_SLC_Tab0'
         
@@ -237,6 +249,11 @@ def main(argv):
         
         SB2=AA[ii-1,2]
         EB2=AA[ii-1,3]
+        
+        if not int(SB)==1:
+            SB2 = SB2 + int(SB)-1
+        if not int(EB)==20:
+            EB2 = SB2 + int(EB) - int(SB)
         
         #call_str = 'echo ' + workDir + '/'+ Mdate+ '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Mdate + '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Mdate+'_'+ str(int(SB1)) + str(int(EB1)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC1_INF_tab
         #os.system(call_str)
