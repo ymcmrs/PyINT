@@ -122,6 +122,7 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
     
     templateContents=read_template(templateFile)
@@ -151,12 +152,12 @@ def main(argv):
     else: EW = '3' 
 
 #  Definition of file
-    MslcDir     = slcDir  + '/' + Mdate
-    SslcDir     = slcDir  + '/' + Sdate
+    MslcDir     = rslcDir  + '/' + Mdate
+    SslcDir     = rslcDir  + '/' + Sdate
 
     
-    SLC1_INF_tab = workDir + '/' + Mdate + '_SLC_Tab'
-    SLC2_INF_tab = workDir + '/' + Sdate + '_SLC_Tab'
+    SLC1_INF_tab = MslcDir + '/' + Mdate + '_SLC_Tab'
+    SLC2_INF_tab = SslcDir + '/' + Sdate + '_SLC_Tab'
 
     HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
     if not os.path.isfile(HGTSIM):
@@ -167,7 +168,7 @@ def main(argv):
     if os.path.isfile(RSLC_tab):
         os.remove(RSLC_tab)
     
-    BURST = processDir + '/' + igramDir + '/' + Mdate + '_' + Sdate + '.common_burst'
+    BURST = SslcDir + '/' + Sdate + '_Burst_Tab'
     AA = np.loadtxt(BURST)
     
     for kk in range(int(EW)-int(SW)+1):
