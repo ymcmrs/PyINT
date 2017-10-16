@@ -89,7 +89,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     f_coreg = open(run_coreg_all,'w')
     
     for kk in range(len(slavelist)):
-        str_coreg = "GenOff_DEM_Sen_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
+        str_coreg = "GenOff_DEM_Sen_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir +'/' + slavelist[kk] + '\n'
         f_coreg.write(str_coreg)
     f_coreg.close()
 
