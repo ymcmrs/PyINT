@@ -189,8 +189,8 @@ def main(argv):
     
 # output multi-looked amplitude
 
-    MamprlksImg = MslcDir + "/" + Mdate + "_" + rlks+"rlks.amp"	
-    MamprlksPar = MslcDir+ "/" + Mdate + "_" + rlks+"rlks.amp.par"
+    MamprlksImg = workir + "/" + Mdate + "_" + rlks+"rlks.amp"	
+    MamprlksPar = workDir+ "/" + Mdate + "_" + rlks+"rlks.amp.par"
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
     
@@ -320,11 +320,11 @@ def main(argv):
         os.system(call_str)
 
 
-        call_str = "cp " + MslcImg + " " + MrslcImg
-        os.system(call_str)
+        #call_str = "cp " + MslcImg + " " + MrslcImg
+        #os.system(call_str)
 
-        call_str = "cp " + MslcPar + " " + MrslcPar
-        os.system(call_str)
+        #call_str = "cp " + MslcPar + " " + MrslcPar
+        #os.system(call_str)
         
         call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
         os.system(call_str)
