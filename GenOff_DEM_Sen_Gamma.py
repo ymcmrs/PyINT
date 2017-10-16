@@ -98,12 +98,6 @@ def main(argv):
     else:
         usage();sys.exit(1)
     
-
-    workDir0 = workDir + '/' + Sdate   
-    call_str ='mkdir ' + workDir0
-    os.system(call_str)
-    workDir_Org = workDir
-    workDir = workDir0
         
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
