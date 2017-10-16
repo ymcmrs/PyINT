@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-##################################################################################
-#                                                                                #
-#            Author:   Yun-Meng Cao                                              #
-#            Email :   ymcmrs@gmail.com                                          #
-#            Date  :   March, 2017                                               #
-#                                                                                #
-#           Generating time series interferograms based on gamma                 # 
-#           Be suitable for general InSAR, MAI, RSA                              #
-##################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -138,33 +135,58 @@ def main(argv):
     if 'walltime_Ifg' in templateContents :  walltime_Ifg =  templateContents['walltime_Ifg']
     else: walltime_Ifg = '1:00'
     
-    if 'DOWN2SLC_S1_FLAG' in templateContents :  DOWN2SLC_S1_FLAG =  templateContents['DOWN2SLC_S1_FLAG']
-    else: DOWN2SLC_S1_FLAG = '1'
+    if 'DOWNLOAD' in templateContents :  DOWNLOAD =  templateContents['DOWNLOAD']
+    else: DOWNLOAD = '1'
+    
+    if 'DOWN2SLC' in templateContents :  DOWN2SLC =  templateContents['DOWN2SLC']
+    else: DOWN2SLC = '1'
         
-    if 'PREORB_S1_FLAG' in templateContents :  PREORB_S1_FLAG =  templateContents['PREORB_S1_FLAG']
-    else: PREORB_S1_FLAG = '1'    
+    if 'PRE_ORB' in templateContents :  PRE_ORB =  templateContents['PRE_ORB']
+    else: PRE_ORB = '1'    
     
-    if 'EXTRACT_SB_ALL' in templateContents :  EXTRACT_SB_ALL =  templateContents['EXTRACT_SB_ALL']
-    else: EXTRACT_SB_ALL = '1'
+    if 'EXTRACT_BURST' in templateContents :  EXTRACT_BURST =  templateContents['EXTRACT_BURST']
+    else: EXTRACT_BURST = '1'
+        
+    if 'COREG_ALL' in templateContents :  COREG_ALL =  templateContents['COREG_ALL']
+    else: COREG_ALL = '1'
+        
+    if 'Gen_DEM' in templateContents :  Gen_DEM =  templateContents['Gen_DEM']
+    else: Gen_DEM = '1'  
+        
+    if 'SelectPairs' in templateContents :  SelectPairs=  templateContents['SelectPairs']
+    else: SelectPairs = '1'      
     
-    if DOWN2SLC_S1_FLAG =='1':
+    if 'SLC2IFG' in templateContents :  SLC2IFG =  templateContents['SLC2IFG']
+    else: SLC2IFG = '1' 
+    
+    
+    if DOWNLOAD == '1':
+        call_str = 'DownloadSen.py ' + projectName
+        os.system(call_str)
+    
+    
+    if DOWN2SLC=='1':
         call_str = 'Down2SLC_Sen_All.py ' + projectName
         os.system(call_str)
     
-    if PREORB_S1_FLAG =='1':
+    if PRE_ORB =='1':
         call_str = 'Sen_Orbit_Cor_all.py ' + projectName
         os.system(call_str)
          
-    if EXTRACT_SB_ALL =='1':
-        call_str = 'Extract_SB_All.py ' + projectName
+    if EXTRACT_BURST =='1':
+        call_str = 'Check_Common_Burst_All.py ' + projectName
+        os.system(call_str)
+        
+        call_str = 'Extract_Burst_Slave_All.py ' + projectName
         os.system(call_str)
 
-    call_str = 'SelectPairs_Gamma.py ' + projectName
-    os.system(call_str)      
+    if SelectPairs =='1':
+        call_str = 'SelectPairs_Gamma.py ' + projectName
+        os.system(call_str)      
        
-    #if IFG_TS_Flag=='1':    
-    call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
-    os.system(call_str)
+    if SLC2IFG=='1':    
+        call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
+        os.system(call_str)
 
     print "Time series interferograms processing is done! "    
     sys.exit(1)
