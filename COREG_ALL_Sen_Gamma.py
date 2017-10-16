@@ -105,10 +105,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            COREG_ALL_Gamma.py projectName
+            COREG_ALL_Sen_Gamma.py projectName
             
     Examples:
-            COREG_ALL_Gamma.py PacayaT163TsxHhA
+            COREG_ALL_Sen_Gamma.py PacayaT163TsxHhA
 ##############################################################################
 '''
 
