@@ -189,7 +189,7 @@ def main(argv):
     
 # output multi-looked amplitude
 
-    MamprlksImg = workir + "/" + Mdate + "_" + rlks+"rlks.amp"	
+    MamprlksImg = workDir + "/" + Mdate + "_" + rlks+"rlks.amp"	
     MamprlksPar = workDir+ "/" + Mdate + "_" + rlks+"rlks.amp.par"
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
