@@ -347,7 +347,7 @@ def main(argv):
         
         SS = glob.glob(workDir + '/*.rslc*')
         for kk in SS:
-            Kk2 = kk.replace('.rslc','.slc')
+            kk2 = kk.replace('.rslc','.slc')
             call_str = 'mv ' + kk + ' ' + kk2
             os.system(call_str)
         
