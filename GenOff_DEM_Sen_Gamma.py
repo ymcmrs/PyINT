@@ -268,7 +268,7 @@ def main(argv):
     #call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
     #os.system(call_str)
     
-    call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + S_RSLC_tab + Srslc0Img + " " + Srslc0Par
+    call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + S_RSLC_tab + " " + Srslc0Img + " " + Srslc0Par
     os.system(call_str)
 
 
