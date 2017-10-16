@@ -171,6 +171,7 @@ def main(argv):
     MslcImg = MslcDir + "/" + Mdate + ".slc"
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
     M_SLC_tab = MslcDir + "/" + Mdate + '_SLC_Tab'
+    M_RSLC_tab = MslcDir + "/" + Mdate + '_RSLC_Tab'
     
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
@@ -323,6 +324,9 @@ def main(argv):
         os.system(call_str)
 
         call_str = "cp " + MslcPar + " " + MrslcPar
+        os.system(call_str)
+        
+        call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
         os.system(call_str)
 
 
