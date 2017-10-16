@@ -82,16 +82,16 @@ def write_template(File, Str):
     f.write(Str)
     f.close()
 
-def write_run_coreg_all(projectName,master,slavelist,workdir):
+def write_run_extract_burst_all(projectName,datelist):
     scratchDir = os.getenv('SCRATCHDIR')    
     projectDir = scratchDir + '/' + projectName   
-    run_coreg_all  = projectDir + "/run_coreg_all"
-    f_coreg = open(run_coreg_all,'w')
+    run_extract_burst_all  = projectDir + "/run_extract_burst_all"
+    f_extract = open(run_extract_burst_all,'w')
     
-    for kk in range(len(slavelist)):
-        str_coreg = "GenOff_DEM_Sen_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir +'/' + slavelist[kk] + '\n'
-        f_coreg.write(str_coreg)
-    f_coreg.close()
+    for kk in range(len(datelist)):
+        str_extract = "Extract_Burst_Slave.py  " + projectName + ' ' + datelist[kk] + '\n'
+        f_extract.write(str_extract)
+    f_extract.close()
 
 #########################################################################
 
@@ -99,16 +99,17 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
-   Coregistrate all of SAR images to one master image based on cross-correlation.
-   Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+   Extract common TOPS burst (Sentinel-1) for the whole project based on one master date.
+   ps: Before using Extract_Burst_Slave_All.py, you should run Check_Common_Burst_All.py.
+   
 '''
 
 EXAMPLE = '''
     Usage:
-            COREG_ALL_Sen_Gamma.py projectName
+            Extract_Burst_Slave_All.py projectName
             
     Examples:
-            COREG_ALL_Sen_Gamma.py PacayaT163TsxHhA
+            Extract_Burst_Slave_All.py PacayaT163TsxHhA
 ##############################################################################
 '''
 
@@ -121,10 +122,6 @@ def cmdLineParse():
     parser.add_argument('project',help='Project name of coregistration.')
     
     inps = parser.parse_args()
-    
-    if not inps.project:
-        parser.print_usage()
-        sys.exit(os.path.basename(sys.argv[0])+': error: project name should be provided.')
 
     return inps
 
@@ -181,59 +178,17 @@ def main(argv):
                 str_slc_par = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc.par"
                 SLCfile.append(str_slc)
                 SLCParfile.append(str_slc_par)
-    
-    if 'masterDate' in templateContents : 
-        masterDate = templateContents['masterDate']
-        if masterDate in Datelist:
-            print "masterDate: %s" % masterDate
-        else:
-            print "The selected masterdate %s is not in the date list!! " % masterDate
-            print "The first date is chosen as the master date: %s" % str(Datelist[0])
-            masterDate = Datelist[0]
-            Str = 'masterDate   =   %s \n' %masterDate
-            write_template(templateFile, Str)           
-    else:
-        print "The first date is chosen as the master date: %s" % str(Datelist[0])
-        masterDate = Datelist[0]
-        Str = 'masterDate   =   %s \n' %masterDate
-        write_template(templateFile, Str)
+
         
-    SLAVElist = Datelist
-    del SLAVElist[Datelist.index(masterDate)]
+    #SLAVElist = Datelist
+    #del SLAVElist[Datelist.index(masterDate)]
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
     
-    if 'DEM' in templateContents :  
-        DEM =  templateContents['DEM']
-        if not os.path.isfile(DEM):
-            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
-            call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
-            os.system(call_str)
-            
-            call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
-            os.system(call_str)
-    else:
-        print 'DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.'
-        call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
-        os.system(call_str)
-            
-        call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
-        os.system(call_str)
-    
-    masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
-    if not os.path.isfile(masterRdcDEM):
-        call_str = 'Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + masterDate
-        os.system(call_str)
-    
-    run_coreg_all  = projectDir + "/run_coreg_all"
-    if os.path.isfile(run_coreg_all):
-        os.remove(run_coreg_all)
 
-    
-    write_run_coreg_all(projectName,masterDate,SLAVElist,rslcDir)
-        
-    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
+    write_run_extract_burst_all(projectName,Datelist)    
+    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_extract_burst_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
     os.system(call_str)
 
     sys.exit(1)
