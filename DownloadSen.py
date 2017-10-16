@@ -131,12 +131,12 @@ def main(argv):
 
     
     
-    SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR + ' --print --download --parallel=2'  
+    SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR + ' --print --download --parallel=10'  
     print SSARA_STRA
     os.system(SSARA_STRA)
     
     
-    SSARA_STRB ='ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR  + ' --print --download --parallel=2'  
+    SSARA_STRB ='ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR  + ' --print --download --parallel=10'  
     print SSARA_STRB
     os.system(SSARA_STRB)   
     
