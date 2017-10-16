@@ -160,11 +160,12 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
-    workDir    = processDir + '/' + igramDir   
+    rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     MslcDir    = slcDir + '/' + Mdate
     SslcDir    = slcDir + '/' + Sdate
     #MBurst_Par = slcDir + '/' + Mdate + '/' + 
-    BURST = processDir + '/' + igramDir + '/' + Mdate + '_' + Sdate + '.common_burst'
+    workDir = rslcDir + '/' + Sdate
+    BURST = workDir '/' + Mdate + '_' + Sdate + '.common_burst_ref'
     
     MslcImg = workDir + '/'+Mdate + '.slc'
     MslcPar = workDir + '/'+Mdate + '.slc.par'    
@@ -179,7 +180,7 @@ def main(argv):
     SamprlksPar = workDir + '/'+ Sdate +  '_' + rlks + 'rlks' + '.amp.par' 
     
     if not os.path.isfile(BURST):
-        call_str = 'Check_Common_Burst.py ' + igramDir
+        call_str = 'Check_Common_Burst_All.py ' + projectName
         os.system(call_str)
         
     if 'Start_Swath' in templateContents: SW = templateContents['Start_Swath']
@@ -196,36 +197,36 @@ def main(argv):
         
     AA = np.loadtxt(BURST)
     
-    SLC1_tab = workDir + '/' + Mdate + '_SLC_Tab0'
+    #SLC1_tab = workDir + '/' + Mdate + '_SLC_Tab0'
     SLC2_tab = workDir + '/' + Sdate + '_SLC_Tab0'
         
-    SLC1_INF_tab = workDir + '/' + Mdate + '_SLC_Tab'
+    #SLC1_INF_tab = workDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = workDir + '/' + Sdate + '_SLC_Tab'
     
-    BURST1_tab = workDir + '/' + Mdate + '_Burst_Tab'
+    #BURST1_tab = workDir + '/' + Mdate + '_Burst_Tab'
     BURST2_tab = workDir + '/' + Sdate + '_Burst_Tab'
     
-    if os.path.isfile(SLC1_tab):
-        os.remove(SLC1_tab)
+    #if os.path.isfile(SLC1_tab):
+    #    os.remove(SLC1_tab)
     
     if os.path.isfile(SLC2_tab):
         os.remove(SLC2_tab)
         
-    if os.path.isfile(SLC1_INF_tab):
-        os.remove(SLC1_INF_tab)
+    #if os.path.isfile(SLC1_INF_tab):
+    #    os.remove(SLC1_INF_tab)
     
     if os.path.isfile(SLC2_INF_tab):
         os.remove(SLC2_INF_tab)
         
-    if os.path.isfile(BURST1_tab):
-        os.remove(BURST1_tab)
+    #if os.path.isfile(BURST1_tab):
+    #    os.remove(BURST1_tab)
     
     if os.path.isfile(BURST2_tab):
         os.remove(BURST2_tab)
     
     for kk in range(int(EW)-int(SW)+1):
-        call_str = 'echo ' + MslcDir + '/' + Mdate+'.IW'+str(int(SW)+kk) + '.slc' + ' ' + MslcDir + '/'+ Mdate + '.IW'+str(int(SW)+kk) +'.slc.par' + ' ' + MslcDir + '/'+ Mdate+'.IW'+str(int(SW)+kk) + '.slc.TOPS_par >>' + SLC1_tab
-        os.system(call_str)
+        #call_str = 'echo ' + MslcDir + '/' + Mdate+'.IW'+str(int(SW)+kk) + '.slc' + ' ' + MslcDir + '/'+ Mdate + '.IW'+str(int(SW)+kk) +'.slc.par' + ' ' + MslcDir + '/'+ Mdate+'.IW'+str(int(SW)+kk) + '.slc.TOPS_par >>' + SLC1_tab
+        #os.system(call_str)
         
         call_str = 'echo ' + SslcDir + '/' + Sdate+'.IW'+str(int(SW)+kk) + '.slc' + ' ' + SslcDir + '/'+ Sdate + '.IW'+str(int(SW)+kk) +'.slc.par' + ' ' + SslcDir + '/'+ Sdate+'.IW'+str(int(SW)+kk) + '.slc.TOPS_par >>' + SLC2_tab
         os.system(call_str)
@@ -237,35 +238,35 @@ def main(argv):
         SB2=AA[ii-1,2]
         EB2=AA[ii-1,3]
         
-        call_str = 'echo ' + workDir + '/'+ Mdate+ '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Mdate + '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Mdate+'_'+ str(int(SB1)) + str(int(EB1)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC1_INF_tab
-        os.system(call_str)
+        #call_str = 'echo ' + workDir + '/'+ Mdate+ '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Mdate + '_'+ str(int(SB1)) + str(int(EB1)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Mdate+'_'+ str(int(SB1)) + str(int(EB1)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC1_INF_tab
+        #os.system(call_str)
         
         
         call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC2_INF_tab
         os.system(call_str)
         
-        call_str = 'echo ' + str(int(SB1)) + ' '  + str(int(EB1)) + ' >>' + BURST1_tab
-        os.system(call_str)
+        #call_str = 'echo ' + str(int(SB1)) + ' '  + str(int(EB1)) + ' >>' + BURST1_tab
+        #os.system(call_str)
         
         call_str = 'echo ' + str(int(SB2)) + ' ' + str(int(EB2)) + ' >>' + BURST2_tab
         os.system(call_str)
 
-    call_str = 'SLC_copy_S1_TOPS ' + SLC1_tab + ' ' + SLC1_INF_tab  + ' ' + BURST1_tab 
-    os.system(call_str)
+    #call_str = 'SLC_copy_S1_TOPS ' + SLC1_tab + ' ' + SLC1_INF_tab  + ' ' + BURST1_tab 
+    #os.system(call_str)
     
     call_str = 'SLC_copy_S1_TOPS ' + SLC2_tab + ' ' + SLC2_INF_tab  + ' ' + BURST2_tab 
     os.system(call_str)
         
-    call_str = 'SLC_mosaic_S1_TOPS ' + SLC1_INF_tab + ' ' + MslcImg + ' ' + MslcPar + ' ' + rlks + ' ' +azlks
-    os.system(call_str)
+    #call_str = 'SLC_mosaic_S1_TOPS ' + SLC1_INF_tab + ' ' + MslcImg + ' ' + MslcPar + ' ' + rlks + ' ' +azlks
+    #os.system(call_str)
     
-    call_str = '$GAMMA_BIN/multi_look ' + MslcImg + ' ' + MslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
-    os.system(call_str) 
+    #call_str = '$GAMMA_BIN/multi_look ' + MslcImg + ' ' + MslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+    #os.system(call_str) 
     
-    nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
-    call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
-    os.system(call_str)  
-    ras2jpg(MamprlksImg, MamprlksImg) 
+    #nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
+    #call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+    #os.system(call_str)  
+    #ras2jpg(MamprlksImg, MamprlksImg) 
     
     call_str = 'SLC_mosaic_S1_TOPS ' + SLC2_INF_tab + ' ' + SslcImg + ' ' + SslcPar + ' ' + rlks + ' ' +azlks
     os.system(call_str)
