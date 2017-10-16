@@ -173,7 +173,7 @@ def main(argv):
         call_str = 'Extract_Burst_Slave_All.py ' + projectName
         os.system(call_str)
     
-    if COREG_ALL =＝ '1'：
+    if COREG_ALL == '1':
         call_str = 'COREG_ALL_Sen_Gamma.py ' + projectNaem
         os.system(call_str)
         
