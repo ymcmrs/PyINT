@@ -133,10 +133,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            Common_Burst_check_Ref.py projectName Mdate Sdate
+            Common_Burst_check_All.py projectName
             
     Examples:
-            Check_Common_Burst_Ref.py PacayaT163TsxHhA 131021 131101
+            Check_Common_Burst_All.py PacayaT163TsxHhA
 ##############################################################################
 '''
 
@@ -147,9 +147,6 @@ def cmdLineParse():
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
     parser.add_argument('projectName',help='Name of project.')
-    parser.add_argument('RefDate',help='Referred date, i.e., master date.')
-    parser.add_argument('SlaveDate',help='Slave date.')
-    parser.add_argument('--dir',dest='workdir', help='work directory.')
 
     inps = parser.parse_args()
 
@@ -162,12 +159,7 @@ def main(argv):
     
     inps = cmdLineParse() 
     projectName = inps.projectName
-    Mdate = inps.RefDate
-    Sdate = inps.SlaveDate
-    
-    if inps.workdir: workDir =inps.workdir
-    else: workDir = os.getcwd()
-        
+           
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
@@ -177,44 +169,56 @@ def main(argv):
     MslcDir    = slcDir + '/' + Mdate
     SslcDir    = slcDir + '/' + Sdate
     #MBurst_Par = slcDir + '/' + Mdate + '/' + 
-    BURST = workDir + '/' + Mdate + '_' + Sdate + '.common_burst_ref'
-    if os.path.isfile(BURST):
-        os.remove(BURST)
-
-    for kk in range(3):
-        MBURST = MslcDir + '/' + Mdate + '.IW' + str(kk+1)+'.burst.par'
-        SBURST = SslcDir + '/' + Sdate + '.IW' + str(kk+1)+'.burst.par'
-        fm = open(MBURST,'r')
-        fs = open(SBURST,'r')
-        Mtt =workDir + '/Mtt'
-        Stt =workDir + '/Stt'
-        fm0 = open(Mtt,'w')
-        fs0 = open(Stt,'w')
-        for line in fm:
-            if 'Burst:' in line:
-                #print line
-                fm0.writelines(line)
-        fm0.close()
-        fm.close()
-        
-        for line in fs:
-            if 'Burst:' in line:
-                #print line
-                fs0.writelines(line)
-        fs0.close()
-        fs.close()
-        
-        MM = np.loadtxt(Mtt,dtype=str)
-        La_M = MM[:,2]
-        
-        SM = np.loadtxt(Stt,dtype=str)
-        La_S = SM[:,2]
-        
-        PP = common_burst_Ref(La_M,La_S)
-        
-        print 'Common bursts of swath' + str(kk+1) + ' : (master) ' + str(PP[0]) + ' ' + str(PP[1]) + ' (slave) ' + str(PP[2]) + ' ' + str(PP[3])
-        call_str = 'echo ' + str(PP[0]) + ' ' + str(PP[1]) + ' ' + str(PP[2]) + ' ' + str(PP[3]) + ' >>' +  BURST
+    rslcDir = scratchDir + '/' + projectName + "/RSLC"
+    if not os.path.isdir(rslcDir):
+        call_str = 'mkdir ' + rslcDir
         os.system(call_str)
+    
+    ListSLC = os.listdir(slcDir)
+    Datelist = []
+    SLCfile = []
+    SLCParfile = []
+    
+
+    for kk in range(len(ListSLC)):
+        if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):    #  if SAR date number is 8, 6 should change to 8.
+            DD=ListSLC[kk]
+            Year=int(DD[0:2])
+            Month = int(DD[2:4])
+            Day = int(DD[4:6])
+            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
+                Datelist.append(ListSLC[kk])
+    
+    map(int,Datelist)                
+    Datelist.sort()
+    map(str,Datelist)            
+    
+    if 'masterDate'          in templateContents:
+        masterDate0 = templateContents['masterDate']
+        if masterDate0 in Datelist:
+            masterDate = masterDate0
+            print "masterDate : " + masterDate0
+        else:
+            masterDate=Datelist[0]
+            print "The selected masterDate is not included in above datelist !!"
+            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            
+    else:  
+        masterDate=Datelist[0]
+        print "masterDate is not found in template!!! "
+        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+    
+    Mdate = masterDate
+    for kk in Datelist:
+        Sdate = kk
+        workDir = rslcDir + '/' + kk
+        if not os.path.isdir(workDir):
+            call_str = 'mkdir ' + workDir
+            os.system(call_str)
+        
+        call_str = 'Check_Common_Burst_Ref.py ' + projectName + ' ' + Mdate + ' ' + Sdate + ' --dir ' + workDir
+        os.system(call_str)
+   
         
     sys.exit(1)
 
