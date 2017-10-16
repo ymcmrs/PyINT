@@ -143,7 +143,6 @@ def main(argv):
     projectName = inps.projectName
     Sdate = inps.Sdate
     
-    projectName = igramDir.split('_')[1]  
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
