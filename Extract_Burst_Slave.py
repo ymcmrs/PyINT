@@ -114,10 +114,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            Common_Burst_check.py igramDir
+            Extract_Burst_Slave.py projectName 170115
             
     Examples:
-            Check_Common_Burst.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+            Extract_Burst_Slave.py PacayaT163TsxHhA 170115
 ##############################################################################
 '''
 
@@ -127,7 +127,8 @@ def cmdLineParse():
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
-    parser.add_argument('igramDir',help='Interferogram directory name.')
+    parser.add_argument('projectName',help='Name of project.')
+    parser.add_argument('Sdate',help='Slave date.')
 
     inps = parser.parse_args()
 
@@ -139,7 +140,8 @@ def cmdLineParse():
 def main(argv):
     
     inps = cmdLineParse() 
-    igramDir = inps.igramDir
+    projectName = inps.projectName
+    Sdate = inps.Sdate
     
     INF = igramDir.split('_')[0]
     projectName = igramDir.split('_')[1]
