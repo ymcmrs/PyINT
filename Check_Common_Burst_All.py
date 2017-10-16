@@ -166,9 +166,6 @@ def main(argv):
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC" 
-    MslcDir    = slcDir + '/' + Mdate
-    SslcDir    = slcDir + '/' + Sdate
-    #MBurst_Par = slcDir + '/' + Mdate + '/' + 
     rslcDir = scratchDir + '/' + projectName + "/RSLC"
     if not os.path.isdir(rslcDir):
         call_str = 'mkdir ' + rslcDir
