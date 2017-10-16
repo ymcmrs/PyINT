@@ -341,10 +341,16 @@ def main(argv):
         #os.system(call_str)  
         #ras2jpg(MamprlksImg, MamprlksImg) 
         
-        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+        call_str = '$GAMMA_BIN/raspwr ' + SramprlksImg + ' ' + nWidth 
         os.system(call_str)
         ras2jpg(SamprlksImg, SamprlksImg)
-
+        
+        SS = glob.glob(workDir + '/*.rslc*')
+        for kk in SS:
+            Kk2 = kk.replace('.rslc','.slc')
+            call_str = 'mv ' + kk + ' ' + kk2
+            os.system(call_str)
+        
 
     os.remove(lt0)
     os.remove(lt1)
