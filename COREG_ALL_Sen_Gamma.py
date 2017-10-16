@@ -89,7 +89,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     f_coreg = open(run_coreg_all,'w')
     
     for kk in range(len(slavelist)):
-        str_coreg = "GenOff_DEM_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
+        str_coreg = "GenOff_DEM_Sen_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
         f_coreg.write(str_coreg)
     f_coreg.close()
 
@@ -156,9 +156,9 @@ def main(argv):
 
     templateContents = read_template(templateFile)
     if 'memory_Coreg' in templateContents :  memory_Coreg =  templateContents['memory_Coreg']
-    else: memory_Coreg = '3700'
+    else: memory_Coreg = '5000'
     if 'walltime_Coreg' in templateContents :  walltime_Coreg =  templateContents['walltime_Coreg']
-    else: walltime_Coreg = '1:00'
+    else: walltime_Coreg = '2:00'
     
 #####################  Extract SLC Date #################################  
 
@@ -223,7 +223,7 @@ def main(argv):
     
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
-        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
+        call_str = 'Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + masterDate
         os.system(call_str)
     
     run_coreg_all  = projectDir + "/run_coreg_all"
