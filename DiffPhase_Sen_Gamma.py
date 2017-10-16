@@ -134,15 +134,15 @@ def main(argv):
         call_str = 'mkdir ' + processDir
         os.system(call_str)
     
-    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-        os.system(call_str)
+    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/DEM" 
+    #if not os.path.isdir(simDir):
+    #    call_str='mkdir ' + simDir  
+    #    os.system(call_str)
         
-    simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-    if not os.path.isdir(simDir):
-        call_str='mkdir ' + simDir  
-        os.system(call_str)
+    #simDir = simDir + '/sim_' + Mdate + '-' + Sdate
+    #if not os.path.isdir(simDir):
+     #   call_str='mkdir ' + simDir  
+     #   os.system(call_str)
     
 
         
@@ -159,7 +159,7 @@ def main(argv):
     SLC1_INF_tab = MslcDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = SslcDir + '/' + Sdate + '_SLC_Tab'
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '-' + Sdate + '_'+ rlks + 'rlks.rdc.dem'
+    HGTSIM      = simDir + '/sim_' + Mdate + '_' + rlks + 'rlks.rdc.dem'
     if not os.path.isfile(HGTSIM):
         call_str = 'CreateRdcDem_Sen_Gamma.py ' + igramDir
         os.system(call_str)
