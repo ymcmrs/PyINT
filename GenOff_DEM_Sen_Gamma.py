@@ -199,7 +199,7 @@ def main(argv):
     OFFSTD = workDir + "/" + Mdate + '-' + Sdate +".off_std"	
     
     demDir = scratchDir + '/' + projectName  + "/PROCESS/DEM" 
-    simDir = simDir + '/sim_' + Mdate
+    #simDir = simDir + '/sim_' + Mdate
 
     HGTSIM      = demDir + '/sim_' + Mdate + '_' + rlks+'rlks.rdc.dem'
     
