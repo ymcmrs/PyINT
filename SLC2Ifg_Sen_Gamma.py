@@ -1,16 +1,13 @@
+
 #! /usr/bin/env python
-#'''
-##################################################################################
-#                                                                                #
-#            Author:   Yun-Meng Cao                                              #
-#            Email :   ymcmrs@gmail.com                                          #
-#            Date  :   March, 2017                                               #
-#                                                                                #
-#           Generate Interferograms of Sentinel-1 based on Gamma                 #
-#         Be suitable for conventional InSAR, MAI, Split-Spectrum InSAR          # 
-#                                                                                #
-##################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -126,18 +123,26 @@ def main(argv):
     #call_str = 'CreateRdcDem_Sen_Gamma.py ' + igramDir
     #os.system(call_str)
     
-    call_str = 'DiffPhase_Sen_Gamma.py ' + igramDir
-    os.system(call_str)
+    if 'DiffPhase' in templateContents :  DiffPhase =  templateContents['DiffPhase']
+    else: DiffPhase = '1'
+        
+    if 'UnwrapPhase' in templateContents :  UnwrapPhase =  templateContents['UnwrapPhase']
+    else: UnwrapPhase = '1'
+        
+    if 'GeoPhase' in templateContents :  GeoPhase =  templateContents['GeoPhase']
+    else: GeoPhase = '1'
     
-    call_str = 'UnwrapPhase_Sen_Gamma.py ' + igramDir
-    os.system(call_str)
+    if DiffPhase == '1':
+        call_str = 'DiffPhase_Sen_Gamma.py ' + igramDir
+        os.system(call_str)
     
-    call_str = 'Geocode_Sen_Gamma.py ' + igramDir
-    os.system(call_str)
+    if UnwrapPhase =='1':
+        call_str = 'UnwrapPhase_Sen_Gamma.py ' + igramDir
+        os.system(call_str)
     
-    
-    
-    
+    if GeoPhase =='1':
+        call_str = 'Geocode_Sen_Gamma.py ' + igramDir
+        os.system(call_str)   
 
     print "Interferometry process for Sentinel-1 is done !" 
     sys.exit(1)
