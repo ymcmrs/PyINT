@@ -128,7 +128,7 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
-   Check the common bursts for S1 TOPs.
+   Check the common bursts for S1 TOPs for the whole project based on master date.
 '''
 
 EXAMPLE = '''
