@@ -343,7 +343,7 @@ def main(argv):
         
         call_str = '$GAMMA_BIN/raspwr ' + SramprlksImg + ' ' + nWidth 
         os.system(call_str)
-        ras2jpg(SamprlksImg, SamprlksImg)
+        ras2jpg(SramprlksImg, SramprlksImg)
         
         SS = glob.glob(workDir + '/*.rslc*')
         for kk in SS:
