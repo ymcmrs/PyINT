@@ -170,13 +170,17 @@ def main(argv):
 
     MslcImg = MslcDir + "/" + Mdate + ".slc"
     MslcPar = MslcDir + "/" + Mdate + ".slc.par"
+    M_SLC_tab = MslcDir + "/" + Mdate + '_SLC_Tab'
+    
     SslcImg = SslcDir + "/" + Sdate + ".slc"
     SslcPar = SslcDir + "/" + Sdate + ".slc.par"
+    S_SLC_tab = SslcDir + "/" + Sdate + '_SLC_Tab'
+    S_RSLC_tab = SslcDir + "/" + Sdate + '_RSLC_Tab'
 
 # output slcs
 
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
+    MrslcImg = MslcDir + "/" + Mdate + ".rslc"
+    MrslcPar = MslcDir + "/" + Mdate + ".rslc.par"
     SrslcImg = workDir + "/" + Sdate + ".rslc"
     SrslcPar = workDir + "/" + Sdate + ".rslc.par"
     Srslc0Img = workDir + "/" + Sdate + ".rslc0"
@@ -184,16 +188,19 @@ def main(argv):
     
 # output multi-looked amplitude
 
-    MamprlksImg = workDir + "/" + Mdate + "_" + rlks+"rlks.amp"	
-    MamprlksPar = workDir + "/" + Mdate + "_" + rlks+"rlks.amp.par"
+    MamprlksImg = MslcDir + "/" + Mdate + "_" + rlks+"rlks.amp"	
+    MamprlksPar = MslcDir+ "/" + Mdate + "_" + rlks+"rlks.amp.par"
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
+    
+    SramprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp"
+    SramprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.ramp.par"
     OFFSTD = workDir + "/" + Mdate + '-' + Sdate +".off_std"	
     
-    simDir = scratchDir + '/' + projectName  + "/SIM" 
+    demDir = scratchDir + '/' + projectName  + "/PROCESS/DEM" 
     simDir = simDir + '/sim_' + Mdate
 
-    HGTSIM      = simDir + '/sim_' + Mdate + '_' + rlks+'rlks.rdc.dem'
+    HGTSIM      = demDir + '/sim_' + Mdate + '_' + rlks+'rlks.rdc.dem'
     
     if not os.path.isfile(HGTSIM):
         call_str= "Generate_RdcDEM_Gamma.py  " + projectName + ' ' + Mdate
@@ -263,7 +270,10 @@ def main(argv):
     os.system(call_str)
     
     
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    #call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    #os.system(call_str)
+    
+    call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + S_RSLC_tab + Srslc0Img + " " + Srslc0Par
     os.system(call_str)
 
 
@@ -302,7 +312,10 @@ def main(argv):
         
 ######################## Resampling Slave Image ####################
 
-        call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
+        #call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
+        #os.system(call_str)
+        
+        call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + S_RSLC_tab + " " + SrslcImg + " " + Srslc`Par
         os.system(call_str)
 
 
@@ -315,25 +328,20 @@ def main(argv):
 
 ####################  multi-looking for RSLC #########################################
 
-        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
+        #MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
+        #MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
+       
+        #call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+        #os.system(call_str)
 
-
-        call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SramprlksImg + ' ' + SramprlksPar + ' ' + rlks + ' ' + azlks
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
+        nWidth = UseGamma(SramprlksPar, 'read', 'range_samples')
 
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
-
-        call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
-        os.system(call_str)  
-        ras2jpg(MamprlksImg, MamprlksImg) 
+        #call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+        #os.system(call_str)  
+        #ras2jpg(MamprlksImg, MamprlksImg) 
         
         call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
         os.system(call_str)
@@ -358,11 +366,11 @@ def main(argv):
     os.remove(Srslc0Img)
     os.remove(Srslc0Par)
 
-    call_str = 'mv ' + workDir+'/* ' +  workDir_Org
-    os.system(call_str)
+    #call_str = 'mv ' + workDir+'/* ' +  workDir_Org
+    #os.system(call_str)
     
-    call_str ='rm -rf ' + workDir
-    os.system(call_str)
+    #call_str ='rm -rf ' + workDir
+    #os.system(call_str)
     
     print "Coregistration with DEM is done!"
  
