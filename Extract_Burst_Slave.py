@@ -143,13 +143,7 @@ def main(argv):
     projectName = inps.projectName
     Sdate = inps.Sdate
     
-    INF = igramDir.split('_')[0]
-    projectName = igramDir.split('_')[1]
-    IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
-    Mdate = IFGPair.split('-')[0]
-    Sdate = IFGPair.split('-')[1]
-    
-    
+    projectName = igramDir.split('_')[1]  
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
@@ -157,6 +151,7 @@ def main(argv):
            
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
+    Mdate =  templateContents['masterDate']
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
@@ -165,7 +160,7 @@ def main(argv):
     SslcDir    = slcDir + '/' + Sdate
     #MBurst_Par = slcDir + '/' + Mdate + '/' + 
     workDir = rslcDir + '/' + Sdate
-    BURST = workDir '/' + Mdate + '_' + Sdate + '.common_burst_ref'
+    BURST = workDir + '/' + Mdate + '_' + Sdate + '.common_burst_ref'
     
     MslcImg = workDir + '/'+Mdate + '.slc'
     MslcPar = workDir + '/'+Mdate + '.slc.par'    
