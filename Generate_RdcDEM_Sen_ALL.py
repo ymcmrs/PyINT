@@ -107,9 +107,9 @@ def usage():
 
    usage:
    
-            Generate_RdcDEM_Rslc_ALL.py projectName
+            Generate_RdcDEM_Sen_ALL.py projectName
       
-      e.g.  Generate_RdcDEM_Rslc_ALL.py PacayaT163TsxHhA
+      e.g.  Generate_RdcDEM_Sen_ALL.py PacayaT163TsxHhA
       
 *******************************************************************************************************
     '''   
@@ -154,10 +154,10 @@ def main(argv):
 
     
     for kk in Datelist:
-        STR = 'echo Generate_RdcDEM_Rslc_Gamma.py ' + projectName + ' ' + kk + ' >>' + run_GenDEM_rslc_all
+        STR = 'echo Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + kk + ' >>' + run_GenDEM_rslc_all
         os.system(STR)
         
-    call_str='$INT_SCR/createBatch.pl ' + run_GenDEM_rslc_all + ' memory=3700 ' + ' walltime= 1:00'
+    call_str='$INT_SCR/createBatch.pl ' + run_GenDEM_rslc_all + ' memory=5000 ' + ' walltime= 1:00'
     os.system(call_str)
     
 
