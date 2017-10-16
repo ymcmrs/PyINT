@@ -141,20 +141,14 @@ def main(argv):
     if 'DOWN2SLC' in templateContents :  DOWN2SLC =  templateContents['DOWN2SLC']
     else: DOWN2SLC = '1'
         
-    if 'PRE_ORB' in templateContents :  PRE_ORB =  templateContents['PRE_ORB']
-    else: PRE_ORB = '1'    
-    
     if 'EXTRACT_BURST' in templateContents :  EXTRACT_BURST =  templateContents['EXTRACT_BURST']
     else: EXTRACT_BURST = '1'
         
     if 'COREG_ALL' in templateContents :  COREG_ALL =  templateContents['COREG_ALL']
     else: COREG_ALL = '1'
         
-    if 'Gen_DEM' in templateContents :  Gen_DEM =  templateContents['Gen_DEM']
-    else: Gen_DEM = '1'  
-        
-    if 'SelectPairs' in templateContents :  SelectPairs=  templateContents['SelectPairs']
-    else: SelectPairs = '1'      
+    if 'Gen_IFG_DIR' in templateContents :  Gen_IFG_DIR=  templateContents['Gen_IFG_DIR']
+    else: Gen_IFG_DIR = '1'      
     
     if 'SLC2IFG' in templateContents :  SLC2IFG =  templateContents['SLC2IFG']
     else: SLC2IFG = '1' 
@@ -168,19 +162,25 @@ def main(argv):
     if DOWN2SLC=='1':
         call_str = 'Down2SLC_Sen_All.py ' + projectName
         os.system(call_str)
-    
-    if PRE_ORB =='1':
+        
         call_str = 'Sen_Orbit_Cor_all.py ' + projectName
         os.system(call_str)
-         
+             
     if EXTRACT_BURST =='1':
         call_str = 'Check_Common_Burst_All.py ' + projectName
         os.system(call_str)
         
         call_str = 'Extract_Burst_Slave_All.py ' + projectName
         os.system(call_str)
-
-    if SelectPairs =='1':
+    
+    if COREG_ALL =＝ '1'：
+        call_str = 'COREG_ALL_Sen_Gamma.py ' + projectNaem
+        os.system(call_str)
+        
+        call_str = 'Generate_RdcDEM_Sen_ALL.py ' + projectName
+        os.system(call_str)
+         
+    if Gen_IFG_DIR=='1':
         call_str = 'SelectPairs_Gamma.py ' + projectName
         os.system(call_str)      
        
