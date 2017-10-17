@@ -124,6 +124,8 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
+    MslcDir    = rslcDir + '/' + Mdate
+    SslcDir    = rslcDir + '/' + Sdate
     workDir    = processDir + '/' + igramDir   
     TS_RSC     = workDir + '/' + IFGPair + '_' + rlks + 'rlks.rsc'
     OFF_STD = workDir + '/' + Mdate + '-' + Sdate + '.off_std'
@@ -147,8 +149,8 @@ def main(argv):
         call_str = 'mkdir ' + rslcDir
         os.system(call_str)
 
-    SLC_par = workDir + '/' + Mdate + '_' + rlks +'rlks.ramp.par' 
-    SLC_par2 = workDir + '/' + Sdate + '_' + rlks +'rlks.ramp.par'
+    SLC_par = MslcDir + '/' + Mdate + '_' + rlks +'rlks.amp.par' 
+    SLC_par2 = SslcDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
     nWidth = UseGamma(SLC_par, 'read', 'range_samples:')
     nLine  = UseGamma(SLC_par, 'read', 'azimuth_lines:')
     
