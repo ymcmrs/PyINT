@@ -222,7 +222,7 @@ def main(argv):
     call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
     os.system(call_str)
     
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
+    call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar  + " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
     os.system(call_str)
     os.rename(rINT, INT)
     
