@@ -229,19 +229,19 @@ def main(argv):
 
 #    FLTFILTlks = FLTlks.replace('flat_', 'filt_')
 
-     geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-     geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+    geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+    geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         #geocode(FLTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         #geocode(FLTFILTlks, GEOFILTINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
-     call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
-     os.system(call_str)
+    call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
+    os.system(call_str)
 
-     ras2jpg(GEOPWR, GEOPWR)
+    ras2jpg(GEOPWR, GEOPWR)
 
-     call_str = '$GAMMA_BIN/rascc ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - - - -' 
-     os.system(call_str)
-     ras2jpg(GEOCOR, GEOCOR) 
+    call_str = '$GAMMA_BIN/rascc ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - - - -' 
+    os.system(call_str)
+    ras2jpg(GEOCOR, GEOCOR) 
 
     geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
     geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
