@@ -172,9 +172,13 @@ def main(argv):
 
     OFF = workDir + '/' + Mdate+ '-' + Sdate  + '.roff'
     OFFlks = workDir + '/' + Mdate+ '-' + Sdate + '_' + rlks + 'rlks.roff'
+    DIFFpar = workDir + '/' + Mdate+ '-' + Sdate  + '.diff_par'
     
     if os.path.isfile(OFFlks):
         os.remove(OFFlks)
+        
+    if os.path.isfile(DIFFpar):
+        os.remove(DIFFpar)
 
 ##############################################  Resampling #####################################################
 
@@ -203,6 +207,9 @@ def main(argv):
     INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
     rINT =  workDir + '/' + Mdate + '-' + Sdate + '.rint'
     rINTpar =  workDir + '/' + Mdate + '-' + Sdate + '.rint.par'
+    INTlks = workDir + '/' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
+    DIFFINTlks = workDir + '/' + Mdate + '_' + Sdate + '.diff' 
+    DIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
     
     call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
     os.system(call_str)
@@ -225,11 +232,15 @@ def main(argv):
     call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW
     os.system(call_str)
     
-    
+    call_str = '$GAMMA_BIN/create_diff_par ' + MLI1PAR + ' ' + MLI1PAR + ' ' + DIFFpar + ' 1 0 '
+    os.system(call_str)     
         
-        
-
+    call_str = '$GAMMA_BIN/sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1 0'
+    os.system(call_str)   
     
+     #call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
+     #os.system(call_str)
+        
     print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
     sys.exit(1)
     
