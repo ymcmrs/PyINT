@@ -242,7 +242,7 @@ def main(argv):
         call_str = 'echo ' + SslcDir + '/' + Sdate+'.IW'+str(int(SW)+kk) + '.slc' + ' ' + SslcDir + '/'+ Sdate + '.IW'+str(int(SW)+kk) +'.slc.par' + ' ' + SslcDir + '/'+ Sdate+'.IW'+str(int(SW)+kk) + '.slc.TOPS_par >>' + SLC2_tab
         os.system(call_str)
         
-        ii = kk + 1
+        ii = int(SW) + kk
         SB1=AA[ii-1,0]
         EB1=AA[ii-1,1]
         
