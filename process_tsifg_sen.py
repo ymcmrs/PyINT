@@ -152,8 +152,8 @@ def main(argv):
     if 'SLC2IFG' in templateContents :  SLC2IFG =  templateContents['SLC2IFG']
     else: SLC2IFG = '1' 
         
-    if 'Load_Date' in templateContents :  Load_Date =  templateContents['Load_Date']
-    else: Load_Date = '1' 
+    if 'Load_Data' in templateContents :  Load_Data =  templateContents['Load_Data']
+    else: Load_Data = '1' 
     
     
     if DOWNLOAD == '1':
