@@ -152,10 +152,10 @@ def main(argv):
         os.system(call_str)
 
     templateContents = read_template(templateFile)
-    #if 'memory_Coreg' in templateContents :  memory_Coreg =  templateContents['memory_Coreg']
-    #else: memory_Coreg = '5000'
-    #if 'walltime_Coreg' in templateContents :  walltime_Coreg =  templateContents['walltime_Coreg']
-    #else: walltime_Coreg = '2:00'
+    if 'memory_Extract' in templateContents :  memory_Extract =  templateContents['memory_Extract']
+    else: memory_Extract = '3700'
+    if 'walltime_Extract' in templateContents :  walltime_Extract =  templateContents['walltime_Extract']
+    else: walltime_Extract = '0:30'
     
 #####################  Extract SLC Date #################################  
 
@@ -188,7 +188,7 @@ def main(argv):
     
 
     write_run_extract_burst_all(projectName,Datelist)    
-    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_extract_burst_all memory=3700 walltime=0:30 ' 
+    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
     os.system(call_str)
 
     sys.exit(1)
