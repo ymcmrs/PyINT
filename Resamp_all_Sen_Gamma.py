@@ -122,9 +122,15 @@ def main(argv):
     templateFile = templateDir + "/" + projectName + ".template"
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
+    demDir = scratchDir + '/' + projectName + "/PROCESS/DEM"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
+    simDir = scratchDir + '/' + projectName + "/PROCESS/SIM"
+    
+    if not os.path.isdir(simDir):
+        call_str= 'mkdir ' + simDir
+        os.system(call_str)
     
     if not os.path.isdir(rslcDir):
         call_str = 'mkdir ' + rslcDir
@@ -152,12 +158,23 @@ def main(argv):
     MLI1PAR ＝ rslcDir +'/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks' + '.amp.par'
     MLI2PAR ＝ rslcDir +'/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks' + '.amp.par'
     
+    HGTSIM = demDir + '/sim_' + masterDate + '_' + rlks +'rlks' + '.rdc.dem'
+    SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
     
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
 
+    MrslcPar = MslcDir + "/" + Mdate + ".rslc.par"
+    SrslcPar = SslcDir + "/" + Sdate + ".rslc.par"
+    
+    MrslcPar0 = workDir + "/" + Mdate + ".rslc.par"
+    SrslcPar0 = workDir + "/" + Sdate + ".rslc.par"
+    MrslcImg0 = workDir + "/" + Mdate + ".rslc"
+    SrslcImg0 = workDir + "/" + Sdate + ".rslc"
+
+    OFF = workDir + '/' + Mdate+ '-' + Sdate  + '.roff'
+    OFFlks = workDir + '/' + Mdate+ '-' + Sdate + '_' + rlks + 'rlks.roff'
+    
+    if os.path.isfile(OFFlks):
+        os.remove(OFFlks)
 
 ##############################################  Resampling #####################################################
 
@@ -187,15 +204,28 @@ def main(argv):
     rINT =  workDir + '/' + Mdate + '-' + Sdate + '.rint'
     rINTpar =  workDir + '/' + Mdate + '-' + Sdate + '.rint.par'
     
-    call_str = 'create_offset ' + MrslcPar + ' ' + MrslcPar + ' ' + int_off + ' 1 - - 0'
+    call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
     os.system(call_str)
     
-    call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg + ' ' + SrslcImg + ' ' + MrslcPar + ' ' + SrslcPar + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
+    call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
     os.system(call_str)
     
     call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + MrslcPar+ " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
     os.system(call_str)
     os.rename(rINT, INT)
+    
+    call_str = 'create_offset ' + MrslcPar + ' ' + MrslcPar + ' ' + OFF + ' 1 - - 0'
+    os.system(call_str)
+    call_str = '$GAMMA_BIN/multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
+    os.system(call_str)
+    
+    #call_str = 'create_offset ' +  MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' 1 ' + rlks + ' ' + azlks + ' 0'
+    #os.system(call_str)
+    
+    call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW
+    os.system(call_str)
+    
+    
         
         
 
