@@ -195,7 +195,8 @@ def main(argv):
         os.system(call_str)
 
     lt0 = workDir + "/lt0" 
-    lt1 = workDir + "/lt1"
+    lt1 = workDir + "/" + Mdate + '.lt'
+    STD= workDir + "/" + Mdate + '.lt_std'
     mli0 = workDir + "/mli0" 
     diff0 = workDir + "/diff0" 
     offs0 = workDir + "/offs0"
@@ -249,7 +250,7 @@ def main(argv):
     call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
   
-    call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
+    call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4 >" + STD
     os.system(call_str)
 
     
@@ -257,85 +258,9 @@ def main(argv):
     call_str = "$GAMMA_BIN/gc_map_fine " + lt0 + " " + width_Mamp + " " + diff0 + " " + lt1
     os.system(call_str)
     
-    
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
-    os.system(call_str)
-
-
-# further refinement processing for resampled SLC
-
-    call_str = "$GAMMA_BIN/create_offset " + MslcPar + " " + Srslc0Par + " " + off + " 1 - - 0"
-    os.system(call_str)
-
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
-    os.system(call_str)
-
-    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
-    os.system(call_str)
-    
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
-    os.system(call_str)
-
-    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
-    os.system(call_str)
-    
-############################################     Resampling     ############################################    
-    
-    
-    for i in range(len(Suffix)):
-        if not INF=='IFG':
-            MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
-            MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
-            SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
-            SslcPar = workDir + "/" + Sdate + Suffix[i]+".slc.par"
-        
-        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"
-
-        
-######################## Resampling Slave Image ####################
-
-        call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
-        os.system(call_str)
-
-
-        call_str = "cp " + MslcImg + " " + MrslcImg
-        os.system(call_str)
-
-        call_str = "cp " + MslcPar + " " + MrslcPar
-        os.system(call_str)
-
-
-####################  multi-looking for RSLC #########################################
-
-        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-
-        call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
-
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
-
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
-
-        call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
-        os.system(call_str)  
-        ras2jpg(MamprlksImg, MamprlksImg) 
-        
-        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
-        os.system(call_str)
-        ras2jpg(SamprlksImg, SamprlksImg)
 
 
     os.remove(lt0)
-    os.remove(lt1)
     os.remove(mli0)
     os.remove(diff0)
     os.remove(offs0)
@@ -343,16 +268,9 @@ def main(argv):
     os.remove(offsets0)
     os.remove(coffs0)
     os.remove(coffsets0)
-    os.remove(off)
-    os.remove(offs)
-    os.remove(snr)
-    os.remove(offsets)
-    os.remove(coffs)
-    os.remove(coffsets)
-    os.remove(Srslc0Img)
-    os.remove(Srslc0Par)
+ 
 
-    print "Coregistration with DEM is done!"
+    print "Generate lookup table for resampling is done!"
  
     sys.exit(1)
 
