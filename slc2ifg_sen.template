@@ -7,12 +7,15 @@ Enddate   = 2100-01-01
 Range_Looks  =  20
 Azimuth_Looks =  4
 
+#####      Time series switch   ####
 DOWNLOAD          =  1
 DOWN2SLC          =  1
 EXTRACT_BURST     =  1 
 COREG_ALL         =  1
 Gen_IFG_DIR       =  1 
 SLC2IFG           =  1
+
+####  interferometry switch  ######
 
 DiffPhase         =  1
 UnwrapPhase       =  1
