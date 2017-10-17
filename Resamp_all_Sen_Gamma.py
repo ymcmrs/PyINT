@@ -185,6 +185,9 @@ def main(argv):
     if os.path.isfile(OFFlks):
         os.remove(OFFlks)
         
+    if os.path.isfile(int_off):
+        os.remove(int_off)
+        
     if os.path.isfile(DIFFpar):
         os.remove(DIFFpar)
 
