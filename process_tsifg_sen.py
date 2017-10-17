@@ -97,7 +97,7 @@ def usage():
     print '''
 ******************************************************************************************************
  
-      Processing time series Sentinel-1 datasets from download data to generate unwrapped interferograms and load time series h5 file. 
+      Processing time series Sentinel-1 datasets. 
 
    usage:
    
