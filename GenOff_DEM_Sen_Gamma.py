@@ -345,11 +345,6 @@ def main(argv):
         os.system(call_str)
         ras2jpg(SamprlksImg, SamprlksImg)
         
-        SS = glob.glob(workDir + '/*.rslc*')
-        for kk in SS:
-            kk2 = kk.replace('.rslc','.slc')
-            call_str = 'mv ' + kk + ' ' + kk2
-            os.system(call_str)
         
 
     os.remove(lt0)
@@ -369,6 +364,13 @@ def main(argv):
     os.remove(coffsets)
     os.remove(Srslc0Img)
     os.remove(Srslc0Par)
+    
+    SS = glob.glob(workDir + '/*.rslc*')
+    
+    for kk in SS:
+        kk2 = kk.replace('.rslc','.slc')
+        call_str = 'mv ' + kk + ' ' + kk2
+        os.system(call_str)
 
     #call_str = 'mv ' + workDir+'/* ' +  workDir_Org
     #os.system(call_str)
