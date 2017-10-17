@@ -126,6 +126,8 @@ def main(argv):
     workDir    = processDir + '/' + igramDir   
     
     templateContents=read_template(templateFile)
+    masterDate   =  templateContents['masterDate']
+    
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
@@ -149,14 +151,24 @@ def main(argv):
     if 'End_Swath' in templateContents: EW = templateContents['End_Swath']
     else: EW = '3' 
     if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
-    else: SB = '1'            
+    else: SB = '1'
+        
+   if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
+    else: Resamp_All = '1'      
         
 #  Definition of file
     MslcDir     = rslcDir  + '/' + Mdate
     SslcDir     = rslcDir  + '/' + Sdate
+    masterDir     = rslcDir  + '/' + masterDate
+    
     
     MamprlksImg = MslcDir  + '/' + Mdate + '_' + rlks +'rlks.amp'
     MamprlksPar = MslcDir + '/' + Mdate + '_' + rlks +'rlks.amp.par'
+    
+    if Resamp_All =='1':
+        MamprlksImg = masterDir  + '/' + masterDate + '_' + rlks +'rlks.amp'
+        MamprlksPar = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par'
+        
 
     SamprlksImg = workDir + '/' + Sdate  + '_' + rlks +'rlks.amp'
     SamprlksPar = workDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
@@ -175,9 +187,7 @@ def main(argv):
     call_str = 'cp ' + DIFF0 + ' ' + DIFFlks
     os.system(call_str)
        
-    if Resamp_All =='1':
-        
-        
+         
  ###################### Filtering ####################  
 
     if 'Diff_FilterStrength' in templateContents: 
