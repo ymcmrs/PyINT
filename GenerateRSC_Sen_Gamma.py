@@ -137,7 +137,7 @@ def main(argv):
     
     OFF   =  workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[0] + '.off'
     if not os.path.isfile(OFF):
-        call_str = 'create_offset ' + workDir+'/' + Mdate + '.rslc.par ' +  workDir+'/' + Sdate + '.rslc.par ' + ' 1 ' + rlks + ' ' + azlks + ' 0'
+        call_str = 'create_offset ' + workDir+'/' + Mdate + '.rslc.par ' +  workDir+'/' + Sdate + '.rslc.par ' + OFF + ' 1 ' + rlks + ' ' + azlks + ' 0'
         os.system(call_str)
         
     BASE  =  workDir + '/' + Mdate + '-' + Sdate + Suffix[0] + '.base'
