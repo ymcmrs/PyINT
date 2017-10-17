@@ -130,10 +130,14 @@ def main(argv):
     SslcDir = rslcDir + '/' + Sdate
     
     templateContents=read_template(templateFile)
+    if 'Resamp_All'          in templateContents: Resamp_All = templateContents['Resamp_All']                
+    else: Resamp_All = '1'
+    
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
     masterDate = templateContents['masterDate']
     masterDir = rslcDir + '/' + masterDate
+    
     
     if not Resamp_All=='1':
         masterDate = Mdate
@@ -179,9 +183,7 @@ def main(argv):
     else: flatteningDiff = 'orbit'     
     if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']      
     else: flatteningUnwrap = 'N'       
-    
-    if 'Resamp_All'          in templateContents: Resamp_All = templateContents['Resamp_All']                
-    else: Resamp_All = '1'
+   
         
     MamprlksImg = MslcDir  + '/' + Mdate + '_' + rlks + 'rlks.amp'
     MamprlksPar = MslcDir  + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
