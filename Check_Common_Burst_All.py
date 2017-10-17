@@ -216,11 +216,15 @@ def main(argv):
             masterDate=Datelist[0]
             print "The selected masterDate is not included in above datelist !!"
             print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
+            os.system(call_str)
             
     else:  
         masterDate=Datelist[0]
         print "masterDate is not found in template!!! "
         print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+        call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
+        os.system(call_str)
     
     Mdate = masterDate
     for kk in Datelist:
