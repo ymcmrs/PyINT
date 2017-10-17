@@ -1,11 +1,20 @@
-################  template for Sentinel data processing based on GAMMA ##############
+################  template for GAMMA-based Sentinel data processing ##############
 
 Track  = 71
 Frame  = 479
 Startdate = 2017-01-01
 Enddate   = 2100-01-01
+Range_Looks  =  20
+Azimuth_Looks =  4
 
+DOWNLOAD          =  1
+DOWN2SLC          =  1
+EXTRACT_BURST     =  1 
+COREG_ALL         =  1
+Gen_IFG_DIR       =  1 
+SLC2IFG           =  1
 
-DOWN2SLC_S1_FLAG  = 1   # [option: 0,1]    Sentinel-1 Download to SLC  for all of datasets
-EXTRACT_SB_ALL    = 1   # [option: 0,1]    Extract Swamth and Burst for all of datasets.
+DiffPhase         =  1
+UnwrapPhase       =  1
+GeoPhase          =  1
 
