@@ -89,7 +89,7 @@ def write_run_extract_burst_all(projectName,datelist):
     f_extract = open(run_extract_burst_all,'w')
     
     for kk in range(len(datelist)):
-        str_extract = "Extract_Burst_Slave.py  " + projectName + ' ' + datelist[kk] + '\n'
+        str_extract = "Extract_Burst_Slave.py " + projectName + ' ' + datelist[kk] + '\n'
         f_extract.write(str_extract)
     f_extract.close()
 
