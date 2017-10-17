@@ -157,8 +157,8 @@ def main(argv):
     if Resamp_All =='1':        
         SLC_par = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par' 
         MrslcImg    = MslcDir + '/' + Mdate + '.rslc'
-        SrslcImg    = MslcDir + '/' + Sdate + '.rslc'
-        MrslcPar    = SslcDir + '/' + Mdate + '.rslc.par'
+        SrslcImg    = SslcDir + '/' + Sdate + '.rslc'
+        MrslcPar    = MslcDir + '/' + Mdate + '.rslc.par'
         SrslcPar    = SslcDir + '/' + Sdate + '.rslc.par'
     
     if os.path.isfile(OFF):
