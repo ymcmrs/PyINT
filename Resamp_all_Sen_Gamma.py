@@ -89,15 +89,15 @@ def usage():
     print '''
 ******************************************************************************************************
  
-          Coregistrate all SAR or interferograms to one master data
+          Resampling all Sentinel-1 based intferograms into one master date coordinates.
 
    usage:
    
-            Resamp_all_Gamma.py igramDir
+            Resamp_all_Sen_Gamma.py igramDir
       
-      e.g.  Resamp_all_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  Resamp_all_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007      
-      e.g.  Resamp_all_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
+      e.g.  Resamp_all_Sen_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  Resamp_all_Sen_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007      
+      e.g.  Resamp_all_Sen_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
     '''   
@@ -135,49 +135,29 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
  
-    Moff = rslcDir +"/"+ masterDate + '-' + Mdate + '.off'
-    Soff = rslcDir +"/"+ masterDate + '-' + Sdate + '.off'        
+    M_off = rslcDir +'/' + Mdate + '/' + masterDate + '-' + Mdate + '.off'
+    M_lt = rslcDir +'/' + Mdate + '/' + masterDate + '-' + Mdate + '.lt   '      
     
-    if INF=='IFG' or INF =='IFGRAM':
-        Suffix=['']
-    elif INF=='MAI':
-        Suffix=['.F','.B']
-    elif INF=='RSI':
-        Suffix=['.HF','.LF']
-    else:
-        print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)  
+  
 # definition of intermediate and output file variables for slc images and parameters
 
-    BaseslcDir = rslcDir + "/" + masterDate
+    BaseslcDir = rslcDir + "/" + masterDate 
     BaseslcImg = BaseslcDir + '/' + masterDate + '.slc'
     BaseslcPar = BaseslcDir + '/' + masterDate + '.slc.par'
     Baseslc4Par = workDir + '/' + masterDate + '.slc4.par'
     
-    SslcDir = slcDir + "/" + Sdate
-    MslcDir = slcDir + "/" + Mdate
-
-    MslcImg = MslcDir + "/" + Mdate + ".slc"
-    MslcPar = MslcDir + "/" + Mdate + ".slc.par"
-    SslcImg = SslcDir + "/" + Sdate + ".slc"
-    SslcPar = SslcDir + "/" + Sdate + ".slc.par"
- 
-    offs = workDir + "/offs"
-    snr = workDir + "/snr"
-    offsets = workDir + "/offsets"
-    coffs = workDir + "/coffs"
-    coffsets = workDir + "/coffsets"
+    SslcDir = rslcDir + "/" + Sdate
+    MslcDir = rslcDir + "/" + Mdate
     
-    MrslcImg = rslcDir + "/" + Mdate + ".rslc"
-    MrslcPar = rslcDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = rslcDir + "/" + Sdate + ".rslc"
-    SrslcPar = rslcDir + "/" + Sdate + ".rslc.par"
+    MLI1PAR ＝ rslcDir +'/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks' + '.amp.par'
+    MLI2PAR ＝ rslcDir +'/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks' + '.amp.par'
+    
+    
+    MrslcImg = workDir + "/" + Mdate + ".rslc"
+    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
+    SrslcImg = workDir + "/" + Sdate + ".rslc"
+    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
 
-    MamprlksImg = rslcDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp"
-    MamprlksPar = rslcDir + "/" + Mdate + '_'+rlks+'rlks' + ".ramp.par"
-        
-    SamprlksImg = rslcDir + "/" + Sdate + '_'+rlks+'rlks' + ".ramp"
-    SamprlksPar = rslcDir + "/" + Sdate + '_'+rlks+'rlks' + ".ramp.par"
 
 ##############################################  Resampling #####################################################
 
@@ -201,35 +181,23 @@ def main(argv):
     fout.write(txtout)
     fin.close()
     fout.close()
-##################################################
 
-        call_str = 'cp ' + MamprlksImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + MamprlksPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + SamprlksImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SamprlksPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + MrslcPar + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SrslcPar + ' ' + workDir
-        os.system(call_str)
-        
-        call_str = 'cp ' + MrslcImg + ' ' + workDir
-        os.system(call_str)
-        call_str = 'cp ' + SrslcImg + ' ' + workDir
-        os.system(call_str)
+    int_off = workDir + '/off0'
+    INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
+    rINT =  workDir + '/' + Mdate + '-' + Sdate + '.rint'
+    rINTpar =  workDir + '/' + Mdate + '-' + Sdate + '.rint.par'
+    
+    call_str = 'create_offset ' + MrslcPar + ' ' + MrslcPar + ' ' + int_off + ' 1 - - 0'
+    os.system(call_str)
+    
+    call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg + ' ' + SrslcImg + ' ' + MrslcPar + ' ' + SrslcPar + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
+    os.system(call_str)
+    
+    call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + MrslcPar+ " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
+    os.system(call_str)
+    os.rename(rINT, INT)
         
         
-#######################################################        
-
-        if ( masterDate != Mdate):
-            call_str = "$GAMMA_BIN/SLC_interp_lt " + DIFF + " " + Baseslc4Par + " " + DIFFpar + " " + lt + " " + MLI1PAR + " " + MLI2_PAR + " " + OFF + " " + rDIFF + " " + rDIFFpar
-            os.system(call_str)
-            os.rename(rDIFF, DIFF)
 
     
     print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
