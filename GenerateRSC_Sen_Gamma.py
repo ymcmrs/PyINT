@@ -138,6 +138,10 @@ def main(argv):
     
     masterDir  = rslcDir + '/' + masterDate   
     TS_RSC     = workDir + '/' + IFGPair + '_' + rlks + 'rlks.rsc'
+    
+    if os.path.isfile(TS_RSC):
+        os.remove(TS_RSC)
+        
     OFF_STD = workDir + '/' + Mdate + '-' + Sdate + '.off_std'
     
     MCORNER = workDir + '/' + Mdate + Suffix[0] + '.corner'
