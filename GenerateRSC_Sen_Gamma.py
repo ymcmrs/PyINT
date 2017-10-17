@@ -355,25 +355,25 @@ def main(argv):
     wstr = 'V_BASELINE_RATE_HDR        ' + V_BASELINE_RATE_HDR + '\n'
     f.write(wstr)
     
-    RR = UseGamma(OFF_STD,'read','final range offset poly. coeff.:')
-    cor_rg = RR.split(' ')[0]
+    #RR = UseGamma(OFF_STD,'read','final range offset poly. coeff.:')
+    #cor_rg = RR.split(' ')[0]
         
-    AA = UseGamma(OFF_STD,'read','final azimuth offset poly. coeff.:')
-    cor_az = AA.split(' ')[0]
+    #AA = UseGamma(OFF_STD,'read','final azimuth offset poly. coeff.:')
+    #cor_az = AA.split(' ')[0]
         
-    STDRR = UseGamma(OFF_STD,'read','final model fit std. dev. (samples) range:')
-    std_rg=STDRR.split(' ')[0]
+    #STDRR = UseGamma(OFF_STD,'read','final model fit std. dev. (samples) range:')
+    #std_rg=STDRR.split(' ')[0]
     
-    std_az = UseGamma2(OFF_STD,'read','final model fit std. dev. (samples) range:')  
+    #std_az = UseGamma2(OFF_STD,'read','final model fit std. dev. (samples) range:')  
 
-    wstr = 'RANGE_OFFSET               ' + cor_az + '\n'
-    f.write(wstr)
-    wstr = 'RANGE_OFFSET_STD           ' + std_rg + '\n'
-    f.write(wstr)
-    wstr = 'AZIMUTH_OFFSET             ' + cor_az + '\n'
-    f.write(wstr)
-    wstr = 'AZIMUTH_OFFSET_STD         ' + std_az + '\n'
-    f.write(wstr)
+    #wstr = 'RANGE_OFFSET               ' + cor_az + '\n'
+    #f.write(wstr)
+    #wstr = 'RANGE_OFFSET_STD           ' + std_rg + '\n'
+    #f.write(wstr)
+    #wstr = 'AZIMUTH_OFFSET             ' + cor_az + '\n'
+    #f.write(wstr)
+    #wstr = 'AZIMUTH_OFFSET_STD         ' + std_az + '\n'
+    #f.write(wstr)
     
     f.close()
     
