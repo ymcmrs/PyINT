@@ -210,8 +210,9 @@ def main(argv):
     QUADUNWlks = UNWlks.replace('.unw','.quad_fit.unw')
     OFFlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
     
+    GEOPWR      = geoDir + '/geo_' + os.path.basename(MamprlksImg)
     GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.cor' 
-    GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
+    GEODIFFINT  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
     GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.unw'
     GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.quad_fit.unw'
 
