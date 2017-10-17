@@ -131,12 +131,19 @@ def main(argv):
         
     if 'GeoPhase' in templateContents :  GeoPhase =  templateContents['GeoPhase']
     else: GeoPhase = '1'
+        
+    if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
+    else: Resamp_All = '1'
     
     if DiffPhase == '1':
         call_str = 'DiffPhase_Sen_Gamma.py ' + igramDir
         os.system(call_str)
         
         call_str ='GenerateRSC_Sen_Gamma.py ' + igramDir
+        os.system(call_str)
+        
+    if Resamp_All =='1':
+        call_str = 'Resamp_all_Sen_Gamma.py ' + igramDir
         os.system(call_str)
     
     if UnwrapPhase =='1':
