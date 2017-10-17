@@ -202,7 +202,7 @@ def main(argv):
         os.system(call_str)
 
     lt0 = workDir + "/lt0" 
-    lt1 = workDir + "/lt1"
+    lt1 = workDir + "/" + Mdate + "-" + Sdate + ".lt"
     mli0 = workDir + "/mli0" 
     diff0 = workDir + "/diff0" 
     offs0 = workDir + "/offs0"
@@ -310,8 +310,8 @@ def main(argv):
         #call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
         #os.system(call_str)
         
-        call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + S_RSLC_tab + " " + SrslcImg + " " + SrslcPar
-        os.system(call_str)
+        #call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + S_RSLC_tab + " " + SrslcImg + " " + SrslcPar
+        #os.system(call_str)
 
 
         #call_str = "cp " + MslcImg + " " + MrslcImg
@@ -348,7 +348,7 @@ def main(argv):
         
 
     os.remove(lt0)
-    os.remove(lt1)
+    #os.remove(lt1)
     os.remove(mli0)
     os.remove(diff0)
     os.remove(offs0)
@@ -356,7 +356,7 @@ def main(argv):
     os.remove(offsets0)
     os.remove(coffs0)
     os.remove(coffsets0)
-    os.remove(off)
+    #os.remove(off)
     os.remove(offs)
     os.remove(snr)
     os.remove(offsets)
@@ -365,12 +365,12 @@ def main(argv):
     os.remove(Srslc0Img)
     os.remove(Srslc0Par)
     
-    SS = glob.glob(workDir + '/*.rslc*')
+    #SS = glob.glob(workDir + '/*.rslc*')
     
-    for kk in SS:
-        kk2 = kk.replace('.rslc','.slc')
-        call_str = 'mv ' + kk + ' ' + kk2
-        os.system(call_str)
+    #for kk in SS:
+    #    kk2 = kk.replace('.rslc','.slc')
+    #    call_str = 'mv ' + kk + ' ' + kk2
+    #    os.system(call_str)
 
     #call_str = 'mv ' + workDir+'/* ' +  workDir_Org
     #os.system(call_str)
