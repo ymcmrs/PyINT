@@ -153,7 +153,7 @@ def main(argv):
     if 'Start_Burst' in templateContents: SB = templateContents['Start_Burst']
     else: SB = '1'
         
-   if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
+    if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
     else: Resamp_All = '1'      
         
 #  Definition of file
