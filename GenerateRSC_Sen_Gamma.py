@@ -161,8 +161,8 @@ def main(argv):
         MrslcPar    = SslcDir + '/' + Mdate + '.rslc.par'
         SrslcPar    = SslcDir + '/' + Sdate + '.rslc.par'
     
-     if os.path.isfile(OFF):
-            os.remove(OFF)
+    if os.path.isfile(OFF):
+        os.remove(OFF)
     
     call_str = 'create_offset ' + MrslcPar + ' ' +   SrslcPar + ' '  + OFF + ' 1 ' + rlks + ' ' + azlks + ' 0'
     os.system(call_str)
