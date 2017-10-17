@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #################################################################
-###  This program is part of PyMIS  v1.0                      ### 
+###  This program is part of PyINT  v1.0                      ### 
 ###  Copy Right (c): 2017, Yunmeng Cao                        ###  
 ###  Author: Yunmeng Cao                                      ###                                                          
 ###  Email : ymcmrs@gmail.com                                 ###
@@ -260,7 +260,7 @@ def read_roipac_rsc(File):
 
 INTRODUCTION = '''
 #############################################################################
-   Copy Right(c): 2017, Yunmeng Cao   @PyMIS v1.0   
+   Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0   
    
    Loading data for PyMIS processing.
    
@@ -324,7 +324,7 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
         
-    workDir    = scratchDir + '/' + projectName + '/PYMIS'
+    workDir    = scratchDir + '/' + projectName + '/TSSAR'
     if not os.path.isdir(workDir):
         call_str='mkdir ' + workDir
         os.system(call_str)
