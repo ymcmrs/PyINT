@@ -1,9 +1,11 @@
 #! /usr/bin/env python
-############################################################                                                     
-# Program is part of TSSAR   v1.0                          #
-# Copyright(c) 2017, Yunmeng Cao                           #
-# Author:  Yunmeng Cao                                     #                                                         
-############################################################
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
 
 
 import os
