@@ -320,8 +320,8 @@ def main(argv):
         #call_str = "cp " + MslcPar + " " + MrslcPar
         #os.system(call_str)
         
-        call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
-        os.system(call_str)
+        #call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
+        #os.system(call_str)
 
 
 ####################  multi-looking for RSLC #########################################
@@ -332,18 +332,18 @@ def main(argv):
         #call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
         #os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
+        #call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+        #os.system(call_str)
 
-        nWidth = UseGamma(SamprlksPar, 'read', 'range_samples')
+        #nWidth = UseGamma(SamprlksPar, 'read', 'range_samples')
 
         #call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
         #os.system(call_str)  
         #ras2jpg(MamprlksImg, MamprlksImg) 
         
-        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
-        os.system(call_str)
-        ras2jpg(SamprlksImg, SamprlksImg)
+        #call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+        #os.system(call_str)
+        #ras2jpg(SamprlksImg, SamprlksImg)
         
         
 
