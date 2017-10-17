@@ -132,7 +132,8 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
     masterDate = templateContents['masterDate']
-
+    masterDir = rslcDir + '/' + masterDate
+    
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM"   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
     
@@ -146,15 +147,6 @@ def main(argv):
         str_call="mkdir " + geoDir
         os.system(str_call)
 
-    if INF=='IFG':
-        Suffix=['']
-    elif INF=='MAI':
-        Suffix=['.F','.B']
-    elif INF=='RSI':
-        Suffix=['.HF','.LF']
-    else:
-        print "The folder name %s cannot be identified !" % igramDir
-        usage();sys.exit(1)          
     
     ### geocode process
 
@@ -167,37 +159,35 @@ def main(argv):
     if 'Unwrap_Flattening'          in templateContents: flatteningUnwrap = templateContents['Unwrap_Flattening']      
     else: flatteningUnwrap = 'N'       
     
-    if 'unwrapMethod'          in templateContents: unwrapMethod = templateContents['unwrapMethod']                
-    else: unwrapMethod = 'mcf'
-
-#  Definition of file
-    simDir = demDir
-    
-    masterDate = Mdate
-    UTMDEMpar   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem.par'
-    UTMDEM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem'
-    UTM2RDC     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm_to_rdc'
-    SIMSARUTM   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_utm'
-    PIX         = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.pix'
-    LSMAP       = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.ls_map'
-    SIMSARRDC   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_rdc'
-    SIMDIFFpar  = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.diff_par'
-    SIMOFFS     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offs'
-    SIMSNR      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.snr'
-    SIMOFFSET   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offset'
-    SIMCOFF     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coff'
-    SIMCOFFSETS = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coffsets'
-    UTMTORDC    = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.UTM_TO_RDC'
-    HGTSIM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.rdc.dem'
-    SIMUNW      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_unw'
-
- 
-    GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.int'  
-    GEOFILTINT  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.filt.int'
-    GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.amp'
-    GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff.cor'
+    if 'Resamp_All'          in templateContents: Resamp_All = templateContents['Resamp_All']                
+    else: Resamp_All = '1'
         
-    GEODIFFRAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff.int'
+    MamprlksImg = MslcDir  + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MamprlksPar = MslcDir  + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    
+    MrslcPar = workDir  + '/' + Mdate + '.rslc.par'
+    MrslcImg = workDir  + '/' + Mdate + '.rslc'
+    SrslcPar = workDir  + '/' + Sdate + '.rslc.par'
+    SrslcImg = workDir  + '/' + Sdate + '.rslc'
+      
+    if Resamp_All=='1':
+        MamprlksImg = masterDir  + '/' + masterDate + '_' + rlks + 'rlks.amp'
+        MamprlksPar = masterDir  + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
+        MrslcPar = MslcDir  + '/' + Mdate + '.rslc.par'
+        MrslcImg = MslcDir  + '/' + Mdate + '.rslc'
+        SrslcPar = SslcDir  + '/' + Sdate + '.rslc.par'
+        SrslcImg = SslcDir  + '/' + Sdate + '.rslc'
+  
+    if os.path.isfile(OFFlks):
+        os.remove(OFFlks)
+        
+    call_str = 'create_offset ' +  MrslcPar + ' ' +   SrslcPar + ' ' + OFFlks + ' 1 ' + rlks + ' ' + azlks + ' 0'
+    os.system(call_str)
+    
+#  Definition of file
+    UNWlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
+    
+    GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.cor' 
     GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
     GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.unw'
     GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.quad_fit.unw'
