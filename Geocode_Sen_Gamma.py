@@ -125,6 +125,7 @@ def main(argv):
     rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     workDir    = processDir + '/' + igramDir   
     demDir     = processDir + '/DEM'
+    simDir     = demDir
     MslcDir = rslcDir + '/' + Mdate
     SslcDir = rslcDir + '/' + Sdate
     
@@ -133,6 +134,26 @@ def main(argv):
     azlks = templateContents['Azimuth_Looks']
     masterDate = templateContents['masterDate']
     masterDir = rslcDir + '/' + masterDate
+    
+    if not Resamp_All=='1':
+        masterDate = Mdate
+    
+    UTMDEMpar   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem.par'
+    UTMDEM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm.dem'
+    UTM2RDC     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.utm_to_rdc'
+    SIMSARUTM   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_utm'
+    PIX         = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.pix'
+    LSMAP       = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.ls_map'
+    SIMSARRDC   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_sar_rdc'
+    SIMDIFFpar  = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.diff_par'
+    SIMOFFS     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offs'
+    SIMSNR      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.snr'
+    SIMOFFSET   = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.offset'
+    SIMCOFF     = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coff'
+    SIMCOFFSETS = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.coffsets'
+    UTMTORDC    = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.UTM_TO_RDC'
+    HGTSIM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.rdc.dem'
+    SIMUNW      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_unw'
     
     simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM"   
     simDir = simDir + '/sim_' + Mdate + '-' + Sdate
@@ -186,14 +207,16 @@ def main(argv):
     
 #  Definition of file
     UNWlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
+    CORDIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'    
+    DIFFINTFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
+    QUADUNWlks = UNWlks.replace('.unw','.quad_fit.unw')
+    
+    
     
     GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.cor' 
     GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
     GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.unw'
     GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.quad_fit.unw'
- 
-            
-    QUADUNWlks   = UNWlks.replace('.unw','.quad_fit.unw')
 
 
     nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
