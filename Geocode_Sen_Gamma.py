@@ -202,11 +202,6 @@ def main(argv):
         SrslcPar = SslcDir  + '/' + Sdate + '.rslc.par'
         SrslcImg = SslcDir  + '/' + Sdate + '.rslc'
   
-    if os.path.isfile(OFFlks):
-        os.remove(OFFlks)
-        
-    call_str = 'create_offset ' +  MrslcPar + ' ' +   SrslcPar + ' ' + OFFlks + ' 1 ' + rlks + ' ' + azlks + ' 0'
-    os.system(call_str)
     
 #  Definition of file
     UNWlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
@@ -220,6 +215,11 @@ def main(argv):
     GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.unw'
     GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.quad_fit.unw'
 
+    if os.path.isfile(OFFlks):
+        os.remove(OFFlks)
+        
+    call_str = 'create_offset ' +  MrslcPar + ' ' +   SrslcPar + ' ' + OFFlks + ' 1 ' + rlks + ' ' + azlks + ' 0'
+    os.system(call_str)
 
     nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
     nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
