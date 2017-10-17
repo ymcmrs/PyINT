@@ -226,6 +226,8 @@ def main(argv):
     os.system(call_str)
     os.rename(rINT, INT)
     
+    if os.path.isfile(OFF):
+        os.remove(OFF)
     call_str = 'create_offset ' + MrslcPar + ' ' + MrslcPar + ' ' + OFF + ' 1 - - 0'
     os.system(call_str)
     call_str = '$GAMMA_BIN/multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
@@ -237,6 +239,8 @@ def main(argv):
     call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW
     os.system(call_str)
     
+    if os.path.isfile(DIFFpar):
+        os.remove(DIFFpar)
     call_str = '$GAMMA_BIN/create_diff_par ' + MLI1PAR + ' ' + MLI1PAR + ' ' + DIFFpar + ' 1 0 '
     os.system(call_str)     
         
