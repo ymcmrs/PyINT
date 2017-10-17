@@ -173,7 +173,7 @@ def main(argv):
         os.system(call_str)
     
     if COREG_ALL == '1':
-        call_str = 'COREG_ALL_Sen_Gamma.py ' + projectNaem
+        call_str = 'COREG_ALL_Sen_Gamma.py ' + projectName
         os.system(call_str)
         
         call_str = 'Generate_RdcDEM_Sen_ALL.py ' + projectName
