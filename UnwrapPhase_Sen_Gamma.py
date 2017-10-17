@@ -175,6 +175,9 @@ def main(argv):
     call_str = 'cp ' + DIFF0 + ' ' + DIFFlks
     os.system(call_str)
        
+    if Resamp_All =='1':
+        
+        
  ###################### Filtering ####################  
 
     if 'Diff_FilterStrength' in templateContents: 
