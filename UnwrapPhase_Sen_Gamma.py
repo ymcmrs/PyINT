@@ -174,14 +174,14 @@ def main(argv):
     SamprlksPar = workDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
 
     DIFF0     = workDir + '/' + Mdate + '_' + Sdate +'.diff'
-    DIFFlks     = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.diff'
-    DIFFFILTlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.filt.diff'
-    UNWlks  =  workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
+    DIFFlks     = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
+    DIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
+    UNWlks  =  workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
     UNWINTERPlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw_interp'
     DIFFpar = workDir + '/' + Mdate + '-' + Sdate +'.diff_par'
     QUADFIT = workDir + '/' + Mdate + '-' + Sdate +'.quad_fit'
 
-    CORDIFFFILTlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.filt_diff.cor'
+    CORDIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'
     MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
 
     call_str = 'cp ' + DIFF0 + ' ' + DIFFlks
