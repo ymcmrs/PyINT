@@ -378,7 +378,7 @@ def main(argv):
     #call_str ='rm -rf ' + workDir
     #os.system(call_str)
     
-    print "Coregistration with DEM is done!"
+    print "Generate lookup table and off is done."
  
     sys.exit(1)
 
