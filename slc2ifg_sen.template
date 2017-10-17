@@ -3,6 +3,9 @@
 Track  = 71
 Frame  = 479 
 
+Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
+Azimuth_Looks =  4
+
 #####################################   Options ##########################################
 Startdate = 2017-01-01     # [option]
 Enddate   = 2100-01-01     # [option]
