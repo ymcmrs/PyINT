@@ -317,11 +317,11 @@ def main(argv):
         os.system(call_str)
 
 
-        #call_str = "cp " + MslcImg + " " + MrslcImg
-        #os.system(call_str)
+        call_str = "cp " + MslcImg + " " + MrslcImg
+        os.system(call_str)
 
-        #call_str = "cp " + MslcPar + " " + MrslcPar
-        #os.system(call_str)
+        call_str = "cp " + MslcPar + " " + MrslcPar
+        os.system(call_str)
         
         #call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
         #os.system(call_str)
