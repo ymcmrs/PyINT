@@ -372,14 +372,14 @@ def main(argv):
     #    call_str = 'mv ' + kk + ' ' + kk2
     #    os.system(call_str)
 
-    #call_str = 'mv ' + workDir+'/* ' +  workDir_Org
-    #os.system(call_str)
+    os.chdir(workDir)
+    call_str = 'rm *rslc*'
+    os.system(call_str)
     
     #call_str ='rm -rf ' + workDir
     #os.system(call_str)
     
     print "Generate lookup table and off is done."
- 
     sys.exit(1)
 
 if __name__ == '__main__':
