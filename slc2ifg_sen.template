@@ -7,6 +7,8 @@ Enddate   = 2100-01-01
 Range_Looks  =  20
 Azimuth_Looks =  4
 
+# DEM =  [you can provide high resolution DEM, otherwise SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
+
 #####      Time series switch   ####
 DOWNLOAD          =  1
 DOWN2SLC          =  1
