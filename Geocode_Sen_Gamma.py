@@ -192,7 +192,8 @@ def main(argv):
     MrslcImg = workDir  + '/' + Mdate + '.rslc'
     SrslcPar = workDir  + '/' + Sdate + '.rslc.par'
     SrslcImg = workDir  + '/' + Sdate + '.rslc'
-      
+    
+    
     if Resamp_All=='1':
         MamprlksImg = masterDir  + '/' + masterDate + '_' + rlks + 'rlks.amp'
         MamprlksPar = masterDir  + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
@@ -212,8 +213,7 @@ def main(argv):
     CORDIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.cor'    
     DIFFINTFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
     QUADUNWlks = UNWlks.replace('.unw','.quad_fit.unw')
-    
-    
+    OFFlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.off'
     
     GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.cor' 
     GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
