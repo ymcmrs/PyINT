@@ -247,13 +247,13 @@ def main(argv):
     call_str = "$GAMMA_BIN/init_offsetm " + mli0 + " " + SamprlksImg + " " + diff0 + " 2 2 - - - - - 512"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rwin4cor + " " + azwin4cor + " " + offsets0 + " 1 " + rsample4cor + " " + azsample4cor
+    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rwin4cor + " " + azwin4cor + " " + offsets0 + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
   
     call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 3"
     os.system(call_str)
     
-    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 1 " + rfsample4cor + " " + azfsample4cor
+    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
   
     call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
