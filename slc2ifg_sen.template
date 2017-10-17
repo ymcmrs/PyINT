@@ -27,6 +27,7 @@ Load_Date         =  1       # [option] Load GAMMA data to H5 file for time seri
 ####  interferometry processing switch  ######
 
 DiffPhase         =  1      # [option] interferometry and differential processing
+Resamp_All        =  1      # [option] resampling all image to one master date. 
 UnwrapPhase       =  1      # [option] unwrap interferogram
 GeoPhase          =  1      # [option] Geocode radar coordinates date into lat/lon coordinates.
 
