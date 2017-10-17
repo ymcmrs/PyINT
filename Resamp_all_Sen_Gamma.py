@@ -174,6 +174,14 @@ def main(argv):
     OFFlks = workDir + '/' + Mdate+ '-' + Sdate + '_' + rlks + 'rlks.roff'
     DIFFpar = workDir + '/' + Mdate+ '-' + Sdate  + '.diff_par'
     
+    int_off = workDir + '/off0'
+    INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
+    rINT =  workDir + '/' + Mdate + '-' + Sdate + '.rint'
+    rINTpar =  workDir + '/' + Mdate + '-' + Sdate + '.rint.par'
+    INTlks = workDir + '/' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
+    DIFFINTlks = workDir + '/' + Mdate + '_' + Sdate + '.diff' 
+    DIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
+    
     if os.path.isfile(OFFlks):
         os.remove(OFFlks)
         
@@ -203,13 +211,6 @@ def main(argv):
     fin.close()
     fout.close()
 
-    int_off = workDir + '/off0'
-    INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
-    rINT =  workDir + '/' + Mdate + '-' + Sdate + '.rint'
-    rINTpar =  workDir + '/' + Mdate + '-' + Sdate + '.rint.par'
-    INTlks = workDir + '/' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
-    DIFFINTlks = workDir + '/' + Mdate + '_' + Sdate + '.diff' 
-    DIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate +  '_' + rlks + 'rlks.int' 
     
     call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
     os.system(call_str)
