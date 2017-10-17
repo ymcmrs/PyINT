@@ -155,8 +155,8 @@ def main(argv):
     SslcDir = rslcDir + "/" + Sdate
     MslcDir = rslcDir + "/" + Mdate
     
-    MLI1PAR ＝ rslcDir +'/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks' + '.amp.par'
-    MLI2PAR ＝ rslcDir +'/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks' + '.amp.par'
+    MLI1PAR ＝ rslcDir +'/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
+    MLI2PAR ＝ rslcDir +'/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
     
     HGTSIM = demDir + '/sim_' + masterDate + '_' + rlks +'rlks' + '.rdc.dem'
     SIMUNW      = simDir + '/sim_' + Mdate + '-' + Sdate + '_' + rlks +'rlks' + '.sim_unw'
