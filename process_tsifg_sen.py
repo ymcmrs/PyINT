@@ -97,14 +97,13 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+      Processing time series Sentinel-1 datasets from download data to generate unwrapped interferograms and load time series h5 file. 
 
    usage:
    
-            process_tsifg projectName
+            process_tsifg_sen.py projectName
       
-      e.g.  process_tsifg PacayaT163TsxHhA
+      e.g.  process_tsifg_sen.py PacayaT163TsxHhA
            
 *******************************************************************************************************
     '''   
