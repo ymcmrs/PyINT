@@ -191,78 +191,24 @@ def main(argv):
     HGTSIM      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.rdc.dem'
     SIMUNW      = simDir + '/sim_' + masterDate + '_'+rlks +'rlks.sim_unw'
 
-
-    for i in range(len(Suffix)):          
-        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"   
-        
-        MamprlksImg = MslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = MslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"        
-        SamprlksImg = SslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = SslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-        OFF         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.off'
-        INT         = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
-        INTlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
-        OFFlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.off'
-        FLTlks      = workDir + '/flat_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'
-        FLTFFTlks   = FLTlks.replace('flat_', 'flat_sim_')      
-
-        CORlks      = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
-        CORFILTlks  = workDir + '/filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
-
-        BASE        = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base'
-        BASE_REF    = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.base_ref'
-   
-        DIFFpar     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.diff.par'
-    
-        DIFFINTlks  = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.int'  
-        DIFFINTFFTlks = DIFFINTlks.replace('diff_', 'diff_sim_')
-
-        CORDIFFlks = workDir+'/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' +  Suffix[i] + '.cor'
-        CORDIFFFILTlks = workDir+'/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[i] + '.cor'
-        
-        MASKTHINlks  = CORFILTlks + 'maskt.bmp'
-        MASKTHINDIFFlks  = CORDIFFFILTlks + 'maskt.bmp'
  
-        GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.int'  
-        GEOFILTINT  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.filt.int'
-        GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.amp'
-        GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff.cor'
+    GEOINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.int'  
+    GEOFILTINT  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.filt.int'
+    GEOPWR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.amp'
+    GEOCOR      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff.cor'
         
-        GEODIFFRAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff.int'
-        GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.diff_filt.int'
-        GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.unw'
-        GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks' + Suffix[i] +'.quad_fit.unw'
+    GEODIFFRAWINT   = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff.int'
+    GEODIFFINT      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.diff_filt.int'
+    GEOUNW      = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.unw'
+    GEOQUADUNW  = geoDir + '/geo_' + Mdate + '-' + Sdate + '_'+rlks + 'rlks.quad_fit.unw'
  
-        if flatteningIgram == 'orbit':
-            FLTFILTlks = FLTlks.replace('flat_', 'filt_')
-        else :
-            FLTFILTlks = FLTFFTlks.replace('flat_', 'filt_')
-
-        if flatteningDiff == 'orbit':
-            DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')    
-        else:
-            DIFFINTFILTlks = DIFFINTFFTlks.replace('diff_', 'diff_filt_')
-
-        if flagTopo == 'Y':
-            WRAPlks = FLTFILTlks      
-        else:
-            WRAPlks = DIFFINTFILTlks
-
-        if unwrapMethod == "mcf":    
-            UNWlks       = WRAPlks.replace('.int', '.unw')
-        else:
-            UNWlks       = WRAPlks.replace('.int', '.branch.unw')
             
-        QUADUNWlks   = UNWlks.replace('.unw','.quad_fit.unw')
+    QUADUNWlks   = UNWlks.replace('.unw','.quad_fit.unw')
 
 
-        nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
-        nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
-        nLineUTMDEM = UseGamma(UTMDEMpar, 'read', 'nlines')
+    nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
+    nWidthUTMDEM = UseGamma(UTMDEMpar, 'read', 'width')
+    nLineUTMDEM = UseGamma(UTMDEMpar, 'read', 'nlines')
 
 
 #    if flatteningIgram == 'fft':
@@ -270,49 +216,36 @@ def main(argv):
 
 #    FLTFILTlks = FLTlks.replace('flat_', 'filt_')
 
-        geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+     geocode(MamprlksImg, GEOPWR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+     geocode(CORDIFFFILTlks, GEOCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         #geocode(FLTlks, GEOINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
         #geocode(FLTFILTlks, GEOFILTINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
-        call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
-        os.system(call_str)
+     call_str = '$GAMMA_BIN/raspwr ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - '
+     os.system(call_str)
 
-        ras2jpg(GEOPWR, GEOPWR)
+     ras2jpg(GEOPWR, GEOPWR)
 
-        call_str = '$GAMMA_BIN/rascc ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - - - -' 
-        os.system(call_str)
-        ras2jpg(GEOCOR, GEOCOR) 
+     call_str = '$GAMMA_BIN/rascc ' + GEOCOR + ' ' + nWidthUTMDEM + ' - - - - - - - - - -' 
+     os.system(call_str)
+     ras2jpg(GEOCOR, GEOCOR) 
 
-        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        #os.system(call_str)
-        #ras2jpg(GEOINT, GEOINT)
+    geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+    geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
 
-        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEOFILTINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        #os.system(call_str)
-        #ras2jpg(GEOFILTINT, GEOFILTINT)
- 
-        #geocode(DIFFINTlks, GEODIFFRAWINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        geocode(DIFFINTFILTlks, GEODIFFINT, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-        geocode(UNWlks, GEOUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+    call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
+    os.system(call_str)
+    ras2jpg(GEODIFFINT, GEODIFFINT) 
 
-        #call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFRAWINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        #os.system(call_str)
-        #ras2jpg(GEODIFFRAWINT, GEODIFFRAWINT)
-       
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + GEODIFFINT + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(GEODIFFINT, GEODIFFINT) 
-
-        call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
-        os.system(call_str)
-        ras2jpg(GEOUNW, GEOUNW) 
+    call_str = '$GAMMA_BIN/rasrmg ' + GEOUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+    os.system(call_str)
+    ras2jpg(GEOUNW, GEOUNW) 
    
-        if flatteningUnwrap == 'Y':
-            geocode(QUADUNWlks, GEOQUADUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
-            call_str = '$GAMMA_BIN/rasrmg ' + GEOQUADUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
-            os.system(call_str)
-            ras2jpg(GEOQUADUNW, GEOQUADUNW) 
+    if flatteningUnwrap == 'Y':
+        geocode(QUADUNWlks, GEOQUADUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM)
+        call_str = '$GAMMA_BIN/rasrmg ' + GEOQUADUNW + ' ' + GEOPWR + ' ' + nWidthUTMDEM + ' - - - - - - - - - - ' 
+        os.system(call_str)
+        ras2jpg(GEOQUADUNW, GEOQUADUNW) 
                 
     
     print "Geocoding is done!" 
