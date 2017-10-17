@@ -74,13 +74,13 @@ def usage():
     print '''
 ******************************************************************************************************
  
-                 Estimating the offsets of two SAR images based on cross-correlation.
+                 Generate lookup table for Sentinel-1 data for resampling
 
    usage:
    
-            GenOff_Gamma.py ProjectName Mdate Sdate workDir
+            GenLT_Sen_Gamm.py ProjectName Mdate Sdate workDir
       
-      e.g.  GenOff_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
+      e.g.  GenLT_Sen_Gamm.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
       
 *******************************************************************************************************
     '''   
