@@ -14,7 +14,7 @@ End_Burst =  9             # [option: bursts position is based on the master ima
 
 # DEM =                    #[if no DEM provided, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
 
-#####      Time series switch   ####
+#####      Time series processing switch   ####
 DOWNLOAD          =  1       # [option] download Sentinel-1 A/B data according to track,frame and time interval.
 DOWN2SLC          =  1       # [option] generate SLC from downloaded raw data.
 EXTRACT_BURST     =  1       # [option] Extract bursts: 1) for coregistration which should make sure all bursts of slave are correspinding to the master;
@@ -24,7 +24,7 @@ Gen_IFG_DIR       =  1       # [option] Generate interferogram directory, you ca
 SLC2IFG           =  1       # [option] Generate interferograms
 Load_Date         =  1       # [option] Load GAMMA data to H5 file for time series processing. 
 
-####  interferometry switch  ######
+####  interferometry processing switch  ######
 
 DiffPhase         =  1      # [option] interferometry and differential processing
 UnwrapPhase       =  1      # [option] unwrap interferogram
