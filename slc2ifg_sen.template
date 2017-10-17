@@ -1,25 +1,32 @@
 ################  template for GAMMA-based Sentinel data processing ##############
 
 Track  = 71
-Frame  = 479
-Startdate = 2017-01-01
-Enddate   = 2100-01-01
-Range_Looks  =  20
+Frame  = 479 
+Startdate = 2017-01-01     # [option]
+Enddate   = 2100-01-01     # [option]
+Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
 Azimuth_Looks =  4
 
-# DEM =  [you can provide high resolution DEM, otherwise SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
+Start_Swath  =  2          # [option]
+End_Swath  =  1            # [option]
+Start_Burst  =  4          # [option: bursts position is based on the master image]
+End_Burst =  9             # [option: bursts position is based on the master image]
+
+# DEM =                    #[if no DEM provided, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
 
 #####      Time series switch   ####
-DOWNLOAD          =  1
-DOWN2SLC          =  1
-EXTRACT_BURST     =  1 
-COREG_ALL         =  1
-Gen_IFG_DIR       =  1 
-SLC2IFG           =  1
+DOWNLOAD          =  1       # [option] download Sentinel-1 A/B data according to track,frame and time interval.
+DOWN2SLC          =  1       # [option] generate SLC from downloaded raw data.
+EXTRACT_BURST     =  1       # [option] Extract bursts: 1) for coregistration which should make sure all bursts of slave are correspinding to the master;
+                             #                          2)  Extract interest region.  
+COREG_ALL         =  1       #  [option] Resample all of the SLC to the master data, make them have the same radar coordinates
+Gen_IFG_DIR       =  1       # [option] Generate interferogram directory, you can use yourself code, here is simply based on SBAS.
+SLC2IFG           =  1       # [option] Generate interferograms
+Load_Date         =  1       # [option] Load GAMMA data to H5 file for time series processing. 
 
 ####  interferometry switch  ######
 
-DiffPhase         =  1
-UnwrapPhase       =  1
-GeoPhase          =  1
+DiffPhase         =  1      # [option] interferometry and differential processing
+UnwrapPhase       =  1      # [option] unwrap interferogram
+GeoPhase          =  1      # [option] Geocode radar coordinates date into lat/lon coordinates.
 
