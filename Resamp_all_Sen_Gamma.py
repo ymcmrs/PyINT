@@ -247,6 +247,8 @@ def main(argv):
     call_str = '$GAMMA_BIN/sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1 0'
     os.system(call_str)   
     
+    os.remove(INT)
+    
      #call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
      #os.system(call_str)
         
