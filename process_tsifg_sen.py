@@ -187,6 +187,10 @@ def main(argv):
     if SLC2IFG=='1':    
         call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
         os.system(call_str)
+        
+    if Load_Data=='1':
+        call_str = 'load_data_gamma.py ' + projectName
+        os.system(call_str)     
 
     print "Time series interferograms processing is done! "    
     sys.exit(1)
