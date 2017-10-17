@@ -203,6 +203,9 @@ def main(argv):
 
     lt0 = workDir + "/lt0" 
     lt1 = workDir + "/" + Mdate + "-" + Sdate + ".lt"
+    if os.path.isfile(lt1):
+        os.remove(lt1)
+    
     mli0 = workDir + "/mli0" 
     diff0 = workDir + "/diff0" 
     offs0 = workDir + "/offs0"
