@@ -121,36 +121,52 @@ def main(argv):
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
     
+    if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
+    else: Resamp_All = '1'
+    
     processDir = scratchDir + '/' + projectName + "/PROCESS"
+    workDir    = processDir + '/' + igramDir 
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     MslcDir    = rslcDir + '/' + Mdate
     SslcDir    = rslcDir + '/' + Sdate
-    workDir    = processDir + '/' + igramDir   
+    
+    MrslcImg    = workDir + '/' + Mdate + '.rslc'
+    SrslcImg    = workDir+ '/' + Sdate + '.rslc'
+    MrslcPar    = workDir + '/' + Mdate + '.rslc.par'
+    SrslcPar    = workDir + '/' + Sdate + '.rslc.par'
+    
+    masterDir  = rslcDir + '/' + masterDate   
     TS_RSC     = workDir + '/' + IFGPair + '_' + rlks + 'rlks.rsc'
     OFF_STD = workDir + '/' + Mdate + '-' + Sdate + '.off_std'
     
-    MRSLCPAR = workDir + '/' + Mdate + Suffix[0] + '.rslc.par'
     MCORNER = workDir + '/' + Mdate + Suffix[0] + '.corner'
     MLATLON = workDir + '/' + Mdate + Suffix[0] + '.latlon'
-    SRSLCPAR = workDir + '/' + Sdate + Suffix[0] + '.rslc.par'    
+
     
     OFF   =  workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks' + Suffix[0] + '.off'
-    if not os.path.isfile(OFF):
-        call_str = 'create_offset ' + workDir+'/' + Mdate + '.rslc.par ' +  workDir+'/' + Sdate + '.rslc.par ' + OFF + ' 1 ' + rlks + ' ' + azlks + ' 0'
-        os.system(call_str)
-        
+    
     BASE  =  workDir + '/' + Mdate + '-' + Sdate + Suffix[0] + '.base'
     PBASE =  workDir + '/' + Mdate + '-' + Sdate + Suffix[0] + '.base_perp'
     PBASE_TXT = workDir + '/' + Mdate + '-' + Sdate + Suffix[0] + '.base_perp_txt'
     BVH_TXT = workDir + '/' + Mdate + '-' + Sdate + Suffix[0] + '.base_vh_txt'
     
-    if not os.path.isdir(rslcDir):
-        call_str = 'mkdir ' + rslcDir
-        os.system(call_str)
 
     SLC_par = MslcDir + '/' + Mdate + '_' + rlks +'rlks.amp.par' 
     SLC_par2 = SslcDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
+    if Resamp_All =='1':        
+        SLC_par = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par' 
+        MrslcImg    = MslcDir + '/' + Mdate + '.rslc'
+        SrslcImg    = MslcDir + '/' + Sdate + '.rslc'
+        MrslcPar    = SslcDir + '/' + Mdate + '.rslc.par'
+        SrslcPar    = SslcDir + '/' + Sdate + '.rslc.par'
+    
+     if os.path.isfile(OFF):
+            os.remove(OFF)
+    
+    call_str = 'create_offset ' + MrslcPar + ' ' +   SrslcPar + ' '  + OFF + ' 1 ' + rlks + ' ' + azlks + ' 0'
+    os.system(call_str)
+    
     nWidth = UseGamma(SLC_par, 'read', 'range_samples:')
     nLine  = UseGamma(SLC_par, 'read', 'azimuth_lines:')
     
@@ -266,10 +282,10 @@ def main(argv):
     Center_Range = UseGamma(SLC_par, 'read', 'center_range_slc:')
     Far_Range = UseGamma(SLC_par, 'read', 'far_range_slc:')
 
-    call_str = 'base_orbit ' + MRSLCPAR + ' ' + SRSLCPAR + ' ' + BASE
+    call_str = 'base_orbit ' + MrslcPar + ' ' + SrslcPar + ' ' + BASE
     os.system(call_str)
     
-    call_str = 'base_perp ' + BASE + ' ' + MRSLCPAR + ' ' + OFF + ' >' + PBASE
+    call_str = 'base_perp ' + BASE + ' ' + MrslcPar + ' ' + OFF + ' >' + PBASE
     os.system(call_str)
     
     call_str ='cat ' + PBASE + ' | tail -n +13 | head -n 50 >' +PBASE_TXT
@@ -303,7 +319,7 @@ def main(argv):
     wstr = 'LOOK_REF2                 ' + str(LA[len(LA)-1]) + '\n'
     f.write(wstr)
     
-    call_str ='SLC_corners ' + MRSLCPAR + ' > ' + MCORNER
+    call_str ='SLC_corners ' + MrslcPar + ' > ' + MCORNER
     os.system(call_str)
     call_str = "awk 'NR==3,NR==6 {print $3,$6} ' " + MCORNER + '> ' + MLATLON
     os.system(call_str)
