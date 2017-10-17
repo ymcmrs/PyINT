@@ -135,6 +135,9 @@ def main(argv):
     if DiffPhase == '1':
         call_str = 'DiffPhase_Sen_Gamma.py ' + igramDir
         os.system(call_str)
+        
+        call_str ='GenerateRSC_Sen_Gamma.py ' + igramDir
+        os.system(call_str)
     
     if UnwrapPhase =='1':
         call_str = 'UnwrapPhase_Sen_Gamma.py ' + igramDir
