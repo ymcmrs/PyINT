@@ -149,7 +149,7 @@ def main(argv):
         usage();sys.exit(1)  
 # definition of intermediate and output file variables for slc images and parameters
 
-    BaseslcDir = slcDir + "/" + masterDate
+    BaseslcDir = rslcDir + "/" + masterDate
     BaseslcImg = BaseslcDir + '/' + masterDate + '.slc'
     BaseslcPar = BaseslcDir + '/' + masterDate + '.slc.par'
     Baseslc4Par = workDir + '/' + masterDate + '.slc4.par'
@@ -181,57 +181,26 @@ def main(argv):
 
 ##############################################  Resampling #####################################################
 
-    for i in range(len(Suffix)):
-        if not INF=='IFG':
-            MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
-            MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
-            SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
-            SslcPar = workDir + "/" + Sdate + Suffix[i]+".slc.par"
- 
-        INT      = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int'
-        INTpar   = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.int.par'
-        
-        rINT     = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint'
-        rINTpar  = workDir + '/' + Mdate + '-' + Sdate + Suffix[i] + '.rint.par'
-        
-        MrslcImg0 = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar0 = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        MrslcPar00 = workDir + "/" + Mdate + Suffix[i]+".rslc0.par"
-        
-        call_str = 'cp ' + MrslcPar0 + ' ' + MrslcPar00
-        os.system(call_str)
-        
-        MrslcImg = rslcDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = rslcDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = rslcDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = rslcDir + "/" + Sdate + Suffix[i]+".rslc.par"
-
-        MamprlksImg = rslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = rslcDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-        SamprlksImg = rslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = rslcDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-
 ####   detect the choice for resampling #######      
         
         
 ### post coregistration for interferogram 
 
-        fin = open(BaseslcPar,"r")
-        fout = open(Baseslc4Par,"w")
-        txt = fin.read()
-        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
-        fout.write(txtout)
-        fin.close()
-        fout.close()
+    fin = open(BaseslcPar,"r")
+    fout = open(Baseslc4Par,"w")
+    txt = fin.read()
+    txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+    fout.write(txtout)
+    fin.close()
+    fout.close()
 
-        fin = open(MrslcPar0,"r")
-        fout = open(INTpar,"w")
-        txt = fin.read()
-        txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
-        fout.write(txtout)
-        fin.close()
-        fout.close()
+    fin = open(MrslcPar0,"r")
+    fout = open(INTpar,"w")
+    txt = fin.read()
+    txtout = re.subn("SCOMPLEX","FCOMPLEX",txt)[0]
+    fout.write(txtout)
+    fin.close()
+    fout.close()
 ##################################################
 
         call_str = 'cp ' + MamprlksImg + ' ' + workDir
@@ -258,9 +227,9 @@ def main(argv):
 #######################################################        
 
         if ( masterDate != Mdate):
-            call_str = "$GAMMA_BIN/SLC_interp " + INT + " " + Baseslc4Par + " " + INTpar + " " + Moff + " " + rINT + " " + rINTpar
+            call_str = "$GAMMA_BIN/SLC_interp_lt " + DIFF + " " + Baseslc4Par + " " + DIFFpar + " " + lt + " " + MLI1PAR + " " + MLI2_PAR + " " + OFF + " " + rDIFF + " " + rDIFFpar
             os.system(call_str)
-            os.rename(rINT, INT)
+            os.rename(rDIFF, DIFF)
 
     
     print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
