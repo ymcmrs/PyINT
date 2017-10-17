@@ -1,4 +1,3 @@
-
 #! /usr/bin/env python
 #################################################################
 ###  This program is part of PyINT  v1.0                      ### 
@@ -107,7 +106,7 @@ def main(argv):
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
-    templateContents=read_template(templateFile)
+    templateContents =read_template(templateFile)
     
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
@@ -124,7 +123,7 @@ def main(argv):
     #call_str = 'CreateRdcDem_Sen_Gamma.py ' + igramDir
     #os.system(call_str)
     
-    if 'DiffPhase' in templateContents :  DiffPhase =  templateContents['DiffPhase']
+    if 'DiffPhase' in templateContents:  DiffPhase =  templateContents['DiffPhase']
     else: DiffPhase = '1'
         
     if 'UnwrapPhase' in templateContents :  UnwrapPhase =  templateContents['UnwrapPhase']
