@@ -185,8 +185,12 @@ def main(argv):
     rslcDir = scratchDir + '/' + projectName + "/RSLC"
     IFGLIST = glob.glob(processDir+'/IFG*'+ projectName + '*') 
     
+    TT = 'out.txt'
+    is os.path.isfile(TT):
+        os.remove(TT)
     for kk in IFGLIST:
-        call_str = 'GenerateRSC_Sen_Gamma.py  ' + os.path.basename(kk)
+        print '>>> Process ' + os.path.basename(kk)
+        call_str = 'GenerateRSC_Sen_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         os.system(call_str)
    
         
