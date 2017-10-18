@@ -186,7 +186,7 @@ def main(argv):
     IFGLIST = glob.glob(processDir+'/IFG*'+ projectName + '*') 
     
     TT = 'out.txt'
-    is os.path.isfile(TT):
+    if os.path.isfile(TT):
         os.remove(TT)
     for kk in IFGLIST:
         print '>>> Process ' + os.path.basename(kk)
