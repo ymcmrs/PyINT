@@ -292,21 +292,6 @@ def main(argv):
     call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
     os.system(call_str)
     
-############################################     Resampling     ############################################    
-    
-    
-    for i in range(len(Suffix)):
-        if not INF=='IFG':
-            MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
-            MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
-            SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
-            SslcPar = workDir + "/" + Sdate + Suffix[i]+".slc.par"
-        
-        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"
-
         
 ######################## Resampling Slave Image ####################
 
