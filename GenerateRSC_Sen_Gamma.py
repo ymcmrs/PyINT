@@ -292,7 +292,10 @@ def main(argv):
     call_str = 'base_perp ' + BASE + ' ' + MrslcPar + ' ' + OFF + ' >' + PBASE
     os.system(call_str)
     
-    call_str ='cat ' + PBASE + ' | tail -n +13 | head -n 50 >' +PBASE_TXT
+    count = len(open(PBASE,'rU').readlines())
+    
+    #call_str ='cat ' + PBASE + ' | tail -n +13 | head -n 50 >' +PBASE_TXT
+    call_str ='cat ' + PBASE + ' | tail -n +13 | head -n ' + str(int(count-18)) + ' > '+PBASE_TXT
     os.system(call_str)
     
     BB=np.loadtxt(PBASE_TXT)
