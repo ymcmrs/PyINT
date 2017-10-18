@@ -6,7 +6,8 @@ Frame  = 479
 Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
 Azimuth_Looks =  4
 
-# DEM =                    # [if no DEM provided, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
+# DEM =                    
+# [if no DEM provided or the provided DEM is not available, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
 
 #####################################   Options ##########################################
 Startdate = 2017-01-01     # [option]
