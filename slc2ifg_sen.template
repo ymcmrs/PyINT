@@ -9,7 +9,7 @@ Azimuth_Looks =  4
 #####################################   Options ##########################################
 Startdate = 2017-01-01     # [option]
 Enddate   = 2100-01-01     # [option, no input means download all of the S-1A/B data]
-
+# masterDate   =           # [no input means select the first date as the master date]
 Start_Swath  =  1          # [option]
 End_Swath  =  2            # [option]
 Start_Burst  =  4          # [option: bursts position is based on the master image]
