@@ -7,7 +7,6 @@
 ###  Univ. : Central South University & University of Miami   ###   
 #################################################################
 
-
 import numpy as np
 import os
 import sys  
@@ -144,15 +143,15 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
-   Check the common bursts for S1 TOPs for the whole project based on master date.
+   Generate parameter file for the whole project.
 '''
 
 EXAMPLE = '''
     Usage:
-            Common_Burst_check_All.py projectName
+            GenerateRSC_Sen_Gamma_All.py projectName
             
     Examples:
-            Check_Common_Burst_All.py PacayaT163TsxHhA
+            GenerateRSC_Sen_Gamma_All.py PacayaT163TsxHhA
 ##############################################################################
 '''
 
@@ -184,57 +183,10 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC" 
     rslcDir = scratchDir + '/' + projectName + "/RSLC"
-    if not os.path.isdir(rslcDir):
-        call_str = 'mkdir ' + rslcDir
-        os.system(call_str)
+    IFGLIST = glob.glob(processDir+'/IFG*'+ projectName + '*') 
     
-    ListSLC = os.listdir(slcDir)
-    Datelist = []
-    SLCfile = []
-    SLCParfile = []
-    
-
-    for kk in range(len(ListSLC)):
-        if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):    #  if SAR date number is 8, 6 should change to 8.
-            DD=ListSLC[kk]
-            Year=int(DD[0:2])
-            Month = int(DD[2:4])
-            Day = int(DD[4:6])
-            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
-                Datelist.append(ListSLC[kk])
-    
-    map(int,Datelist)                
-    Datelist.sort()
-    map(str,Datelist)            
-    
-    if 'masterDate'          in templateContents:
-        masterDate0 = templateContents['masterDate']
-        if masterDate0 in Datelist:
-            masterDate = masterDate0
-            print "masterDate : " + masterDate0
-        else:
-            masterDate=Datelist[0]
-            print "The selected masterDate is not included in above datelist !!"
-            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
-            call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
-            os.system(call_str)
-            
-    else:  
-        masterDate=Datelist[0]
-        print "masterDate is not found in template!!! "
-        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
-        call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
-        os.system(call_str)
-    
-    Mdate = masterDate
-    for kk in Datelist:
-        Sdate = kk
-        workDir = rslcDir + '/' + kk
-        if not os.path.isdir(workDir):
-            call_str = 'mkdir ' + workDir
-            os.system(call_str)
-        
-        call_str = 'Check_Common_Burst_Ref.py ' + projectName + ' ' + Mdate + ' ' + Sdate + ' --dir ' + workDir
+    for kk in IFGLIST:
+        call_str = 'GenerateRSC_Sen_Gamma.py  ' + os.path.basename(kk)
         os.system(call_str)
    
         
