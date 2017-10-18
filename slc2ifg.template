@@ -2,21 +2,20 @@
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
 
-Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
-Coreg_int            = 0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
-GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
-      
-############################################################################################################
+########################################   all below are options #####################################
 memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
 walltime_Coreg_all     =   1:00          # walltime for the coregistration jobs
 
 memory_slc2ifg       =   3700            # memory for generating time series interferograms
 walltime_slc2ifg     =   2:00            # walltime for generating time series interferograms
 
-
 DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem                
 # If the DEM is not provided or the DEM file is not exsited, a 30 SRTM based dem will be generated autamatically.
 
+Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
+Coreg_int            = 0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
+     
 #################################################  Coregistration ############################################
 
 rwin4cor           =   256       #  rfwin4cor = 1/2 * rwin4cor
@@ -31,7 +30,6 @@ coregMethod        =  DEM        # [option: DEM, init ]
 
 swath = 2:3                     # for Sentinel-1:  swath 1~3   
 burst = 6:9                     # for Sentinel-1: burst usually 1~ 9.   concrete number should be check from TOPS_Par file
-
 
 ###################   Interferomery ############################
 
@@ -62,22 +60,20 @@ Unwrap_pataz = 1    # unwrap patch number in azimuth direction
 
 ####################  slc2ifg #####################################
 
-#Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
-#INT_Flag      =   1   
-#DIFF_Flag     =   1
-#UNW_Flag      =   1
-#UNW_SUB_Flag  =   1
-#GEO_Flag      =   1 
+Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+INT_Flag      =   1   
+DIFF_Flag     =   1
+UNW_Flag      =   1
+UNW_SUB_Flag  =   1
+GEO_Flag      =   1 
 
 #######################################   Time series GAMMA      ######################################
 Max_Spacial_Baseline =   500      # spatial baseline threshold for selecting pairs
 Max_Temporal_Baseline =  500      # temporal baseline threshold for selecting pairs
 
-
 JOB = IFG # [option: IFG, MAI, RSI ]
-
 Select_pairs    =  1              # select pairs and generate interferograms directory  
-
+Load_Date       =  1
 ############ load data ##############
 
 Byte_order           =   big      # [option: big, little ]    Except GAMMA, usually it should be little
