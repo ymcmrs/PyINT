@@ -172,7 +172,7 @@ def main(argv):
     AA = np.loadtxt(BURST)
     
     for kk in range(int(EW)-int(SW)+1):
-        ii = int(SW) + kk
+        ii = int(int(kk) + 1)
         SB2=AA[ii-1,0]
         EB2=AA[ii-1,1]
         call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.rslc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.rslc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.rslc.TOPS_par >>' + RSLC_tab
