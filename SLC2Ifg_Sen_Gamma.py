@@ -111,7 +111,7 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
-
+    masterDate = templateContents['masterDate']
 ########################################################################
 
     #call_str = 'Check_Common_Burst.py ' + igramDir
@@ -142,7 +142,7 @@ def main(argv):
         call_str ='GenerateRSC_Sen_Gamma.py ' + igramDir
         os.system(call_str)
         
-    if Resamp_All =='1':
+    if (Resamp_All =='1') and (not Mdate==masterDate):
         call_str = 'Resamp_all_Sen_Gamma.py ' + igramDir
         os.system(call_str)
     
