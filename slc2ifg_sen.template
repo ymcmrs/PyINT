@@ -6,16 +6,19 @@ Frame  = 479
 Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
 Azimuth_Looks =  4
 
+# DEM =                    # [if no DEM provided, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
+
 #####################################   Options ##########################################
 Startdate = 2017-01-01     # [option]
 Enddate   = 2100-01-01     # [option, no input means download all of the S-1A/B data]
 # masterDate   =           # [no input means select the first date as the master date]
+
+#############  processing area:  no input means processing the whole image ####################
+
 Start_Swath  =  1          # [option]
 End_Swath  =  2            # [option]
 Start_Burst  =  4          # [option: bursts position is based on the master image]
 End_Burst =  9             # [option: bursts position is based on the master image]
-
-# DEM =                    # [if no DEM provided, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
 
 ##############      Time series processing switch : You can set the value to 0 as stop that step #################
 
