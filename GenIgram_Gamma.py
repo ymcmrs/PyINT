@@ -259,42 +259,42 @@ def main(argv):
         os.system(call_str)
         ras2jpg(CORlks, CORlks)
 
-        if flatteningIgram == 'fft':
-            call_str = '$GAMMA_BIN/base_est_fft ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfft 
-            os.system(call_str)
+        #if flatteningIgram == 'fft':
+        #    call_str = '$GAMMA_BIN/base_est_fft ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfft 
+        #    os.system(call_str)
 
-            call_str = '$GAMMA_BIN/ph_slope_base ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + FLTFFTlks  
-            os.system(call_str)
+        #    call_str = '$GAMMA_BIN/ph_slope_base ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + FLTFFTlks  
+        #    os.system(call_str)
 
-            FLTlks = FLTFFTlks
-            call_str = '$GAMMA_BIN/base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
-            os.system(call_str)     
-            os.rename(BASE+'.tmp', BASE)
+        #   FLTlks = FLTFFTlks
+        #   call_str = '$GAMMA_BIN/base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
+        #   os.system(call_str)     
+        #    os.rename(BASE+'.tmp', BASE)
           
-        FLTFILTlks = FLTlks.replace('flat_', 'filt_')
+        # FLTFILTlks = FLTlks.replace('flat_', 'filt_')
         
 ########################    filtering  ################################
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(FLTlks, FLTlks)
+        #call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+        #os.system(call_str)
+        #ras2jpg(FLTlks, FLTlks)
 
-        call_str = '$GAMMA_BIN/adf ' + FLTlks + ' ' + FLTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
-        os.system(call_str)
+        #call_str = '$GAMMA_BIN/adf ' + FLTlks + ' ' + FLTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
+        #os.system(call_str)
 
-        if strFilterMethod == 'adapt_filt':    
-            call_str = '$GAMMA_BIN/adapt_filt ' + FLTlks + ' ' + FLTFILTlks + ' ' + nWidth + ' ' + fFiltLength + ' ' + nFiltWindow
-            os.system(call_str)
+        #if strFilterMethod == 'adapt_filt':    
+        #    call_str = '$GAMMA_BIN/adapt_filt ' + FLTlks + ' ' + FLTFILTlks + ' ' + nWidth + ' ' + fFiltLength + ' ' + nFiltWindow
+        #    os.system(call_str)
         
-        call_str = '$GAMMA_BIN/cc_wave '+ FLTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
-        os.system(call_str)
+        #call_str = '$GAMMA_BIN/cc_wave '+ FLTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        #os.system(call_str)
              
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
-        os.system(call_str)
-        ras2jpg(FLTFILTlks, FLTFILTlks)
+        #call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+        #os.system(call_str)
+        #ras2jpg(FLTFILTlks, FLTFILTlks)
         
-        call_str = '$GAMMA_BIN/rascc ' + CORFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
-        os.system(call_str)
-        ras2jpg(CORFILTlks, CORFILTlks)
+        #call_str = '$GAMMA_BIN/rascc ' + CORFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        #os.system(call_str)
+        #ras2jpg(CORFILTlks, CORFILTlks)
 
     print "Interferogram generation is done!"
     sys.exit(1)
