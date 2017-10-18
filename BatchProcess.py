@@ -1,13 +1,11 @@
 #! /usr/bin/env python
-
-#'''
-######################################################################
-###         Author:    Yun-Meng Cao                                ### 
-###         Date  :   March, 2017                                  ###  
-###         Email :   ymcmrs@gmail.com                             ###   
-###          Batch processing in pegasus                           ###    
-######################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
 
 
 import numpy as np
