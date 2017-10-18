@@ -298,15 +298,15 @@ def main(argv):
         #call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
         #os.system(call_str)
         
-        call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + S_RSLC_tab + " " + SrslcImg + " " + SrslcPar
-        os.system(call_str)
+    call_str = "$GAMMA_BIN/SLC_interp_lt_S1_TOPS " + S_SLC_tab + " " + SslcPar + " " + M_SLC_tab + " " + MslcPar + " " +  lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + S_RSLC_tab + " " + SrslcImg + " " + SrslcPar
+    os.system(call_str)
 
 
-        call_str = "cp " + MslcImg + " " + MrslcImg
-        os.system(call_str)
+    call_str = "cp " + MslcImg + " " + MrslcImg
+    os.system(call_str)
 
-        call_str = "cp " + MslcPar + " " + MrslcPar
-        os.system(call_str)
+    call_str = "cp " + MslcPar + " " + MrslcPar
+    os.system(call_str)
         
         #call_str = "cp " + M_SLC_tab + " " + M_RSLC_tab
         #os.system(call_str)
