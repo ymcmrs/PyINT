@@ -1,15 +1,12 @@
 #! /usr/bin/env python
-#'''
-###################################################################################
-#                                                                                 #
-#            Author:   Yun-Meng Cao                                               #
-#            Email :   ymcmrs@gmail.com                                           #
-#            Date  :   Mar, 2017                                                  #
-#                                                                                 #
-#         Select Interferometry-Pairs from time series SAR images                  #
-#                                                                                 #
-###################################################################################
-#'''
+#################################################################
+###  This program is part of PyINT  v1.0                      ### 
+###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  Author: Yunmeng Cao                                      ###                                                          
+###  Email : ymcmrs@gmail.com                                 ###
+###  Univ. : Central South University & University of Miami   ###   
+#################################################################
+
 import numpy as np
 import os
 import sys  
@@ -129,13 +126,13 @@ def main(argv):
     else:
         print "Max_Spacial_Baseline is not found in template!! "
         print "500m is chosen as the threshold for spatial baseline!"
-        MaxSB = '500'
+        MaxSB = '100'
         
     if 'Max_Temporal_Baseline'  in templateContents: MaxTB=templateContents['Max_Temporal_Baseline']
     else:
         print "Max_Temporal_Baseline is not found in template!! "
         print "500 days is chosen as the threshold for temporal baseline!"
-        MaxTB = '500'
+        MaxTB = '100'
     
     
 #  extract available SAR images slc and slc_par    
