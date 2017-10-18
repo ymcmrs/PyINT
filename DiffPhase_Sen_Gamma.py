@@ -170,6 +170,8 @@ def main(argv):
     
     BURST = SslcDir + '/' + Sdate + '_Burst_Tab'
     AA = np.loadtxt(BURST)
+    if EW==SW:
+        AA = AA.reshape([1,2])
     
     for kk in range(int(EW)-int(SW)+1):
         ii = int(int(kk) + 1)
