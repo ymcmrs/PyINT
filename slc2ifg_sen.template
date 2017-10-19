@@ -30,6 +30,7 @@ Start_Burst  =  4          # [option: bursts position is based on the master ima
 End_Burst =  9             # [option: bursts position is based on the master image]
 
 ##############      Time series processing switch : You can set the value to 0 as stop that step #################
+
 Max_Spacial_Baseline =   80      # spatial baseline threshold for selecting pairs
 Max_Temporal_Baseline =  100      # temporal baseline threshold for selecting pairs
 
