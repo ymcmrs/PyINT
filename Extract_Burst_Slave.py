@@ -109,7 +109,7 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
-   Check the common bursts for S1 TOPs.
+   Extract the common bursts for S1 TOPs based on one master image.
 '''
 
 EXAMPLE = '''
