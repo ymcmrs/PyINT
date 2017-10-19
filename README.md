@@ -1,6 +1,6 @@
 # PyINT
 ## (Python&GAMMA based interfermetry toolbox)
-###Bratch processing for generating Interferograms based on python and GAMMA.      
+### Time series interferograms processing based on python and GAMMA.      
 
 Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
@@ -19,7 +19,9 @@ Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...
       
 #####3) ifgramDir should be named like:     
 
-    IFGRAM_PacayaT120F107AlosA_20080101-20090101_0111-0123   
+    IFG_PacayaT120F107AlosA_080101-090101_0111-0123   
+    MAI_PacayaT120F107AlosA_080101-090101_0111-0123
+    RSI_PacayaT120F107AlosA_080101-090101_0111-0123
      
      
 If you set all the above OK, then these scripts shoul work for you! If you can share some advices or ideas about python, GAMMA, InSAR processing ..., I would be very grateful and very glad to communicate with you!        
