@@ -27,7 +27,7 @@ DOWNLOAD          =  1       # [option: default=1 ] download Sentinel-1 A/B data
 DOWN2SLC          =  1       # [option: default=1 ] generate SLC from downloaded raw data.
 EXTRACT_BURST     =  1       # [option: default=1 ] Extract bursts: 1) for coregistration which should make sure all bursts of slave are correspinding to the master;
                              #                          2)  Extract interest region.  
-COREG_ALL         =  1       #  [option: default=1 ] Resample all of the SLC to the master data, make them have the same radar coordinates
+COREG_ALL         =  1       #  [option: default=1 ] prepare for Resamp_All in the SLC2IFG step
 Gen_IFG_DIR       =  1       # [option: default=1 ] Generate interferogram directory, you can use yourself code, here is simply based on SBAS.
 SLC2IFG           =  1       # [option: default=1 ] Generate interferograms
 Load_Date         =  1       # [option: default=1 ] Load GAMMA data to H5 file for time series processing. 
