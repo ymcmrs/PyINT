@@ -1,7 +1,7 @@
 ################  template for GAMMA-based time series Sentinel data processing ##############
 
-Track  = 71
-Frame  = 479 
+Track  = 143
+Frame  = 529 
 
 Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
 Azimuth_Looks =  4
@@ -9,9 +9,17 @@ Azimuth_Looks =  4
 # DEM =                    
 # [if no DEM provided or the provided DEM is not available, SRTM-1 can be downloaded automatically which will be saved in your DEMDIR]
 
+################################  memory and time control #############################################
+
+memory_Coreg_all       =   3700          #  [options default: 3700 ] memory used for coregistrate all SLCs to the master SLC
+walltime_Coreg_all     =   1:00          # [options default: 1:00 ] walltime for the coregistration jobs
+
+memory_slc2ifg       =   5000            # [options default: 5000 ] memory for generating time series interferograms
+walltime_slc2ifg     =   2:00            # [options default: 2:00 ] walltime for generating time series interferograms
+
 #####################################   Options ##########################################
-Startdate = 2017-01-01     # [option]
-Enddate   = 2100-01-01     # [option, no input means download all of the S-1A/B data]
+Startdate = 2014-01-01     # [option]
+Enddate   = 2016-01-01     # [option, no input means download all of the S-1A/B data]
 # masterDate   =           # [no input means select the first date as the master date]
 
 #############  processing area:  no input means processing the whole image ####################
@@ -22,6 +30,8 @@ Start_Burst  =  4          # [option: bursts position is based on the master ima
 End_Burst =  9             # [option: bursts position is based on the master image]
 
 ##############      Time series processing switch : You can set the value to 0 as stop that step #################
+Max_Spacial_Baseline =   80      # spatial baseline threshold for selecting pairs
+Max_Temporal_Baseline =  100      # temporal baseline threshold for selecting pairs
 
 DOWNLOAD          =  1       # [option: default=1 ] download Sentinel-1 A/B data according to track,frame and time interval.
 DOWN2SLC          =  1       # [option: default=1 ] generate SLC from downloaded raw data.
@@ -33,6 +43,8 @@ SLC2IFG           =  1       # [option: default=1 ] Generate interferograms
 Load_Date         =  1       # [option: default=1 ] Load GAMMA data to H5 file for time series processing. 
 
 ####  interferometry processing switch which is included in the above SLC2IFG step  #############
+Simphase_Lat_Ovr  =  1   # should according to the resolution of DEM and multi-looked SAR
+Simphase_Lon_Ovr  =  1   # e.g. for SRTM-1 30m, for 20:4 looks, 40m,  if you use 1, it's almost the same, that's OK, otherwise you might lose some information. 
 
 DiffPhase         =  1      # [option: default=1 ] interferometry and differential processing
 Resamp_All        =  1      # [option: default=1 ] resampling all image to one master date. 
