@@ -109,15 +109,15 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
    
-   Check the common bursts for S1 TOPs.
+   Extract the common bursts for S1 TOPs.
 '''
 
 EXAMPLE = '''
     Usage:
-            Common_Burst_check.py igramDir
+            Extract_Common_Burst.py igramDir
             
     Examples:
-            Check_Common_Burst.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
+            Extract_Common_Burst.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
 ##############################################################################
 '''
 
