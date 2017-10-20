@@ -1,6 +1,6 @@
 # PyINT
 ## (Python&GAMMA based interfermetry toolbox)
-### Interferometry processing based on python and GAMMA.       
+### Time series interferometry processing based on python and GAMMA.       
 
 Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
