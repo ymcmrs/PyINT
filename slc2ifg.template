@@ -6,7 +6,7 @@ Azimuth_Looks     =  5
 memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
 walltime_Coreg_all     =   1:00          # walltime for the coregistration jobs
 
-memory_slc2ifg       =   3700            # memory for generating time series interferograms
+memory_slc2ifg       =   5000            # memory for generating time series interferograms, adjust based on zimuth and range pixel numbers.
 walltime_slc2ifg     =   2:00            # walltime for generating time series interferograms
 
 DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem                
