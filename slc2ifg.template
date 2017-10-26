@@ -13,7 +13,7 @@ DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/Pacaya
 # If the DEM is not provided or the DEM file is not exsited, a 30 SRTM based dem will be generated autamatically.
 
 Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
-Coreg_int            = 0      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+Coreg_int            = 1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
 GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
      
 #################################################  Coregistration ############################################
@@ -25,7 +25,6 @@ azsample4cor       =   32        #  azfsample4cor = 2*azsample4cor
 thresh4cor         =   0.15      # 2016 GAMMA, for 2015 GAMMA should be SNR, not correlation
 
 coreCoarse         =  both       # [option: orbit, ampcor]
-COREG_all_Flag     =  0          # [option: 0, 1]  zero means not coregist all to one master
 coregMethod        =  DEM        # [option: DEM, init ]
 
 swath = 2:3                     # for Sentinel-1:  swath 1~3   
