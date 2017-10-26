@@ -31,7 +31,7 @@ INTRODUCTION = '''
 ##############################################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0   
    
-   Generate dem automatically for GAMMA processing.
+   Generate dem automatically for GAMMA & ROI_PAC processing.
    
 '''
 
@@ -41,6 +41,7 @@ EXAMPLE = '''
  
     Examples:
             Makedem_PyINT.py ShanghaiT171F96S1A gamma
+            Makedem_PyINT.py ShanghaiT171F96S1A roi_pac
 
 ###################################################################################################
 '''
