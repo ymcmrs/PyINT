@@ -236,7 +236,7 @@ def main(argv):
     call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
     os.system(call_str)
 
-    sys.exit(1)
+
     
 if __name__ == '__main__':
     main(sys.argv[:])
