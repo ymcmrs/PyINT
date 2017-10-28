@@ -299,8 +299,10 @@ def main(argv):
         
             str_igram = INF + '_' + projectName+"_"+str(int(MDatelist[kk]))[2:]+"-"+str(int(SDatelist[kk]))[2:]+"_"+str_sb+"_"+str_tb
             str_scrip = 'SLC2Ifg_Gamma.py ' + str_igram + '\n'
-            if 'S1' in projectNam:
+            if 'S1' in projectName:
                 str_scrip = 'SLC2Ifg_Sen_Gamma.py ' + str_igram + '\n'
+            
+            
             f_slc2ifg.write(str_scrip)      
             STR_FLAG = INF + '_' + projectName+"_"+str(int(MDatelist[kk]))[2:]+"-"+str(int(SDatelist[kk]))[2:]
             KK= glob.glob(processDir + '/' + STR_FLAG + '*')
