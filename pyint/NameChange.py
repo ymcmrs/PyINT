@@ -72,9 +72,9 @@ def usage():
      
       usage:
    
-            NameChange.py ProjectName
+            SelectPairs_Gamma.py ProjectName
       
-      e.g.  NameChange.py PacayaT163TsxHhA
+      e.g.  SelectPairs_Gamma.py PacayaT163TsxHhA
           
             
 *******************************************************************************************************

@@ -142,6 +142,7 @@ def cmdLineParse():
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
+    #parser.add_argument('-r','--lalo', dest='region', nargs=4, type=float, help='lalo limit')
     parser.add_argument('-r',dest = 'region',help='Research region, west/east/south/north.')
     parser.add_argument('-d', dest='dem', help='Raw dem file that used for further processing.')
     parser.add_argument('-s', dest='par', help='SLC parameter file of SAR image used for determining research region.')
@@ -165,20 +166,27 @@ def main(argv):
     inps = cmdLineParse() 
     
     if inps.par: 
-        PAR = inps.par
-        CentLat = UseGamma(PAR,'read','center_latitude')
-        CentLat = float(CentLat.split('degrees')[0])
+        Par = inps.par
+        print "SLC_par file is provided:    %s" % Par
+        print "SRTM1 over research region will be downloaded automatically based on %s" % Par
+        call_str = "SLC_corners "+ Par + " > corners.txt"
+        os.system(call_str)
         
-        CentLon = UseGamma(PAR,'read','center_longitude')
-        CentLon = float(CentLon.split('degrees')[0])
+        File = open("corners.txt","r")
+        InfoLine = File.readlines()[8:10]      
+        File.close()
+           
+        MinLat = float(InfoLine[0].split(':')[1].split('  max. ')[0])
+        MaxLat = float(InfoLine[0].split(':')[2])
+        MinLon = float(InfoLine[1].split(':')[1].split('  max. ')[0])
+        MaxLon = float(InfoLine[1].split(':')[2])
         
-        west = CentLon - 2    #   dem with radius of 2 degrees according to center coordinates will be generated.  
-        east = CentLon + 2
-        
-        south = CentLat - 2
-        north = CentLat + 2
-        
-    
+        north = MaxLat + 1
+        south = MinLat - 1
+        east = MaxLon + 1
+        west = MinLon - 1
+
+         
     if inps.region: 
         region = inps.region
         west,south,east,north = read_region(region)
@@ -205,6 +213,7 @@ def main(argv):
     os.chdir(workdir)
     
     if not inps.dem:
+        
         print 'Research region: %s(west)  %s(south)  %s(east)  %s(north)' % (west,south,east,north)
         print '>>> Ready to download SRTM1 dem over research region.'
         call_str='wget -q -O dem.tif "http://ot-data1.sdsc.edu:9090/otr/getdem?north=%f&south=%f&east=%f&west=%f&demtype=SRTMGL1"' % (north,south,east,west)

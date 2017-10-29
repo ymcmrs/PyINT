@@ -17,6 +17,33 @@ import glob
 import argparse
 
 
+def check_variable_name(path):
+    s=path.split("/")[0]
+    if len(s)>0 and s[0]=="$":
+        p0=os.getenv(s[1:])
+        path=path.replace(path.split("/")[0],p0)
+    return path
+
+def read_template(File, delimiter='='):
+    '''Reads the template file into a python dictionary structure.
+    Input : string, full path to the template file
+    Output: dictionary, pysar template content
+    Example:
+        tmpl = read_template(KyushuT424F610_640AlosA.template)
+        tmpl = read_template(R1_54014_ST5_L0_F898.000.pi, ':')
+    '''
+    template_dict = {}
+    for line in open(File):
+        line = line.strip()
+        c = [i.strip() for i in line.split(delimiter, 1)]  #split on the 1st occurrence of delimiter
+        if len(c) < 2 or line.startswith('%') or line.startswith('#'):
+            next #ignore commented lines or those without variables
+        else:
+            atrName  = c[0]
+            atrValue = str.replace(c[1],'\n','').split("#")[0].strip()
+            atrValue = check_variable_name(atrValue)
+            template_dict[atrName] = atrValue
+    return template_dict
 
 def is_number(s):
     try:
@@ -31,7 +58,7 @@ INTRODUCTION = '''
 ##############################################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0   
    
-   Generate dem automatically for GAMMA & ROI_PAC processing.
+   Generate dem automatically for GAMMA processing.
    
 '''
 
@@ -41,7 +68,6 @@ EXAMPLE = '''
  
     Examples:
             Makedem_PyINT.py ShanghaiT171F96S1A gamma
-            Makedem_PyINT.py ShanghaiT171F96S1A roi_pac
 
 ###################################################################################################
 '''
@@ -69,13 +95,40 @@ def main(argv):
     scratchDir = os.getenv('SCRATCHDIR')
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     KK=os.listdir(slcDir)
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+    templateContents=read_template(templateFile)
     
-    SLCNM = []
+    ListSLC = os.listdir(slcDir)
+    Datelist = []
+
     
-    for ll in KK:
-        if is_number(ll):
-            SLCNM.append(ll)
-    SLC_PAR = slcDir + '/' + SLCNM[0] + '/'+ SLCNM[0] + '.slc.par'
+
+    for kk in range(len(ListSLC)):
+        if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):    #  if SAR date number is 8, 6 should change to 8.
+            DD=ListSLC[kk]
+            Year=int(DD[0:2])
+            Month = int(DD[2:4])
+            Day = int(DD[4:6])
+            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
+                Datelist.append(ListSLC[kk])
+    
+    if 'masterDate'          in templateContents:
+        masterDate0 = templateContents['masterDate']
+        if masterDate0 in Datelist:
+            masterDate = masterDate0
+            print "masterDate : " + masterDate0
+        else:
+            masterDate=Datelist[0]
+            print "The selected masterDate is not included in above datelist !!"
+            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            
+    else:  
+        masterDate=Datelist[0]
+        print "masterDate is not found in template!!! "
+        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+
+    SLC_PAR = slcDir + '/' + masterDate + '/'+ masterDate + '.slc.par'
     
     demDir = os.getenv('DEMDIR') 
     os.chdir(demDir)
