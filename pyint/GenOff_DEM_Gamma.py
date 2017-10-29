@@ -190,8 +190,7 @@ def main(argv):
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
     OFFSTD = workDir + "/" + Mdate + '-' + Sdate +".off_std"	
     
-    simDir = scratchDir + '/' + projectName  + "/SIM" 
-    simDir = simDir + '/sim_' + Mdate
+    simDir = scratchDir + '/' + projectName  + "/PROCESS/DEM" 
 
     HGTSIM      = simDir + '/sim_' + Mdate + '_' + rlks+'rlks.rdc.dem'
     
