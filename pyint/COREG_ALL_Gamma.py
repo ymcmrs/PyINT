@@ -223,7 +223,7 @@ def main(argv):
     
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
-        #call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
+        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
         status = subprocess.Popen(call_str, shell=True).wait()
         #os.system(call_str)
     
