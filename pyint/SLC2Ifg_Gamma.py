@@ -7,6 +7,7 @@
 ###  Univ. : Central South University & University of Miami   ###   
 #################################################################
 
+
 import numpy as np
 import os
 import sys  
@@ -86,8 +87,8 @@ def main(argv):
         os.system(call_str)
         
     
-    if 'COREG_Flag'          in templateContents: COREG_Flag = templateContents['COREG_Flag']                
-    else: COREG_Flag = '1'
+    if 'Coreg_int'          in templateContents: Coreg_int = templateContents['Coreg_int']                
+    else: Coreg_int = '1'
     
     if 'INT_Flag'          in templateContents: INT_Flag = templateContents['INT_Flag']                
     else: INT_Flag = '1'
@@ -99,7 +100,7 @@ def main(argv):
     else: UNW_Flag = '1'
         
     if 'UNW_SUB_Flag'          in templateContents: UNW_SUB_Flag = templateContents['UNW_SUB_Flag']                
-    else: UNW_SUB_Flag = '0'
+    else: UNW_SUB_Flag = '1'
         
     if 'GEO_Flag'          in templateContents: GEO_Flag = templateContents['GEO_Flag']                
     else: GEO_Flag = '1'    
@@ -112,7 +113,7 @@ def main(argv):
     else: unwrapMethod = 'mcf'
     
 
-    if COREG_Flag == '1' :
+    if Coreg_int == '1' :
         if coregMethod == "DEM":
             call_str = "CoregistSLC_DEM_Gamma.py " + igramDir
             os.system(call_str)
@@ -141,19 +142,14 @@ def main(argv):
             call_str = "UnwrapPhase_BranchCut_Gamma.py " + igramDir
             os.system(call_str)
 
-    if UNW_SUB_Flag=='1':        
-        call_str = 'UnwrapPhase_Sub_Gamma.py '+ igramDir 
-        os.system(call_str)
-
     if GEO_Flag == '1':
         call_str = "Geocode_Gamma.py " + igramDir
         os.system(call_str)      
     
-    print "SLC to interferogram done!"
-    
+    print "SLC to interferogram done!"    
     sys.exit(1)
 
-#################################################################    
+
     
 if __name__ == '__main__':
     main(sys.argv[:])
