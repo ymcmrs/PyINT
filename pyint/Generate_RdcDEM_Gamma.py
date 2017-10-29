@@ -279,7 +279,7 @@ def main(argv):
 
 
     print "Create DEM in Radar Coordinates is done!"
-    sys.exit(1)
+
 
 if __name__ == '__main__':
     main(sys.argv[:])
