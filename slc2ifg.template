@@ -3,8 +3,8 @@ Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1
 Azimuth_Looks     =  5     
 
 ########################################   all below are options #####################################
-memory_Coreg_all       =   3700          # memory used for coregistrate all SLCs to the master SLC
-walltime_Coreg_all     =   1:00          # walltime for the coregistration jobs
+memory_Coreg       =   3700          # memory used for coregistrate all SLCs to the master SLC
+walltime_Coreg     =   1:00          # walltime for the coregistration jobs
 
 memory_slc2ifg       =   5000            # memory for generating time series interferograms, adjust based on zimuth and range pixel numbers.
 walltime_slc2ifg     =   2:00            # walltime for generating time series interferograms
@@ -63,7 +63,7 @@ INT_Flag      =   1
 DIFF_Flag     =   1
 UNW_Flag      =   1
 UNW_SUB_Flag  =   1
-GEO_Flag      =   1 
+GEO_Flag      =   0 
 
 #######################################   Time series GAMMA      ######################################
 Max_Spacial_Baseline =   500      # spatial baseline threshold for selecting pairs
