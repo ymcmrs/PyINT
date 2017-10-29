@@ -104,7 +104,7 @@ def main(argv):
     os.system(call_str)
     workDir_Org = workDir
     workDir = workDir0
-        
+       
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
@@ -339,10 +339,10 @@ def main(argv):
         ras2jpg(SamprlksImg, SamprlksImg)
 
 
-    os.remove(lt0)
-    os.remove(lt1)
-    os.remove(mli0)
-    os.remove(diff0)
+    #os.remove(lt0)
+    #os.remove(lt1)
+    #os.remove(mli0)
+    #os.remove(diff0)
     os.remove(offs0)
     os.remove(snr0)
     os.remove(offsets0)
