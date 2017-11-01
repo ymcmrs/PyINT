@@ -338,10 +338,6 @@ def main(argv):
         ras2jpg(SamprlksImg, SamprlksImg)
 
 
-    os.remove(lt0)
-    os.remove(lt1)
-    os.remove(mli0)
-    os.remove(diff0)
     os.remove(offs0)
     os.remove(snr0)
     os.remove(offsets0)
