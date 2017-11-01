@@ -1,15 +1,15 @@
 #! /usr/bin/env python
 #################################################################
-###  This program is part of PyINT  v1.0                      ### 
-###  Copy Right (c): 2017, Yunmeng Cao                        ###  
-###  Author: Yunmeng Cao                                      ###                                                          
+###  This program is part of PyINT  v1.0                      ###
+###  Copy Right (c): 2017, Yunmeng Cao                        ###
+###  Author: Yunmeng Cao                                      ###
 ###  Email : ymcmrs@gmail.com                                 ###
-###  Univ. : Central South University & University of Miami   ###   
+###  Univ. : Central South University & University of Miami   ###
 #################################################################
 
 import numpy as np
 import os
-import sys  
+import sys
 import subprocess
 import getopt
 import time
@@ -76,18 +76,18 @@ def UseGamma(inFile, task, keyword):
                 return value
         print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
-        
+
 def write_template(File, Str):
     f = open(File,'a')
     f.write(Str)
     f.close()
 
 def write_run_coreg_all(projectName,master,slavelist,workdir):
-    scratchDir = os.getenv('SCRATCHDIR')    
-    projectDir = scratchDir + '/' + projectName   
+    scratchDir = os.getenv('SCRATCHDIR')
+    projectDir = scratchDir + '/' + projectName
     run_coreg_all  = projectDir + "/run_coreg_all"
     f_coreg = open(run_coreg_all,'w')
-    
+
     for kk in range(len(slavelist)):
         str_coreg = "GenOff_DEM_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
         f_coreg.write(str_coreg)
@@ -98,7 +98,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
 INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017, Yunmeng Cao   @PyINT v1.0
-   
+
    Coregistrate all of SAR images to one master image based on cross-correlation.
    Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
 '''
@@ -106,7 +106,7 @@ INTRODUCTION = '''
 EXAMPLE = '''
     Usage:
             COREG_ALL_Gamma.py projectName
-            
+
     Examples:
             COREG_ALL_Gamma.py PacayaT163TsxHhA
 ##############################################################################
@@ -119,33 +119,33 @@ def cmdLineParse():
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
     parser.add_argument('project',help='Project name of coregistration.')
-    
+
     inps = parser.parse_args()
-    
+
     if not inps.project:
         parser.print_usage()
         sys.exit(os.path.basename(sys.argv[0])+': error: project name should be provided.')
 
     return inps
 
-################################################################################    
-    
-    
+################################################################################
+
+
 def main(argv):
-    
-    inps = cmdLineParse() 
-    
-    projectName = inps.project   
+
+    inps = cmdLineParse()
+
+    projectName = inps.project
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     DEMDIR = os.getenv('DEMDIR')
     templateFile = templateDir + "/" + projectName + ".template"
-    
+
     projectDir = scratchDir + '/' + projectName
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
-    
+
     if not os.path.isdir(rslcDir):
         call_str = 'mkdir ' + rslcDir
         os.system(call_str)
@@ -155,30 +155,30 @@ def main(argv):
     else: memory_Coreg = '3700'
     if 'walltime_Coreg' in templateContents :  walltime_Coreg =  templateContents['walltime_Coreg']
     else: walltime_Coreg = '1:00'
-    
-#####################  Extract SLC Date #################################  
+
+#####################  Extract SLC Date #################################
 
     ListSLC = os.listdir(slcDir)
     Datelist = []
     SLCfile = []
     SLCParfile = []
-    
-    print("All of the available SAR acquisition datelist is :")  
+
+    print("All of the available SAR acquisition datelist is :")
     for kk in range(len(ListSLC)):
         if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):
             DD=ListSLC[kk]
             Year=int(DD[0:2])
             Month = int(DD[2:4])
             Day = int(DD[4:6])
-            #if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
+            #if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):
             Datelist.append(ListSLC[kk])
             print(ListSLC[kk])
             str_slc = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc"
             str_slc_par = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc.par"
             SLCfile.append(str_slc)
             SLCParfile.append(str_slc_par)
-    
-    if 'masterDate' in templateContents : 
+
+    if 'masterDate' in templateContents :
         masterDate = templateContents['masterDate']
         if masterDate in Datelist:
             print("masterDate: %s" % masterDate)
@@ -187,69 +187,50 @@ def main(argv):
             print("The first date is chosen as the master date: %s" % str(Datelist[0]))
             masterDate = Datelist[0]
             Str = 'masterDate   =   %s \n' %masterDate
-            write_template(templateFile, Str)           
+            write_template(templateFile, Str)
     else:
         print("The first date is chosen as the master date: %s" % str(Datelist[0]))
         masterDate = Datelist[0]
         Str = 'masterDate   =   %s \n' %masterDate
         write_template(templateFile, Str)
-        
+
     SLAVElist = Datelist
     del SLAVElist[Datelist.index(masterDate)]
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
 
-    
-    if 'DEM' in templateContents :  
+
+    if 'DEM' in templateContents :
         DEM =  templateContents['DEM']
         if not os.path.isfile(DEM):
             print('Provided DEM is not available, a new DEM based on SRTM-1 will be generated.')
             call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
             os.system(call_str)
-            
+
             call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
             os.system(call_str)
     else:
         print('DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.')
         call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
         os.system(call_str)
-            
+
         call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
         os.system(call_str)
-   
-    
+
+
     run_coreg_all  = projectDir + "/run_coreg_all"
     if os.path.isfile(run_coreg_all):
         os.remove(run_coreg_all)
 
     call_str ='rm job*'
     os.system(call_str)
-    
+
     write_run_coreg_all(projectName,masterDate,SLAVElist,rslcDir)
-        
+
     call_str='process_loop_runfile.py ' + run_coreg_all
     os.system(call_str)
 
- 
-    
+
+
 if __name__ == '__main__':
     main(sys.argv[:])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

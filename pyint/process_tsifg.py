@@ -116,7 +116,7 @@ def main(argv):
         else: projectName=sys.argv[1]
     else:
         usage();sys.exit(1)
-    
+
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     DEMDIR = os.getenv('DEMDIR')
@@ -133,15 +133,28 @@ def main(argv):
         os.system(call_str)
 
     templateContents = read_template(templateFile)
-    if 'memory_slc2ifg' in templateContents:
-        memory_Ifg =  templateContents['memory_slc2ifg']
-    else:
-        memory_Ifg = '3700'
-    if 'walltime_slc2ifg' in templateContents:
-        walltime_Ifg =  templateContents['walltime_slc2ifg']
-    else:
-        walltime_Ifg = '1:00'
 
+    key = 'memory_Coreg'
+    if key in templateContents:
+        memory_Coreg =  templateContents[key]
+    else:
+        memory_Coreg = '3700'
+    key = 'walltime_Coreg'
+    if key in templateContents:
+        walltime_Coreg =  templateContents[key]
+    else:
+        walltime_Coreg = '1:00'
+
+    key = 'memory_slc2ifg'
+    if key in templateContents:
+        memory_Ifg =  templateContents[key]
+    else:
+        memory_Ifg = '5000'
+    key = 'walltime_slc2ifg'
+    if key in templateContents:
+        walltime_Ifg =  templateContents[key]
+    else:
+        walltime_Ifg = '4:00'
 
     if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
     else: Coreg_all = '1'
