@@ -1,15 +1,15 @@
 #! /usr/bin/env python
 #################################################################
-###  This program is part of PyINT  v1.0                      ### 
-###  Copy Right (c): 2017, Yunmeng Cao                        ###  
-###  Author: Yunmeng Cao                                      ###                                                          
+###  This program is part of PyINT  v1.0                      ###
+###  Copy Right (c): 2017, Yunmeng Cao                        ###
+###  Author: Yunmeng Cao                                      ###
 ###  Email : ymcmrs@gmail.com                                 ###
-###  Univ. : Central South University & University of Miami   ###   
+###  Univ. : Central South University & University of Miami   ###
 #################################################################
 
 import numpy as np
 import os
-import sys  
+import sys
 import subprocess
 import getopt
 import time
@@ -75,74 +75,101 @@ def UseGamma(inFile, task, keyword):
                 return value
         print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
-        
+
 def write_template(File, Str):
     f = open(File,'a')
     f.write(Str)
     f.close()
 
 def write_run_coreg_all(projectName,master,slavelist,workdir):
-    scratchDir = os.getenv('SCRATCHDIR')    
-    projectDir = scratchDir + '/' + projectName   
+    scratchDir = os.getenv('SCRATCHDIR')
+    projectDir = scratchDir + '/' + projectName
     run_coreg_all  = projectDir + "/run_coreg_all"
     f_coreg = open(run_coreg_all,'w')
-    
+
     for kk in range(len(slavelist)):
         str_coreg = "GenOff_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
         f_coreg.write(str_coreg)
     f_coreg.close()
-    
-    
+
+
 def usage():
     print('''
 ******************************************************************************************************
- 
+
        Process time series of interferograms from downloading data or SLC images.
 
    usage:
-   
+
             process_tsifg.py projectName
-      
+
       e.g.  process_tsifg.py PacayaT163TsxHhA
             process_tsifg.py PacayaT163S1A
-           
+
 *******************************************************************************************************
-    ''')   
-    
+    ''')
+
 def main(argv):
-    
+
     if len(sys.argv)==2:
         if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: projectName=sys.argv[1]        
+        else: projectName=sys.argv[1]
     else:
         usage();sys.exit(1)
-       
-    if 'S1' in projectName:
-        call_str='process_tsifg_sen.py ' + projectName
+    
+    scratchDir = os.getenv('SCRATCHDIR')
+    templateDir = os.getenv('TEMPLATEDIR')
+    DEMDIR = os.getenv('DEMDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+
+    projectDir = scratchDir + '/' + projectName
+    processDir = scratchDir + '/' + projectName + "/PROCESS"
+    slcDir     = scratchDir + '/' + projectName + "/SLC"
+    rslcDir    = scratchDir + '/' + projectName + "/RSLC"
+
+
+    if not os.path.isdir(rslcDir):
+        call_str = 'mkdir ' + rslcDir
+        os.system(call_str)
+
+    templateContents = read_template(templateFile)
+    if 'memory_slc2ifg' in templateContents:
+        memory_Ifg =  templateContents['memory_slc2ifg']
+    else:
+        memory_Ifg = '3700'
+    if 'walltime_slc2ifg' in templateContents:
+        walltime_Ifg =  templateContents['walltime_slc2ifg']
+    else:
+        walltime_Ifg = '1:00'
+
+
+    if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
+    else: Coreg_all = '1'
+
+    if 'Select_pairs' in templateContents :  Select_pairs =  templateContents['Select_pairs']
+    else: Select_pairs = '1'
+
+    if 'GenRdcDem_Rslc_all' in templateContents :  GenRdcDem_Rslc_all =  templateContents['GenRdcDem_Rslc_all']
+    else: GenRdcDem_Rslc_all = '1'
+
+##########################    Check DEM   ###############################################
+
+    if 'DEM' in templateContents :
+        DEM =  templateContents['DEM']
+        if not os.path.isfile(DEM):
+            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
+            call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+            os.system(call_str)
+
+            call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
+            os.system(call_str)
     else:
         call_str='process_tsifg_gamma.py ' + projectName
-        
+
     os.system(call_str)
-    
-    
+
+    print "Time series interferograms processing is done! "
+    return
+
 if __name__ == '__main__':
     main(sys.argv[:])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

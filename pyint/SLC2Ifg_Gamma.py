@@ -1,16 +1,17 @@
 #! /usr/bin/env python
 #################################################################
-###  This program is part of PyINT  v1.0                      ### 
-###  Copy Right (c): 2017, Yunmeng Cao                        ###  
-###  Author: Yunmeng Cao                                      ###                                                          
+###  This program is part of PyINT  v1.0                      ###
+###  Copy Right (c): 2017, Yunmeng Cao                        ###
+###  Author: Yunmeng Cao                                      ###
 ###  Email : ymcmrs@gmail.com                                 ###
-###  Univ. : Central South University & University of Miami   ###   
+###  Univ. : Central South University & University of Miami   ###
 #################################################################
 
 
 import numpy as np
 import os
-import sys  
+import sys
+import re
 import subprocess
 import getopt
 import time
@@ -48,67 +49,67 @@ def read_template(File, delimiter='='):
 def usage():
     print('''
 ******************************************************************************************************
- 
+
            Generating interferograms from SLC : InSAR, MAI, Split-specrum Interferometry
-     
+
       usage:
-   
+
             SLC2Ifg_Gamma.py igramDir
-      
+
       e.g.  SLC2Ifg_Gamma.py IFG_PacayaT163TsxHhA_131021-131101_0011_0007
-      e.g.  SLC2Ifg_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007         
-      e.g.  SLC2Ifg_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
+      e.g.  SLC2Ifg_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007
+      e.g.  SLC2Ifg_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007
 *******************************************************************************************************
-    ''')   
-    
+    ''')
+
 def main(argv):
-    
+
     if len(sys.argv)==2:
         if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: igramDir=sys.argv[1]        
+        else: igramDir=sys.argv[1]
     else:
         usage();sys.exit(1)
-    
+
     projectName = igramDir.split('_')[1]
-    
+
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateContents=read_template(templateFile)
-    
+
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     workDir    = processDir + '/' + igramDir
-    
+
     if not os.path.isdir(workDir):
         call_str="mkdir "+ workDir
         os.system(call_str)
-        
-    
-    if 'Coreg_int'          in templateContents: Coreg_int = templateContents['Coreg_int']                
+
+
+    if 'Coreg_int'          in templateContents: Coreg_int = templateContents['Coreg_int']
     else: Coreg_int = '1'
-    
-    if 'INT_Flag'          in templateContents: INT_Flag = templateContents['INT_Flag']                
+
+    if 'INT_Flag'          in templateContents: INT_Flag = templateContents['INT_Flag']
     else: INT_Flag = '1'
-        
-    if 'DIFF_Flag'          in templateContents: DIFF_Flag = templateContents['DIFF_Flag']                
+
+    if 'DIFF_Flag'          in templateContents: DIFF_Flag = templateContents['DIFF_Flag']
     else: DIFF_Flag = '1'
-        
-    if 'UNW_Flag'          in templateContents: UNW_Flag = templateContents['UNW_Flag']                
+
+    if 'UNW_Flag'          in templateContents: UNW_Flag = templateContents['UNW_Flag']
     else: UNW_Flag = '1'
-        
-    if 'UNW_SUB_Flag'          in templateContents: UNW_SUB_Flag = templateContents['UNW_SUB_Flag']                
+
+    if 'UNW_SUB_Flag'          in templateContents: UNW_SUB_Flag = templateContents['UNW_SUB_Flag']
     else: UNW_SUB_Flag = '1'
-        
-    if 'GEO_Flag'          in templateContents: GEO_Flag = templateContents['GEO_Flag']                
-    else: GEO_Flag = '1'    
-          
+
+    if 'GEO_Flag'          in templateContents: GEO_Flag = templateContents['GEO_Flag']
+    else: GEO_Flag = '1'
+
 ##############################################################
 
-    if 'coregMethod'          in templateContents: coregMethod = templateContents['coregMethod']                
+    if 'coregMethod'          in templateContents: coregMethod = templateContents['coregMethod']
     else: coregMethod = 'Init'
-    if 'unwrapMethod'          in templateContents: unwrapMethod = templateContents['unwrapMethod']                
+    if 'unwrapMethod'          in templateContents: unwrapMethod = templateContents['unwrapMethod']
     else: unwrapMethod = 'mcf'
-    
+
 
     if Coreg_int == '1' :
         if coregMethod == "DEM":
@@ -117,20 +118,20 @@ def main(argv):
         else:
             call_str = "CoregistSLC_init_Gamma.py " + igramDir
             os.system(call_str)
-    
+
     if INT_Flag == '1' :
         call_str = "GenIgram_Gamma.py " + igramDir
-        os.system(call_str)        
-    
+        os.system(call_str)
+
     if DIFF_Flag == '1':
         call_str = "SimPhase_Gamma.py " + igramDir
-        os.system(call_str)        
+        os.system(call_str)
         call_str = "DiffPhase_Gamma.py " + igramDir
-        os.system(call_str) 
-    
+        os.system(call_str)
+
     call_str = "GenerateRSC_Gamma.py " + igramDir
     os.system(call_str)
-    
+
     if UNW_Flag == '1':
         if unwrapMethod =="mcf":
             call_str = "UnwrapPhase_Gamma.py " + igramDir
@@ -142,24 +143,15 @@ def main(argv):
     if GEO_Flag == '1':
         call_str = "Geocode_Gamma.py " + igramDir
         os.system(call_str)      
-    
-    print("SLC to interferogram done!")    
-    sys.exit(1)
+
+    date12 = str(re.findall('\d{8}[-_]\d{8}', igramDir)[0]).replace('_','-')
+    m_date, s_date = date12.split('-')
+    rmCmd = 'rm %s.int %s.rslc %s.rslc flat_%s_rlks.int' % (date12, m_date, s_date, date12);   print rmCmd;  os.system(rmCmd)
+
+    print "SLC to interferogram done!"
+    return
 
 
-    
+
 if __name__ == '__main__':
     main(sys.argv[:])
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

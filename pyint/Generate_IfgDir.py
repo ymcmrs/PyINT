@@ -15,6 +15,8 @@ import getopt
 import time
 import glob
 
+import pysar._network as pnet
+
 def check_variable_name(path):
     s=path.split("/")[0]
     if len(s)>0 and s[0]=="$":
@@ -104,14 +106,9 @@ def main(argv):
     if not os.path.isdir(processDir):
         call_str='mkdir ' + processDir
         os.system(call_str)
-    
-    Dirlist = []
-    fd=file(IFG_List,'r')
-    
-    for line in fd.readlines():
-        if len(line)>0:
-            Dirlist.append(line)
-    
+
+    Dirlist = pnet.get_date12_list(IFG_List)
+
     for ff in Dirlist:
         master = ff.split('-')[0]
         slave  = ff.split('-')[1]
