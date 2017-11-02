@@ -142,7 +142,7 @@ def main(argv):
 
     if GEO_Flag == '1':
         call_str = "Geocode_Gamma.py " + igramDir
-        os.system(call_str)      
+        os.system(call_str)
 
     date12 = str(re.findall('\d{8}[-_]\d{8}', igramDir)[0]).replace('_','-')
     m_date, s_date = date12.split('-')
