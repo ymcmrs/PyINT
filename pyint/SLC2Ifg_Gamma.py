@@ -146,7 +146,9 @@ def main(argv):
 
     date12 = str(re.findall('\d{8}[-_]\d{8}', igramDir)[0]).replace('_','-')
     m_date, s_date = date12.split('-')
-    rmCmd = 'rm %s.int %s.rslc %s.rslc flat_%s_rlks.int' % (date12, m_date, s_date, date12);   print rmCmd;  os.system(rmCmd)
+    rmCmd = 'rm '+os.path.join(igramDir, date12+'.int');   print rmCmd; os.system(rmCmd)
+    rmCmd = 'rm '+os.path.join(igramDir, m_date+'.rslc');  print rmCmd; os.system(rmCmd)
+    rmCmd = 'rm '+os.path.join(igramDir, s_date+'.rslc');  print rmCmd; os.system(rmCmd)
 
     print "SLC to interferogram done!"
     return
