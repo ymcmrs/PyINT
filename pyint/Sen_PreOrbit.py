@@ -60,9 +60,7 @@ def cmdLineParse():
 
 
 def main(argv):
-    
-    MON_DAY = [31,28,31,30,31,30,31,31,30,31,30,31]
-    
+      
     total = time.time()
     inps = cmdLineParse()
     
@@ -110,9 +108,7 @@ def main(argv):
             if TT[k]<=0 and TT[k+1]>0:
                 ff = k
             
-        
-    SS='https://qc.sentinel1.eo.esa.int/aux_poeorb/?mission=S1A&validity_start_time=2016&validity_start_time=2016-01&validity_start_time=2016-01-01..2016-01-04&validity_start_time=2016-01-01'
-    
+  
     DAY1 = T0[ff]
     DAY2 = T0[ff+1]
     
