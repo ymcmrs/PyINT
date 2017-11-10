@@ -46,7 +46,7 @@ EXAMPLE = '''
 
 
 def cmdLineParse():
-    parser = argparse.ArgumentParser(description='Geocode h5 file based on GAMMA.',\
+    parser = argparse.ArgumentParser(description='Download precise S1 orbit data.',\
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
