@@ -146,6 +146,9 @@ def main(argv):
     if 'COREG_ALL' in templateContents :  COREG_ALL =  templateContents['COREG_ALL']
     else: COREG_ALL = '1'
         
+    if 'GEN_DEM_ALL' in templateContents :  GEN_DEM_ALL =  templateContents['GEN_DEM_ALL']
+    else: GEN_DEM_ALL = '1'
+        
     if 'Gen_IFG_DIR' in templateContents :  Gen_IFG_DIR=  templateContents['Gen_IFG_DIR']
     else: Gen_IFG_DIR = '1'      
     
@@ -179,6 +182,7 @@ def main(argv):
         call_str = 'COREG_ALL_Sen_Gamma.py ' + projectName
         os.system(call_str)
         
+    if GEN_DEM_ALL =='1':    
         call_str = 'Generate_RdcDEM_Sen_ALL.py ' + projectName
         os.system(call_str)
          
