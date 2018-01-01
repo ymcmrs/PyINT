@@ -190,7 +190,10 @@ def main(argv):
         os.remove(TT)
     for kk in IFGLIST:
         print '>>> Process ' + os.path.basename(kk)
-        call_str = 'echo UnwrapPhase_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
+        if 'S1' in projectName:
+            call_str = 'echo UnwrapPhase_Sen_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
+        else:
+            call_str = 'echo UnwrapPhase_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         os.system(call_str)
    
     call_str ='BatchProcess.py ' + '-p ' + TT + ' -m 5000 ' + ' -t 3:00'  
