@@ -196,7 +196,7 @@ def main(argv):
             call_str = 'echo UnwrapPhase_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         os.system(call_str)
    
-    call_str ='BatchProcess.py ' + '-p ' + TT + ' -m 5000 ' + ' -t 3:00'  
+    call_str ='BatchProcess.py ' + '-p ' + TT + ' -m 8000 ' + ' -t 2:00'  
     os.system(call_str)
     sys.exit(1)
 
