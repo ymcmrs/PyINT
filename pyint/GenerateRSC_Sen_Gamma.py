@@ -160,10 +160,10 @@ def main(argv):
     SLC_par2 = SslcDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
     if Resamp_All =='1':        
         SLC_par = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par' 
-        #MrslcImg    = MslcDir + '/' + Mdate + '.rslc'
-        #SrslcImg    = SslcDir + '/' + Sdate + '.rslc'
-        #MrslcPar    = MslcDir + '/' + Mdate + '.rslc.par'
-        #SrslcPar    = SslcDir + '/' + Sdate + '.rslc.par'
+        MrslcImg    = MslcDir + '/' + Mdate + '.rslc'
+        SrslcImg    = SslcDir + '/' + Sdate + '.rslc'
+        MrslcPar    = MslcDir + '/' + Mdate + '.rslc.par'
+        SrslcPar    = SslcDir + '/' + Sdate + '.rslc.par'
     
     if os.path.isfile(OFF):
         os.remove(OFF)
