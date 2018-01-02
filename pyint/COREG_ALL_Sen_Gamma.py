@@ -223,8 +223,9 @@ def main(argv):
     
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
 
-    call_str = 'Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + masterDate
-    os.system(call_str)
+    if not os.path.isfile(masterRdcDEM):
+        call_str = 'Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + masterDate
+        os.system(call_str)
     
     run_coreg_all  = projectDir + "/run_coreg_all"
     if os.path.isfile(run_coreg_all):
