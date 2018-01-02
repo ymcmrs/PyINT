@@ -182,8 +182,8 @@ def main(argv):
     MslcDir     = rslcDir  + '/' + Mdate
 
        
-    MslcImg     = MslcDir + '/' + Mdate + '.slc'
-    MslcPar     = MslcDir + '/' + Mdate + '.slc.par'
+    MslcImg     = MslcDir + '/' + Mdate + '.rslc'
+    MslcPar     = MslcDir + '/' + Mdate + '.rslc.par'
     OFFSTD = workDir + '/' + Mdate + '_dem.off_std'
     
 
