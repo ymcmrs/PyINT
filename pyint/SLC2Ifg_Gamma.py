@@ -70,9 +70,6 @@ def main(argv):
         usage();sys.exit(1)
     
     projectName = igramDir.split('_')[1]
-    IFGPair = igramDir.split(projectName+'_')[1].split('_')[0]
-    Mdate = IFGPair.split('-')[0]
-    Sdate = IFGPair.split('-')[1]
     
     scratchDir = os.getenv('SCRATCHDIR')
     templateDir = os.getenv('TEMPLATEDIR')
