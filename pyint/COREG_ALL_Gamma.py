@@ -146,13 +146,6 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     
-    if not os.path.isdir(rslcDir):
-        call_str = 'mkdir ' + rslcDir
-        os.system(call_str)
-    
-    if not os.path.isdir(processDir):
-        call_str = 'mkdir ' + processDir
-        os.system(call_str)
 
     templateContents = read_template(templateFile)
     if 'memory_Coreg' in templateContents :  memory_Coreg =  templateContents['memory_Coreg']
@@ -220,13 +213,7 @@ def main(argv):
             
         call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
         os.system(call_str)
-    
-    masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
-    if not os.path.isfile(masterRdcDEM):
-        #call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
-        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
-        #status = subprocess.Popen(call_str, shell=True).wait()
-        os.system(call_str)
+   
     
     run_coreg_all  = projectDir + "/run_coreg_all"
     if os.path.isfile(run_coreg_all):
