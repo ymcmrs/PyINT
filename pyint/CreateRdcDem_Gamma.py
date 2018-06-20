@@ -248,8 +248,7 @@ def main(argv):
         DF_type = '2'
     
         
-    tmp_dem = dem + '_tmp'
-    
+    tmp_dem = dem + '_tmp' 
     if not os.path.isfile(tmp_dem):
         call_str = '$GAMMA_BIN/replace_values ' + dem + ' -10000 0 ' + tmp_dem + ' ' + nWidthUTMDEM0 + ' 2 ' + DF_type
         os.system(call_str)
