@@ -190,11 +190,8 @@ def main(argv):
     if Select_pairs =='1':
         call_str = 'SelectPairs_Gamma.py ' + projectName
         os.system(call_str) 
-        
-    if 'Load_Data' in templateContents :  GenRdcDem_Rslc_all =  templateContents['GenRdcDem_Rslc_all']
-    else: GenRdcDem_Rslc_all = '1'    
          
-    IFGLIST = glob.glob(processDir+'/*_' +projectName + '_*') 
+    IFGLIST = glob.glob(processDir+'/IFG_' +projectName + '_*') 
     
     run_slc2ifg_gamma = processDir+'/run_slc2ifg_gamma'
     if os.path.isfile(run_slc2ifg_gamma):
