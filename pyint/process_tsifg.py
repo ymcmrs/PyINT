@@ -172,11 +172,14 @@ def main(argv):
         call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
         os.system(call_str)
  
+
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
         call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
         os.system(call_str)
-        
+      
+    
+    
     if Coreg_all== '1':    
         call_str = 'COREG_ALL_Gamma.py ' + projectName
         os.system(call_str)
