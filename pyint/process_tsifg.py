@@ -201,7 +201,8 @@ def main(argv):
         Str = 'masterDate   =   %s \n' %masterDate
         write_template(templateFile, Str)
 
-
+    rlks = templateContents['Range_Looks']
+    azlks = templateContents['Azimuth_Looks']
 
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
