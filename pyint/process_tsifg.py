@@ -173,6 +173,35 @@ def main(argv):
         os.system(call_str)
  
 
+    ListSLC = os.listdir(slcDir)
+    for kk in range(len(ListSLC)):
+        if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):
+            DD=ListSLC[kk]
+            Year=int(DD[0:2])
+            Month = int(DD[2:4])
+            Day = int(DD[4:6])
+            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
+                Datelist.append(ListSLC[kk])
+
+
+    if 'masterDate' in templateContents : 
+        masterDate = templateContents['masterDate']
+        if masterDate in Datelist:
+            print "masterDate: %s" % masterDate
+        else:
+            print "The selected masterdate %s is not in the date list!! " % masterDate
+            print "The first date is chosen as the master date: %s" % str(Datelist[0])
+            masterDate = Datelist[0]
+            Str = 'masterDate   =   %s \n' %masterDate
+            write_template(templateFile, Str)           
+    else:
+        print "The first date is chosen as the master date: %s" % str(Datelist[0])
+        masterDate = Datelist[0]
+        Str = 'masterDate   =   %s \n' %masterDate
+        write_template(templateFile, Str)
+
+
+
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
         call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
