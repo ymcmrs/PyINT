@@ -174,6 +174,7 @@ def main(argv):
  
 
     ListSLC = os.listdir(slcDir)
+    Datelist = []
     for kk in range(len(ListSLC)):
         if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):
             DD=ListSLC[kk]
