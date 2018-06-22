@@ -42,11 +42,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 3.  Our codes work for both conventional SAR datasets and TOPS datasets.
 
-1). Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):  
+   1). Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):  
 
        process_tsifg.py projectName   (start from SLCs )
       
-2). Running for TOPS SAR datasets (like Sentinel-1A/B):
+   2). Running for TOPS SAR datasets (like Sentinel-1A/B):
     
        process_tsifg_sen.py projectName  (start from data download)
 
