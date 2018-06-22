@@ -40,11 +40,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
 
-3. Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
+3. 1) Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
 
       process_tsifg.py projectName
       
-   Running for TOPS SAR datasets (like Sentinel-1A/B):
+   2) Running for TOPS SAR datasets (like Sentinel-1A/B):
       
       process_tsifg_sen.py projectName
 
