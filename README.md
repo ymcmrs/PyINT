@@ -30,7 +30,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     setenv PYTHONPATH    ${PYTHONPATH}:${PYINT_HOME}
     setenv PATH          ${PATH}:${PYINT_HOME}/pyint
    
-### 3 Running PyInt
+### 3 Running PyINT
 
 1. $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:        
 
