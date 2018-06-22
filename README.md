@@ -1,7 +1,15 @@
 # PyINT
 ## (Python&GAMMA based interfermetry toolbox)
-### Time series interferometry processing based on python and GAMMA.       
+## Time series interferometry processing based on python and GAMMA for all of the present SAR datasets.       
 
+## 1 Download
+
+Download the development version (based on Python 2) using git:   
+   
+    cd ~/python
+    git clone https://github.com/ymcmrs/PyINT
+    
+    
 Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
 ####If you want to make the scripts work smoothly, you should obey the following rules :              
