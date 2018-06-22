@@ -22,11 +22,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     endif
     
     ##--------- Anaconda ---------------## 
-    setenv PYTHON3DIR    ~/python/anaconda3
-    setenv PATH          ${PATH}:${PYTHON3DIR}/bin
+    setenv PYTHON2DIR    ~/python/anaconda2
+    setenv PATH          ${PATH}:${PYTHON2DIR}/bin
     
     ##--------- PySAR ------------------## 
-    setenv PYINT_HOME    ~/python/PyINT       #for released version, "~/python/PySAR-0.4.0"
+    setenv PYINT_HOME    ~/python/PyINT       
     setenv PYTHONPATH    ${PYTHONPATH}:${PYINT_HOME}
     setenv PATH          ${PATH}:${PYINT_HOME}/pyint
    
