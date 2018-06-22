@@ -40,8 +40,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
 
-3. Our codes do not support SAR focus processing yet, so you should prepare your SLCs first, that should be saved under the folder     /Users/Yunmeng/Documents/SCRATCH/ProjectName/SLC  (each date have one single folder, e.g SLC/100102/100102.slc, SLC/100102/100102.slc.par) when you have prepared your SLC folder, then you can running PyINT as follow:
-
+3. Our codes do not support SAR focus processing yet, so you should prepare your SLCs first
+        /Users/Yunmeng/Documents/SCRATCH/ProjectName/SLC  
+        (each date have one single folder, e.g SLC/100102/100102.slc, SLC/100102/100102.slc.par) 
+        
+   when you have prepared your SLC folder, then you can running PyINT as follow:
    1) Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
 
        process_tsifg.py projectName
