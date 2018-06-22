@@ -25,7 +25,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     setenv PYTHON2DIR    ~/python/anaconda2
     setenv PATH          ${PATH}:${PYTHON2DIR}/bin
     
-    ##--------- PySAR ------------------## 
+    ##--------- PyINT ------------------## 
     setenv PYINT_HOME    ~/python/PyINT       
     setenv PYTHONPATH    ${PYTHONPATH}:${PYINT_HOME}
     setenv PATH          ${PATH}:${PYINT_HOME}/pyint
