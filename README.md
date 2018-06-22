@@ -2,7 +2,7 @@
 ## (Python&GAMMA based interfermetry toolbox)
 ### Time series interferometry processing based on python and GAMMA for all of the present SAR datasets.       
 
-## 1 Download
+### 1 Download
 
 Download the development version (based on Python 2) using git:   
    
@@ -10,6 +10,29 @@ Download the development version (based on Python 2) using git:
     git clone https://github.com/ymcmrs/PyINT
     
     
+### 2 Installation
+
+To make pysar importable in python, by adding the path to PySAR directory to your $PYTHONPATH
+For csh/tcsh user, add to your **_~/.cshrc_** file for example:   
+
+    ############################  Python  ###############################
+    if ( ! $?PYTHONPATH ) then
+        setenv PYTHONPATH ""
+    endif
+    
+    ##--------- Anaconda ---------------## 
+    setenv PYTHON3DIR    ~/python/anaconda3
+    setenv PATH          ${PATH}:${PYTHON3DIR}/bin
+    
+    ##--------- PySAR ------------------## 
+    setenv PYINT_HOME    ~/python/PyINT       #for released version, "~/python/PySAR-0.4.0"
+    setenv PYTHONPATH    ${PYTHONPATH}:${PYINT_HOME}
+    setenv PATH          ${PATH}:${PYINT_HOME}/pyint
+   
+
+
+
+
 Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
 ####If you want to make the scripts work smoothly, you should obey the following rules :              
