@@ -12,7 +12,8 @@ Download the development version (based on Python 2) using git:
     
 ### 2 Installation
 
-To make pysar importable in python, by adding the path to PySAR directory to your $PYTHONPATH
+ To make pysar importable in python, by adding the path to PySAR directory to your $PYTHONPATH
+
 For csh/tcsh user, add to your **_~/.cshrc_** file for example:   
 
     ############################  Python  ###############################
