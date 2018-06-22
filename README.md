@@ -41,6 +41,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 
 3. Our codes do not support SAR focus processing yet, so you should prepare your SLCs first
+
         e.g., /Users/Yunmeng/Documents/SCRATCH/ProjectName/SLC  
         Each date have one single folder, like SLC/100102/100102.slc, SLC/100102/100102.slc.par
         
