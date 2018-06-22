@@ -42,11 +42,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 3. 1) Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
 
-      process_tsifg.py projectName
+       process_tsifg.py projectName
       
    2) Running for TOPS SAR datasets (like Sentinel-1A/B):
-      
-      process_tsifg_sen.py projectName
+       
+       process_tsifg_sen.py projectName
 
     Of course, you also can process step by step: 
     
