@@ -40,7 +40,9 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
 
-3. 1) Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
+3. Our code dosen't support SAR focusing yet, so you should start from SLCs that should be saved under the folder     /Users/Yunmeng/Documents/SCRATCH/ProjectName/SLC
+
+   1) Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
 
        process_tsifg.py projectName
       
