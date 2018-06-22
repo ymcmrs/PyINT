@@ -37,7 +37,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
       setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
       setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR   
 
-
+2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).
 
 Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
