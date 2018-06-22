@@ -40,7 +40,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
 
-3.  
+3.  Our codes work for both conventional SAR datasets and TOPS datasets.
 
 1). Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):  
 
@@ -50,7 +50,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     
        process_tsifg_sen.py projectName  (start from data download)
 
-    Of course, you also can process step by step: 
+   Of course, you also can process step by step: 
     
        step1: Check DEM, if no DEM is available, using Makedem_PyINT.py
        step2: Coregistration.   Using COREG_ALL_GAMMA.py   or COREG_ALL_Sen_GAMMA.py
