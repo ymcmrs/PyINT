@@ -37,31 +37,24 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
       setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
       setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR   
 
-2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).
+2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
-Available SAR sensors:  ERS, ASAR, ALOS-1/2, Sentinal-1A/B, TSX, ...         
 
-####If you want to make the scripts work smoothly, you should obey the following rules :              
+3. Running for conventional SAR datasets (like ENVISAT, ALOS-1, Radarsat-1, TerreSAR-x):
 
-#####1) $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:              
-      setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
-      setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR      
-      ...    
-            
-#####2) The correct folders' format should be:        
-     $SCRATCHDIR/PROJECTNAME/SLC       (SLC folder should be available!!!)     
-     $SCRATCHDIR/PROJECTNAME/PROCESS/ifgramDir  
-     ...     
-    
+      process_tsifg.py projectName
       
-#####3) ifgramDir should be named like:     
+   Running for TOPS SAR datasets (like Sentinel-1A/B):
+      
+      process_tsifg_sen.py projectName
 
-    IFG_PacayaT120F107AlosA_080101-090101_0111-0123   
-    MAI_PacayaT120F107AlosA_080101-090101_0111-0123
-    RSI_PacayaT120F107AlosA_080101-090101_0111-0123
-     
-     
-If you set all the above OK, then these scripts shoul work for you! If you can share some advices or ideas about python, GAMMA, InSAR processing ..., I would be very grateful and very glad to communicate with you!        
+    Of course, you also can process step by step: 
+    
+       step1: Check DEM, if no DEM is available, using Makedem_PyINT.py
+       step2: Coregistration.   Using COREG_ALL_GAMMA.py   or COREG_ALL_Sen_GAMMA.py
+       step3: Selecting interferometry pairs. Using SelectPairs_Gamma.py    (Generate_IfgDir.py for available ifg_list file)
+       Step4: Generating interferograms. Using SLC2Ifg_Gamma.py  or SLC2Ifg_Sen_Gamma.py
+       Step5: Loading data for further time-series processing (PYSAR).  Using Load_data_gamma.py 
    
    
 Wish these scripts can help you for InSAR processing!! Enjoy it!  Any advices or problems would be very welcomed!  Do not hesitate to contact me: ymcmrs@gmail.com        
@@ -69,3 +62,4 @@ Wish these scripts can help you for InSAR processing!! Enjoy it!  Any advices or
    
    
  March 10, 2017   Yunmeng    
+ updated June 22, 2018    Miami  
