@@ -219,6 +219,8 @@ def main(argv):
     if os.path.isfile(run_coreg_all):
         os.remove(run_coreg_all)
 
+    call_str ='rm job*'
+    os.system(call_str)
     
     write_run_coreg_all(projectName,masterDate,SLAVElist,rslcDir)
         
