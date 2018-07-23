@@ -191,7 +191,6 @@ def main(argv):
     call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
     os.system(call_str)
 
-    sys.exit(1)
     
 if __name__ == '__main__':
     main(sys.argv[:])
