@@ -156,7 +156,10 @@ def main(argv):
     for kk in Datelist:
         STR = 'echo Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + kk + ' >>' + run_GenDEM_rslc_all
         os.system(STR)
-        
+     
+    call_str='rm job*'
+    os.system(call_str)
+    
     call_str='$INT_SCR/createBatch.pl ' + run_GenDEM_rslc_all + ' memory=5000 ' + ' walltime= 1:00'
     os.system(call_str)
     
