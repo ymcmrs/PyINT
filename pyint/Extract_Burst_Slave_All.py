@@ -84,8 +84,9 @@ def write_template(File, Str):
 
 def write_run_extract_burst_all(projectName,datelist):
     scratchDir = os.getenv('SCRATCHDIR')    
-    projectDir = scratchDir + '/' + projectName   
-    run_extract_burst_all  = projectDir + "/run_extract_burst_all"
+    projectDir = scratchDir + '/' + projectName
+    slcDir = projectDir + '/SLC'
+    run_extract_burst_all  = slcDir + "/SLC/run_extract_burst_all"
     f_extract = open(run_extract_burst_all,'w')
     
     for kk in range(len(datelist)):
