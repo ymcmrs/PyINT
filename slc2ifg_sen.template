@@ -3,7 +3,7 @@
 Track  = 143
 Frame  = 529 
 
-Range_Looks  =  20         # [20:4 means almost 40 m resolution in both azimuth and range direction.]
+Range_Looks  =  20         # [20:4 means almost 80 m resolution in both azimuth and range direction.]
 Azimuth_Looks =  4
 
 # DEM =                    
@@ -48,7 +48,6 @@ Simphase_Lat_Ovr  =  1   # should according to the resolution of DEM and multi-l
 Simphase_Lon_Ovr  =  1   # e.g. for SRTM-1 30m, for 20:4 looks, 40m,  if you use 1, it's almost the same, that's OK, otherwise you might lose some information. 
 
 DiffPhase         =  1      # [option: default=1 ] interferometry and differential processing
-Resamp_All        =  1      # [option: default=1 ] resampling all image to one master date. 
 UnwrapPhase       =  1      # [option: default=1 ] unwrap interferogram
 GeoPhase          =  1      # [option: default=1 ] Geocode radar coordinates date into lat/lon coordinates.
 ##############################################################################################################
