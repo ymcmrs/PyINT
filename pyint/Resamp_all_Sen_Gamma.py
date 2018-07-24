@@ -215,16 +215,16 @@ def main(argv):
     fin.close()
     fout.close()
 
+    if not Mdate==masterDate:
+        call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
+        os.system(call_str)
     
-    call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
-    os.system(call_str)
+        call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
+        os.system(call_str)
     
-    call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
-    os.system(call_str)
-    
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar  + " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
-    os.system(call_str)
-    os.rename(rINT, INT)
+        call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar  + " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
+        os.system(call_str)
+        os.rename(rINT, INT)
     
     if os.path.isfile(OFF):
         os.remove(OFF)
