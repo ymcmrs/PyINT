@@ -189,7 +189,10 @@ def main(argv):
     
 
     write_run_extract_burst_all(projectName,Datelist)
-    call_str = 'rm job*'
+    call_str = 'rm ' + slcDir + '/job*'
+    os.system(call_str)
+    
+    call_str = 'rm ' + slcDir + '/z_output*'
     os.system(call_str)
     
     call_str='$INT_SCR/createBatch.pl ' + slcDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
