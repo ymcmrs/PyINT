@@ -192,7 +192,7 @@ def main(argv):
     call_str = 'rm job*'
     os.system(call_str)
     
-    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
+    call_str='$INT_SCR/createBatch.pl ' + slcDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
     os.system(call_str)
     
     sys.exit(1)
