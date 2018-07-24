@@ -237,7 +237,7 @@ def main(argv):
     call_str = 'rm job*'
     os.system(call_str)
     
-    call_str='$INT_SCR/createBatch.pl ' + projectDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
+    call_str='$INT_SCR/createBatch.pl ' + rslcDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
     os.system(call_str)
 
     sys.exit(1)
