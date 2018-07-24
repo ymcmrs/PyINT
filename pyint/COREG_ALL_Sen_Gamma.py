@@ -85,7 +85,7 @@ def write_template(File, Str):
 def write_run_coreg_all(projectName,master,slavelist,workdir):
     scratchDir = os.getenv('SCRATCHDIR')    
     projectDir = scratchDir + '/' + projectName   
-    run_coreg_all  = workDir + "/run_coreg_all"
+    run_coreg_all  = workdir + "/run_coreg_all"
     f_coreg = open(run_coreg_all,'w')
     
     for kk in range(len(slavelist)):
