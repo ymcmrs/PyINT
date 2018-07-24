@@ -142,7 +142,7 @@ def main(argv):
         call_str ='GenerateRSC_Sen_Gamma.py ' + igramDir
         os.system(call_str)
         
-    if (Resamp_All =='1') and (not Mdate==masterDate):
+    if Resamp_All =='1':
         call_str = 'Resamp_all_Sen_Gamma.py ' + igramDir
         os.system(call_str)
     
