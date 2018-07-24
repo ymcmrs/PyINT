@@ -148,7 +148,7 @@ def main(argv):
     map(int,Datelist)                
     Datelist.sort()
     
-    run_GenDEM_rslc_all = processDir + '/run_GenDEM_rslc_all'
+    run_GenDEM_rslc_all = processDir + '/DEM/run_GenDEM_rslc_all'
     if os.path.isfile(run_GenDEM_rslc_all):
         os.remove(run_GenDEM_rslc_all)
 
