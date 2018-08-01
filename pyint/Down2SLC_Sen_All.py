@@ -145,7 +145,7 @@ def main(argv):
     print ''
     print 'Start processing down2sl for project: ' + projectName
     
-    call_str='$INT_SCR/createBatch.pl ' + run_down2slc_sen + ' memory=3700  walltime=0:30'
+    call_str='$INT_SCR/createBatch.pl ' + run_down2slc_sen + ' memory=7000  walltime=0:30'
     os.system(call_str)
     
     print "Down to SLC for project %s is done! " % projectName
