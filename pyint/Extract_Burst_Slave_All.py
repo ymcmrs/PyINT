@@ -154,7 +154,7 @@ def main(argv):
 
     templateContents = read_template(templateFile)
     if 'memory_Extract' in templateContents :  memory_Extract =  templateContents['memory_Extract']
-    else: memory_Extract = '3700'
+    else: memory_Extract = '7000'
     if 'walltime_Extract' in templateContents :  walltime_Extract =  templateContents['walltime_Extract']
     else: walltime_Extract = '0:30'
     
