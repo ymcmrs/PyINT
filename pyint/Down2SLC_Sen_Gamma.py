@@ -200,7 +200,11 @@ def main(argv):
             #call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
             #os.system(call_str)
             
-            call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+            if int(Date) > 180311:
+                call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' - ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+            else:
+                call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+            
             os.system(call_str)
             
             call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
