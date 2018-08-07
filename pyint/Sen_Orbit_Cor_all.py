@@ -80,13 +80,19 @@ def main(argv):
         if is_number(kk):
             call_str ='echo Sen_Orbit_Cor.py ' + projectName + ' ' + kk + ' >> run_Sen_OrbCor' 
             os.system(call_str)
-        
-    call_str = 'BatchProcess.py -p run_Sen_OrbCor -m 3700 -t 0:30'
+    
+    call_str = 'rm job*'
+    os.system(call_str)
+    
+    call_str = 'rm z_out*'
+    os.system(call_str)
+    
+    
+    call_str = '$INT_SCR/createBatch.pl run_Sen_OrbCor memory=3700 walltime=0:30'
     os.system(call_str)
     
     
     print 'Correct the orbit for project %s is done.' % projectName
-    sys.exit(1)
     
 if __name__ == '__main__':
     main(sys.argv[:])
