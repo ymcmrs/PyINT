@@ -117,7 +117,9 @@ def main(argv):
     S3 = StrNum(YEAR0) + '-' + StrNum(MON0) + '-' + StrNum(DAY2)
     S4 = StrNum(YEAR0) + '-' + StrNum(MON0) + '-' + StrNum(DAY0)
     
-    SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?mission=S1' + ST + '&validity_start_time=' + StrNum(YEAR0) + '&validity_start_time=' + S1 + '&validity_start_time=' + S2 + '..' + S3 + '&validity_start_time=' + S4
+    #SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?mission=S1' + ST + '&validity_start_time=' + StrNum(YEAR0) + '&validity_start_time=' + S1 + '&validity_start_time=' + S2 + '..' + S3 + '&validity_start_time=' + S4
+    SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?validity_start=' + StrNum(YEAR0) + '&validity_start=' + S1 + '&validity_start=' + S2 + '..' + S3 + '&sentinel1_mission=S1'+ST
+    
     
     SS = "'" + SS + "'"
     print SS
