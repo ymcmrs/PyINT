@@ -15,6 +15,7 @@ import getopt
 import time
 import glob
 import argparse
+import linecache
 
 def StrNum(S):
     S = str(S)
@@ -123,15 +124,25 @@ def main(argv):
     
     SS = "'" + SS + "'"
     print SS
-    
-    call_str = 'wget -q -nd -r -l1 --no-parent -R index.html --no-check-certificate ' + SS
+    call_str = 'curl ' + SS + ' >tt'
     os.system(call_str)
     
-    call_str = 'rm index.html?*'
+    call_str = "grep 'EOF' -C 0 tt >t0"
     os.system(call_str)
     
-    call_str = 'rm robots.txt*'
+    
+    call_str="awk -F'href=' '{print $2}' t0 >t00"
     os.system(call_str)
+    
+    call_str= "awk -F'>' '{print $1}' t00 > t0"
+    os.system(call_str)
+    
+    SS=linecache.getline('t0', 1)
+    print SS
+    
+    call_str = 'wget -q --no-check-certificate ' + SS
+    os.system(call_str)
+    
     
     print "Download precise orbital data for %s is done." % DATE
     sys.exit(1)
