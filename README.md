@@ -59,9 +59,3 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
        Step5: Loading data for further time-series processing (PYSAR).  Using Load_data_gamma.py 
    
    
-Wish these scripts can help you for InSAR processing! Any advices or problems would be very welcomed, and do not hesitate to contact me: ymcmrs@gmail.com.   Good Luck!     
- 
-   
-   
- March 10, 2017   Yunmeng    
- Updated by June 22, 2018 (Miami)  
