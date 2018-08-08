@@ -64,4 +64,4 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     Step4: Generating interferograms. Using SLC2Ifg.py
     Step5: Loading data for further time-series processing (PYSAR).  Using Load_data.py 
    
-   ### PS: ALL OF THE ABOVE CODES ARE BASED ON THE HYPOTHESIS THAT YOU HAVE INSTALLED GAMMA!!!
+PS: All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/).
