@@ -62,6 +62,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     step2: Coregistration.   Using coreg_all.py
     step3: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
     Step4: Generating interferograms. Using SLC2Ifg.py
-    Step5: Loading data for further time-series processing (Right now, PySAR https://github.com/ymcmrs/PySAR is supported).  Using Load_data.py 
+    Step5: Loading data for further time-series processing (Right now, PySAR https://github.com/ymcmrs/PySAR is supported). 
+           Using Load_data.py 
    
 PS: All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/).
