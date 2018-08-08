@@ -46,7 +46,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
      SLC2Ifg.py IFG_PROJECTNAME_MASTER-SLAVE_PB_TB
      
      e.g. :
-         SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_34_48
+         SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048
 
 4).  Time-series of interferograms processing.
 
