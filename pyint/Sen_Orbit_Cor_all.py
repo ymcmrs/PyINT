@@ -88,7 +88,7 @@ def main(argv):
     os.system(call_str)
     
     
-    call_str = '$INT_SCR/createBatch.pl run_Sen_OrbCor memory=3700 walltime=0:30'
+    call_str = '$INT_SCR/createBatch.pl run_Sen_OrbCor memory=3700 walltime=0:10'
     os.system(call_str)
     
     
