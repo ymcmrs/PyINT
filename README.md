@@ -32,23 +32,23 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
    
 ### 3 Running PyINT
 
-1. $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:        
+####1. $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:        
 
       setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
       setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR   
 
-2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
+####2. Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
 
 
 
-3. Single interferogram processing:
+####3. Single interferogram processing:
      
      SLC2Ifg.py IFG_PROJECTNAME_MASTER-SLAVE_PB_TB
      
      e.g. :
          SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_34_48
 
-4.  Time-series of interferograms processing.
+####4.  Time-series of interferograms processing.
 
       process_tsifg.py PROJECTNAME
       
@@ -56,7 +56,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
           process_tsifg.py MexicoCityT143F529S1D
           
 
-  You also can process step by step: 
+  ####You also can process step by step: 
     
     step1: Check DEM, if no DEM is available, using Makedem_PyInt.py
     step2: Coregistration.   Using coreg_all.py
