@@ -43,7 +43,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 3). Single interferogram processing:
      
-     SLC2Ifg.py IfgramDir     ## typical name style of the ifgdir:  < IFG_PROJECTNAME_MASTER-SLAVE_PB_TB >
+         SLC2Ifg.py IfgramDir     ## typical name style of the ifgdir:  < IFG_PROJECTNAME_MASTER-SLAVE_PB_TB >
      
      e.g. :
          SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048
