@@ -93,6 +93,7 @@ def main(argv):
     
     
     print 'Correct the orbit for project %s is done.' % projectName
+    sys.exit(1)
     
 if __name__ == '__main__':
     main(sys.argv[:])
