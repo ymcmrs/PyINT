@@ -50,7 +50,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     
        process_tsifg_sen.py projectName  (start from data download)
 
-   Of course, you also can process step by step: 
+      You also can process step by step: 
     
        step1: Check DEM, if no DEM is available, using Makedem_PyINT.py
        step2: Coregistration.   Using COREG_ALL_GAMMA.py   or COREG_ALL_Sen_GAMMA.py
