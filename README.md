@@ -32,7 +32,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
    
 ### 3 Running PyINT
 
-1). $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files:        
+1). $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files to set the related processing parameters:        
 
       setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
       setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR   
