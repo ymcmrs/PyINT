@@ -97,8 +97,7 @@ def usage():
     print '''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
-       Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
+       Process time series of interferograms from downloading data or SLC images.
 
    usage:
    
