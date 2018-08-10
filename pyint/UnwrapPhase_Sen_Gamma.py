@@ -90,15 +90,15 @@ def usage():
     print '''
 ******************************************************************************************************
  
-              Generating the differential interferograms for Sentinel-1A/B
+              Unwrapping the differential interferograms for Sentinel-1A/B
 
    usage:
    
-            DiffPhase_Sen_Gamma.py igramDir
+            UnwrapPhase_Sen_Gamma.py igramDir
       
-      e.g.  DiffPhase_Sen_Gamma.py IFG_PacayaT163S1A_131021-131101_0011_-0007
-      e.g.  DiffPhase_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
-      e.g.  DiffPhase_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
+      e.g.  UnwrapPhase_Sen_Gamma.py IFG_PacayaT163S1A_131021-131101_0011_-0007
+      e.g.  UnwrapPhase_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
+      e.g.  UnwrapPhase_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
     '''   
     
