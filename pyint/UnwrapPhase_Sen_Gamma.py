@@ -230,7 +230,7 @@ def main(argv):
     #call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
     #os.system(call_str)
 
-    call_str = '$GAMMA_BIN/mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + CORDIFFFILTlksbmp + ' ' + UNWlks + ' ' + nWidth + ' 1 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+    call_str = '$GAMMA_BIN/mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + CORDIFFFILTlksbmp + ' ' + UNWlks + ' ' + nWidth + ' 0 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
     #call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
