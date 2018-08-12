@@ -49,5 +49,7 @@ Simphase_Lon_Ovr  =  1   # e.g. for SRTM-1 30m, for 20:4 looks, 40m,  if you use
 
 DiffPhase         =  1      # [option: default=1 ] interferometry and differential processing
 UnwrapPhase       =  1      # [option: default=1 ] unwrap interferogram
+Clear_IntFile     =  0      # [option: default=0 ] remove large files after unwarp for big data processing
+Clear_RslcFile    =  0      # [option: default=0 ] remove rslc file after unwrap for big data processing   
 GeoPhase          =  1      # [option: default=1 ] Geocode radar coordinates date into lat/lon coordinates.
 ##############################################################################################################
