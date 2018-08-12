@@ -156,6 +156,9 @@ def main(argv):
     if 'Resamp_All' in templateContents: Resamp_All = templateContents['Resamp_All']
     else: Resamp_All = '1'      
         
+    if 'Clear_IntFile' in templateContents: Clear_IntFile = templateContents['Clear_IntFile']
+    else: Clear_IntFile = '0'        
+        
 #  Definition of file
     MslcDir     = rslcDir  + '/' + Mdate
     SslcDir     = rslcDir  + '/' + Sdate
@@ -169,13 +172,14 @@ def main(argv):
         MamprlksImg = masterDir  + '/' + masterDate + '_' + rlks +'rlks.amp'
         MamprlksPar = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par'
         
-
+    INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
     SamprlksImg = workDir + '/' + Sdate  + '_' + rlks +'rlks.amp'
     SamprlksPar = workDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
 
     DIFF0     = workDir + '/' + Mdate + '_' + Sdate +'.diff'
     DIFFlks     = workDir + '/diff_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
     DIFFFILTlks = workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
+    
     UNWlks  =  workDir + '/diff_filt_' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw'
     UNWINTERPlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.unw_interp'
     DIFFpar = workDir + '/' + Mdate + '-' + Sdate +'.diff_par'
@@ -263,6 +267,12 @@ def main(argv):
 
         ras2jpg(OUTUNWQUAD, OUTUNWQUAD)
 
+    if Clear_IntFile =='1':
+        os.remove(INT)
+        os.remove(DIFF0)
+        os.remove(DIFFlks)
+        os.remove(DIFFFILTlks)
+        
 
     print "Unwrapping for S1 interferogram is done !"
     sys.exit(1)
