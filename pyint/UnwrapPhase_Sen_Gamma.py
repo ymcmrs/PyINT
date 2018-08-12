@@ -157,7 +157,10 @@ def main(argv):
     else: Resamp_All = '1'      
         
     if 'Clear_IntFile' in templateContents: Clear_IntFile = templateContents['Clear_IntFile']
-    else: Clear_IntFile = '0'        
+    else: Clear_IntFile = '0' 
+        
+    if 'Clear_RslcFile' in templateContents: Clear_RslcFile = templateContents['Clear_RslcFile']
+    else: Clear_RslcFile = '0'      
         
 #  Definition of file
     MslcDir     = rslcDir  + '/' + Mdate
@@ -272,6 +275,11 @@ def main(argv):
         os.remove(DIFF0)
         os.remove(DIFFlks)
         os.remove(DIFFFILTlks)
+    
+    RSLCFILE= glob.glob(workDir+'/'+'*.rslc')    
+    if Clear_RslcFile =='1':
+        for kk in RSLCFILE:
+            os.remove(kk)
         
 
     print "Unwrapping for S1 interferogram is done !"
