@@ -176,6 +176,7 @@ def main(argv):
         MamprlksPar = masterDir + '/' + masterDate + '_' + rlks +'rlks.amp.par'
         
     INT = workDir + '/' + Mdate + '-' + Sdate + '.int'
+    INTrlks = workDir + '/' + Mdate + '-' + Sdate + '_' + rlks + 'rlks.int'
     SamprlksImg = workDir + '/' + Sdate  + '_' + rlks +'rlks.amp'
     SamprlksPar = workDir + '/' + Sdate + '_' + rlks +'rlks.amp.par'
 
@@ -272,6 +273,7 @@ def main(argv):
 
     if Clear_IntFile =='1':
         os.remove(INT)
+        os.remove(INTrlks)
         os.remove(DIFF0)
         os.remove(DIFFlks)
         os.remove(DIFFFILTlks)
