@@ -112,6 +112,10 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     workDir    = processDir + '/' + igramDir   
     masterDate = templateContents['masterDate']
+    
+    if not os.path.isdir(workDir):
+        call_str = 'mkdir ' + workDir
+        os.system(call_str)
 ########################################################################
 
     #call_str = 'Check_Common_Burst.py ' + igramDir
