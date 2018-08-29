@@ -60,7 +60,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
   ### You also can process step by step: 
     
-    step1: Check DEM, if no DEM is available, using Makedem_PyInt.py
+    step1: Check DEM, if no DEM is available, using Makedem_PyInt.py (download DEM and generate GAMMA/ROI_PAC DEM file automatically)
     step2: Coregistration.   Using coreg_all.py
     step3: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
     Step4: Generating interferograms. Using SLC2Ifg.py
