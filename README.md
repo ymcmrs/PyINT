@@ -55,6 +55,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
      process_tsifg.py PROJECTNAME
   
      e.g. :
+     
        process_tsifg.py MexicoCityT143F529S1D
        
 You also can process step by step:
