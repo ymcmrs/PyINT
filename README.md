@@ -49,17 +49,22 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
      SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048     ## general interferometry processing
      SLC2Ifg.py MAI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Multi-aperture interferometry
      SLC2Ifg.py RSI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Range-split interferometry
+
 4). Time-series of interferograms processing.
 
-  process_tsifg.py PROJECTNAME
+     process_tsifg.py PROJECTNAME
   
-  e.g. :
-      process_tsifg.py MexicoCityT143F529S1D
+     e.g. :
+       process_tsifg.py MexicoCityT143F529S1D
+       
 You also can process step by step:
+
 step1: Check DEM, if no DEM is available, using Makedem_PyInt.py
 step2: Coregistration.   Using coreg_all.py
 step3: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
 Step4: Generating interferograms. Using SLC2Ifg.py
 Step5: Loading data for further time-series processing (Rightnow,PySAR https://github.com/ymcmrs/PySAR is supported). 
        Using Load_data.py 
+       
+       
 PS: All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/).
