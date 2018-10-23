@@ -35,10 +35,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 1). $SCRATCHDIR and $TEMPLATEDIR should be available in your system environment. $SCRATCHDIR for processing, $TEMPLATEDIR for template files to set the related processing parameters:        
 
       setenv SCRATCHDIR /Users/Yunmeng/Documents/SCRATCH         
-      setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR    [prefix of the template file should be the project name]   
+      setenv TEMPLATEDIR /Users/Yunmeng/Documents/development/TEMPLATEDIR       
 
-2). Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name, like projectname.template
-
+2). Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name:
+         
+      e.g.,   MexicoCityT143F529S1D.template
 
 
 3). Single interferogram processing:
