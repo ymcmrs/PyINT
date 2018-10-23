@@ -73,8 +73,10 @@ def usage():
     print '''
 ******************************************************************************************************
  
-                 Downloading Sentinel-1A/B data based on SSARA software: 
-                 https://github.com/bakerunavco/SSARA , which is developed by Scott Baker from UNAVCO.
+                 Downloading Sentinel-1A/B data from ASF which is supported by WInSAR.
+                 Scripts ssara_federated_query.py from SSARA software is called, 
+                 which is developed by Scott Baker from UNAVCO. 
+                 So you should install SSARA and register a WInSAR account to use this script.
    usage:
    
             DownloadSen.py ProjectName
