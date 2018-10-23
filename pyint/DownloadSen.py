@@ -43,13 +43,6 @@ def read_template(File, delimiter='='):
             template_dict[atrName] = atrValue
     return template_dict
 
-def is_number(s):
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
-
 
 def ras2jpg(input, strTitle):
     call_str = "convert " + input + ".ras " + input + ".jpg"
@@ -75,74 +68,84 @@ def UseGamma(inFile, task, keyword):
                 return value
         print "Keyword " + keyword + " doesn't exist in " + inFile
         f.close()
-        
-def write_template(File, Str):
-    f = open(File,'a')
-    f.write(Str)
-    f.close()
 
-def write_run_coreg_all(projectName,master,slavelist,workdir):
-    scratchDir = os.getenv('SCRATCHDIR')    
-    projectDir = scratchDir + '/' + projectName   
-    run_coreg_all  = projectDir + "/run_coreg_all"
-    f_coreg = open(run_coreg_all,'w')
-    
-    for kk in range(len(slavelist)):
-        str_coreg = "GenOff_Gamma.py " + projectName + ' ' + master + ' ' + slavelist[kk] + ' ' + workdir + '\n'
-        f_coreg.write(str_coreg)
-    f_coreg.close()
-    
-    
 def usage():
     print '''
 ******************************************************************************************************
  
-       Process time series of interferograms from downloading data or SLC images.
-
+                 Downloading Sentinel-1A/B data based on SSARA software: 
+                 https://github.com/bakerunavco/SSARA , which is developed by Scott Baker from UNAVCO.
    usage:
    
-            process_tsifg.py projectName
+            DownloadSen.py ProjectName
       
-      e.g.  process_tsifg.py PacayaT163TsxHhA
-            process_tsifg.py PacayaT163S1A
-           
+      e.g.  DownloadSen.py PacayaT163TsxHhA
+      
 *******************************************************************************************************
     '''   
     
 def main(argv):
     
     if len(sys.argv)==2:
-        if argv[0] in ['-h','--help']: usage(); sys.exit(1)
-        else: projectName=sys.argv[1]        
+        projectName = sys.argv[1]
     else:
         usage();sys.exit(1)
-       
-    if 'S1' in projectName:
-        call_str='process_tsifg_sen.py ' + projectName
-    else:
-        call_str='process_tsifg_gamma.py ' + projectName
-        
-    os.system(call_str)
+         
+    scratchDir = os.getenv('SCRATCHDIR')
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
     
+    projectDir = scratchDir + '/' + projectName
+    downDir     = scratchDir + '/' + projectName + "/DOWNLOAD"
+
+    if not os.path.isdir(projectDir):
+        call_str = 'mkdir ' + projectDir
+        os.system(call_str)
+
+    if not os.path.isdir(downDir):
+        call_str = 'mkdir ' + downDir
+        os.system(call_str)
+        
+    os.chdir(downDir)
+    
+#################################  Define coregistration parameters ##########################
+    templateContents=read_template(templateFile)
+    Track = templateContents['Track']
+    Frame = templateContents['Frame']
+    
+    if 'Startdate' in templateContents: 
+        Startdate = templateContents['Startdate'] 
+        STARTSTR = ' -s ' + Startdate
+    else:
+        STARTSTR = ''
+        
+        
+    if 'Enddate' in templateContents: 
+        Enddate = templateContents['Enddate']  
+        ENDSTR = ' -e ' + Enddate
+    else:
+        ENDSTR = ''
+
+    
+    
+    SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR + ' --print --download --parallel=10'  
+    print SSARA_STRA
+    os.system(SSARA_STRA)
+    
+    
+    SSARA_STRB ='ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR  + ' --print --download --parallel=10'  
+    print SSARA_STRB
+    os.system(SSARA_STRB)   
+    
+    
+    print "Downloading Sentinel-1A/B during %s and %s is done " % ( Startdate, Enddate )
+    sys.exit(1)
     
 if __name__ == '__main__':
-    main(sys.argv[:])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    main(sys.argv[:])    
+    
+    
+    
+    
+    
+    
