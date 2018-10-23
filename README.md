@@ -67,4 +67,5 @@ You also can process step by step:
            Using Load_data.py 
        
        
-PS: All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/).
+PS: 1) All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/);
+    2) Download S1 data is based on SSARA, so you should install SSARA software first https://github.com/bakerunavco/SSARA.
