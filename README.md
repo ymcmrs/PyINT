@@ -39,7 +39,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 2). Preparing your template file, which should be saved in $TEMPLATEDIR,  for setting some basic parameters (see the template file above).The template file should be named with a prefix of your project name:
          
-      e.g.,   MexicoCityT143F529S1D.template
+      e.g.,   MexicoCityT143F529S1D.template     [Region + Track + Frame + Satellite + Orbit]
 
 
 3). Single interferogram processing:
