@@ -59,7 +59,7 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
        
 You also can process step by step:
 
-    step1: Download data from ASF supported by WInSAR by setting "DOWNLOAD" to "1" in the template file based on SSARA software.   
+    step1: Download data from ASF supported by WInSAR by setting "DOWNLOAD" to "1" in the template file.   
     step2: Check DEM, if no DEM is available, using Makedem_PyInt.py
     step3: Coregistration.   Using coreg_all.py
     step4: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
