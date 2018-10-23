@@ -45,10 +45,10 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
      SLC2Ifg.py IfgramDir     ## typical name style of the ifgdir:  < IFG_PROJECTNAME_MASTER-SLAVE_PB_TB > 
  
- e.g. :
-     SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048     ## general interferometry processing
-     SLC2Ifg.py MAI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Multi-aperture interferometry
-     SLC2Ifg.py RSI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Range-split interferometry
+     e.g. :
+         SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048     ## general interferometry processing
+         SLC2Ifg.py MAI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Multi-aperture interferometry
+         SLC2Ifg.py RSI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Range-split interferometry
 
 4). Time-series of interferograms processing.
 
