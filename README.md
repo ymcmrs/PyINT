@@ -4,7 +4,7 @@
 
 ### 1 Download
 
-Download the development version (based on Python 2) using git:   
+Download the development version using git:   
    
     cd ~/python
     git clone https://github.com/ymcmrs/PyINT
