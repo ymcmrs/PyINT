@@ -159,6 +159,11 @@ def main(argv):
 
 ##########################    Check DEM   ###############################################
 
+    if slc_cat_all == '1':
+        call_str = 'down2slc_cat_all.py ' + projectName
+        os.system(call_str)
+
+
     if 'DEM' in templateContents :  
         DEM =  templateContents['DEM']
         if not os.path.isfile(DEM):
@@ -206,11 +211,6 @@ def main(argv):
 
     rlks = templateContents['Range_Looks']
     azlks = templateContents['Azimuth_Looks']
-
-    if slc_cat_all == '1':
-        call_str = 'down2slc_cat_all.py ' + projectName
-        os.system(call_str)
-    
     
     masterRdcDEM = scratchDir + '/' + projectName + "/PROCESS/DEM/sim_" + masterDate + "_" + rlks + "rlks.rdc.dem"
     if not os.path.isfile(masterRdcDEM):
