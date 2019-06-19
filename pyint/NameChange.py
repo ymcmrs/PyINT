@@ -65,7 +65,7 @@ def add_zero(s):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Select interferometry pairs from time series SAR images
@@ -78,7 +78,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -106,15 +106,15 @@ def main(argv):
     INF=JOB    
     if INF=='IFG':
         Suffix=['']
-        print "Time series interferograms will be processed!"
+        print("Time series interferograms will be processed!")
     elif INF=='MAI':
         Suffix=['.F','.B']
-        print "Time series multi-aperture interferograms will be processed!"
+        print("Time series multi-aperture interferograms will be processed!")
     elif INF=='RSI':
         Suffix=['.HF','.LF']
-        print "Time series range split-spectrum interferograms will be processed!"
+        print("Time series range split-spectrum interferograms will be processed!")
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 # define files    
@@ -127,14 +127,14 @@ def main(argv):
     
     if 'Max_Spacial_Baseline'  in templateContents: MaxSB=templateContents['Max_Spacial_Baseline']
     else:
-        print "Max_Spacial_Baseline is not found in template!! "
-        print "500m is chosen as the threshold for spatial baseline!"
+        print("Max_Spacial_Baseline is not found in template!! ")
+        print("500m is chosen as the threshold for spatial baseline!")
         MaxSB = '500'
         
     if 'Max_Temporal_Baseline'  in templateContents: MaxTB=templateContents['Max_Temporal_Baseline']
     else:
-        print "Max_Temporal_Baseline is not found in template!! "
-        print "500 days is chosen as the threshold for temporal baseline!"
+        print("Max_Temporal_Baseline is not found in template!! ")
+        print("500 days is chosen as the threshold for temporal baseline!")
         MaxTB = '500'
     
     
@@ -144,7 +144,7 @@ def main(argv):
     SLCfile = []
     SLCParfile = []
     
-    print "All of the available SAR acquisition datelist is :"  
+    print("All of the available SAR acquisition datelist is :")  
     for kk in range(len(ListSLC)):
         if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):    #  if SAR date number is 8, 6 should change to 8.
             DD=ListSLC[kk]
@@ -153,7 +153,7 @@ def main(argv):
             Day = int(DD[4:6])
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
-                print ListSLC[kk]
+                print(ListSLC[kk])
                 DateDir = slcDir+'/'+ListSLC[kk]
                 SLC0 = glob.glob(DateDir+'/*slc')[0]
                 SLCPar0 = glob.glob(DateDir+'/*slc.par')[0]
@@ -171,7 +171,7 @@ def main(argv):
                 SLCParfile.append(str_slc_par)
     
 
-    print "Change name of SLC file is done! "
+    print("Change name of SLC file is done! ")
     sys.exit(1)
     
 if __name__ == '__main__':

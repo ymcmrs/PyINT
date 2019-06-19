@@ -71,7 +71,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def GetDatelist(projectName):
@@ -90,9 +90,9 @@ def GetDatelist(projectName):
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
     
-    map(int,Datelist)                
+    list(map(int,Datelist))                
     Datelist.sort()
-    map(str,Datelist)
+    list(map(str,Datelist))
     
     return Datelist
 

@@ -123,7 +123,7 @@ def main(argv):
 
     
     SS = "'" + SS + "'"
-    print SS
+    print(SS)
     call_str = 'curl ' + SS + ' >tt'
     os.system(call_str)
     
@@ -138,13 +138,13 @@ def main(argv):
     os.system(call_str)
     
     SS=linecache.getline('t0', 1)
-    print SS
+    print(SS)
     
     call_str = 'wget -q --no-check-certificate ' + SS
     os.system(call_str)
     
     
-    print "Download precise orbital data for %s is done." % DATE
+    print("Download precise orbital data for %s is done." % DATE)
     sys.exit(1)
     
 if __name__ == '__main__':

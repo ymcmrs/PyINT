@@ -67,11 +67,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Generate lookup table for Sentinel-1 data for resampling
@@ -83,7 +83,7 @@ def usage():
       e.g.  GenLT_Sen_Gamm.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -116,7 +116,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 #################################  Define coregistration parameters ##########################
@@ -270,7 +270,7 @@ def main(argv):
     os.remove(coffsets0)
  
 
-    print "Generate lookup table for resampling is done!"
+    print("Generate lookup table for resampling is done!")
  
     sys.exit(1)
 

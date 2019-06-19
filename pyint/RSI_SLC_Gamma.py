@@ -70,7 +70,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -89,7 +89,7 @@ def createBlankFile(strFile):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
          Split Spectrum on range direction to generate high-frequency- and low-frequency- SLCs
@@ -102,7 +102,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -188,7 +188,7 @@ def main(argv):
     os.system(call_str)
     
     
-    print "Split spectrum for both slave and master date is done!"
+    print("Split spectrum for both slave and master date is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

@@ -81,18 +81,15 @@ def main(argv):
             call_str ='echo Sen_Orbit_Cor.py ' + projectName + ' ' + kk + ' >> run_Sen_OrbCor' 
             os.system(call_str)
     
-    call_str = 'rm job*'
+    
+    call_str= 'process_loop_runfile.py run_Sen_OrbCor'
     os.system(call_str)
     
-    call_str = 'rm z_out*'
-    os.system(call_str)
+    #call_str = '$INT_SCR/createBatch.pl run_Sen_OrbCor memory=3700 walltime=0:10'
+    #os.system(call_str)
     
     
-    call_str = '$INT_SCR/createBatch.pl run_Sen_OrbCor memory=3700 walltime=0:10'
-    os.system(call_str)
-    
-    
-    print 'Correct the orbit for project %s is done.' % projectName
+    print('Correct the orbit for project %s is done.' % projectName)
     sys.exit(1)
     
 if __name__ == '__main__':

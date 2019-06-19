@@ -66,14 +66,14 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if ( inFile.rsplit('.')[1] == 'int' or inFile.rsplit('.')[1] == 'diff'):
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
 def createBlankFile(strFile):
@@ -85,7 +85,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Unwrap interferograms based on GAMMA.
@@ -100,7 +100,7 @@ def usage():
       e.g.  UnwrapPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -137,7 +137,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)     
     
 
@@ -236,26 +236,26 @@ def main(argv):
         if os.path.isfile(CORMASKbmp):
             os.remove(CORMASKbmp)
             
-        call_str = '$GAMMA_BIN/rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
+        call_str = 'rascc_mask ' + CORMASK + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORMASKbmp   # based on int coherence
         os.system(call_str)
     
-        #call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
+        #call_str = 'rascc_mask_thinning ' + CORMASKbmp + ' ' + CORMASK + ' ' + nWidth + ' ' + MASKTHIN + ' 5 0.3 0.4 0.5 0.6 0.7'
         #os.system(call_str)    
 ##########################  Start to Unwrap  ###########################
 
-        call_str = '$GAMMA_BIN/mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' - - - - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+        call_str = 'mcf ' + WRAPlks + ' ' + CORMASK + ' ' + CORMASKbmp + ' ' + UNWlks + ' ' + nWidth + ' - - - - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
         os.system(call_str)
 
-#        call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
+#        call_str = 'interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
 #        os.system(call_str)
 
-#        call_str = '$GAMMA_BIN/unw_model ' + WRAPlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
+#        call_str = 'unw_model ' + WRAPlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
 #        os.system(call_str)
 
-        call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
+        call_str = 'rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
         os.system(call_str)
 
-        ras2jpg(UNWlks, UNWlks)
+        #ras2jpg(UNWlks, UNWlks)
 
         if flatteningUnwrap == 'Y':
             if os.path.isfile(DIFFpar):
@@ -263,17 +263,17 @@ def main(argv):
             
             QUADFIT       = WRAPlks.replace('.int', '.quad_fit')
             OUTUNWQUAD    = UNWlks.replace('.unw','.quad_fit.unw')
-            call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
+            call_str = 'create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' - 0'
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASKbmp + ' ' + QUADFIT + ' 0'
+            call_str = 'quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORMASKbmp + ' ' + QUADFIT + ' 0'
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
+            call_str = 'quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
             os.system(call_str)
 
 
-    print "Uwrapping interferometric phase is done!"
+    print("Uwrapping interferometric phase is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

@@ -81,22 +81,22 @@ def main(argv):
         if 'slc.par' in ll:
             SLC_PAR.append(ll)
         if 'S1A_OPER_AUX_POEORB_OPOD_' and FF0 in ll:
-            print ll
+            print(ll)
             ORBIT = ll
     
     if not os.path.isfile(ORBIT):
 
-        print 'Precise orbit file is not found! Please use Sen_PreOrb.py to download the orbit data.'
+        print('Precise orbit file is not found! Please use Sen_PreOrb.py to download the orbit data.')
         sys.exit(1)
     
-    print SLC_PAR
+    print(SLC_PAR)
     N = len(SLC_PAR)
            
     for ff in SLC_PAR:
         call_str = 'S1_OPOD_vec ' + ff + ' ' + ORBIT
         os.system(call_str)
         
-    print 'Update the orbit parameters of the slc par files for date %s is finished.' % Date
+    print('Update the orbit parameters of the slc par files for date %s is finished.' % Date)
     sys.exit(1)
     
 if __name__ == '__main__':

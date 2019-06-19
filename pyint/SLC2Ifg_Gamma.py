@@ -46,7 +46,7 @@ def read_template(File, delimiter='='):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Generating interferograms from SLC : InSAR, MAI, Split-specrum Interferometry
@@ -59,7 +59,7 @@ def usage():
       e.g.  SLC2Ifg_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_0007         
       e.g.  SLC2Ifg_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -143,7 +143,7 @@ def main(argv):
         call_str = "Geocode_Gamma.py " + igramDir
         os.system(call_str)      
     
-    print "SLC to interferogram done!"    
+    print("SLC to interferogram done!")    
     sys.exit(1)
 
 

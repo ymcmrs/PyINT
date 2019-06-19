@@ -69,11 +69,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Downloading Sentinel-1A/B data based on ssara
@@ -85,7 +85,7 @@ def usage():
       e.g.  Down2SLC_Sen_All.py CotopaxiT120SenVVA
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -139,16 +139,20 @@ def main(argv):
     for i in range(N):
         str_script = 'Down2SLC_Sen_Gamma.py ' + projectName + ' ' + DATE[i] + '\n'
         f_down2slc.write(str_script)
-        print 'Add download raw S1 data: ' + DATE[i]
+        print('Add download raw S1 data: ' + DATE[i])
     f_down2slc.close()
     
-    print ''
-    print 'Start processing down2sl for project: ' + projectName
+    print('')
+    print('Start processing down2sl for project: ' + projectName)
     
-    call_str='$INT_SCR/createBatch.pl ' + run_down2slc_sen + ' memory=7000  walltime=0:30'
+    #call_str='$INT_SCR/createBatch.pl ' + run_down2slc_sen + ' memory=7000  walltime=0:30'
+    #os.system(call_str)
+    
+    call_str='process_loop_runfile.py ' + run_down2slc_sen
     os.system(call_str)
     
-    print "Down to SLC for project %s is done! " % projectName
+    
+    print("Down to SLC for project %s is done! " % projectName)
     sys.exit(1)
     
 if __name__ == '__main__':

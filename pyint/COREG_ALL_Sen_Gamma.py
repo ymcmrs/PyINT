@@ -43,7 +43,6 @@ def read_template(File, delimiter='='):
             atrValue = check_variable_name(atrValue)
             template_dict[atrName] = atrValue
     return template_dict
-
 def is_number(s):
     try:
         int(s)
@@ -74,7 +73,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def write_template(File, Str):
@@ -167,7 +166,7 @@ def main(argv):
     SLCfile = []
     SLCParfile = []
     
-    print "All of the available SAR acquisition datelist is :"  
+    print("All of the available SAR acquisition datelist is :")  
     for kk in range(len(ListSLC)):
         if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):
             DD=ListSLC[kk]
@@ -176,7 +175,7 @@ def main(argv):
             Day = int(DD[4:6])
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
-                print ListSLC[kk]
+                print(ListSLC[kk])
                 str_slc = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc"
                 str_slc_par = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc.par"
                 SLCfile.append(str_slc)
@@ -185,15 +184,15 @@ def main(argv):
     if 'masterDate' in templateContents : 
         masterDate = templateContents['masterDate']
         if masterDate in Datelist:
-            print "masterDate: %s" % masterDate
+            print("masterDate: %s" % masterDate)
         else:
-            print "The selected masterdate %s is not in the date list!! " % masterDate
-            print "The first date is chosen as the master date: %s" % str(Datelist[0])
+            print("The selected masterdate %s is not in the date list!! " % masterDate)
+            print("The first date is chosen as the master date: %s" % str(Datelist[0]))
             masterDate = Datelist[0]
             Str = 'masterDate   =   %s \n' %masterDate
             write_template(templateFile, Str)           
     else:
-        print "The first date is chosen as the master date: %s" % str(Datelist[0])
+        print("The first date is chosen as the master date: %s" % str(Datelist[0]))
         masterDate = Datelist[0]
         Str = 'masterDate   =   %s \n' %masterDate
         write_template(templateFile, Str)
@@ -207,15 +206,15 @@ def main(argv):
     if 'DEM' in templateContents :  
         DEM =  templateContents['DEM']
         if not os.path.isfile(DEM):
-            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
-            call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+            print('Provided DEM is not available, a new DEM based on SRTM-1 will be generated.')
+            call_str = 'Makedem_PyINT.py ' + projectName + ' gamma'
             os.system(call_str)
             
             call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
             os.system(call_str)
     else:
-        print 'DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.'
-        call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
+        print('DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.')
+        call_str = 'Makedem_PyINT.py ' + projectName + ' gamma'
         os.system(call_str)
             
         call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
@@ -234,11 +233,12 @@ def main(argv):
     
     write_run_coreg_all(projectName,masterDate,SLAVElist,rslcDir)
     
-    call_str = 'rm job*'
+    call_str = 'process_loop_runfile.py ' + rslcDir+'/run_coreg_all'
     os.system(call_str)
     
-    call_str='$INT_SCR/createBatch.pl ' + rslcDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
-    os.system(call_str)
+    
+    #call_str='$INT_SCR/createBatch.pl ' + rslcDir+'/run_coreg_all memory=' + memory_Coreg + ' walltime=' + walltime_Coreg
+    #os.system(call_str)
 
     sys.exit(1)
     

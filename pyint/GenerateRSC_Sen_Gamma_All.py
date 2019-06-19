@@ -67,7 +67,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def common_burst_Ref(La_M,La_S):
@@ -189,7 +189,7 @@ def main(argv):
     if os.path.isfile(TT):
         os.remove(TT)
     for kk in IFGLIST:
-        print '>>> Process ' + os.path.basename(kk)
+        print('>>> Process ' + os.path.basename(kk))
         call_str = 'GenerateRSC_Sen_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         os.system(call_str)
    

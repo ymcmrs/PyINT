@@ -66,7 +66,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -85,7 +85,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Geocoding GAMMA files: slc, mli, int, unw, flt, cor...
@@ -100,7 +100,7 @@ def usage():
       e.g.  Geocode_Gamma.py SPI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -264,7 +264,7 @@ def main(argv):
         ras2jpg(GEOQUADUNW, GEOQUADUNW) 
                 
     
-    print "Geocoding is done!" 
+    print("Geocoding is done!") 
     sys.exit(1)
 
 if __name__ == '__main__':

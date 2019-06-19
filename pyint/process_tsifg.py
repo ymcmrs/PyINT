@@ -73,7 +73,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def write_template(File, Str):
@@ -94,7 +94,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     
     
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Process time series of interferograms from downloading data or SLC images.
@@ -107,7 +107,7 @@ def usage():
             process_tsifg.py PacayaT163S1A
            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     

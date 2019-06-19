@@ -56,7 +56,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def UseGamma2(inFile, task, keyword):
@@ -69,11 +69,11 @@ def UseGamma2(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[2].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Generate Roi_PAC RSC file based on GAMMA par file 
@@ -87,7 +87,7 @@ def usage():
       e.g.  GenerateRSC_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -110,7 +110,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
         
     scratchDir = os.getenv('SCRATCHDIR')
@@ -300,7 +300,7 @@ def main(argv):
     
     BB=np.loadtxt(PBASE_TXT)
     XX = BB[:,0]
-    XX = map(int,XX)
+    XX = list(map(int,XX))
     
     BP0 = BB[:,7]
     LA0 = BB[:,5]

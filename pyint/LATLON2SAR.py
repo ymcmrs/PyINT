@@ -79,12 +79,12 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
        
         
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Transform LAT/LON coordinates into SAR coordinates based on lookup table
@@ -97,7 +97,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
 
 def main(argv):
     
@@ -132,8 +132,8 @@ def main(argv):
     Range = int(CPX_OUT.real)
     Azimuth = int(CPX_OUT.imag)
     
-    print ' Latitude: ' + LAT + '    ' + 'Longitude: ' + LON    
-    print ' Range: ' + str(Range) + '    ' + 'Azimuth: ' + str(Azimuth)    
+    print(' Latitude: ' + LAT + '    ' + 'Longitude: ' + LON)    
+    print(' Range: ' + str(Range) + '    ' + 'Azimuth: ' + str(Azimuth))    
 ##############################################################################
 if __name__ == '__main__':
     main(sys.argv[1:])

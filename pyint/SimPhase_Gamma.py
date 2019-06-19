@@ -66,14 +66,14 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
 def createBlankFile(strFile):
@@ -85,7 +85,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Simulating Topography phase and flattening phase based on radar-coordinates' DEM
@@ -99,7 +99,7 @@ def usage():
       e.g.  SimPhase_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -146,7 +146,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 #  Definition of file
@@ -198,13 +198,13 @@ def main(argv):
     else: flagTDM = 'N'
 
     if flagTDM == 'N':
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
+        call_str = 'phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW 
     else:
-        call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
+        call_str = 'phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW + ' - - - 0' 
     os.system(call_str)
 
 
-    print "Simulation interferometric phas with DEM is done!"
+    print("Simulation interferometric phas with DEM is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

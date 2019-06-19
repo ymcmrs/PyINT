@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -87,7 +87,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
               Create DEM in Radar coordinates for Sentinel-1 date
@@ -100,7 +100,7 @@ def usage():
       e.g.  CreateRdcDem_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
       e.g.  CreateRdcDem_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -264,7 +264,7 @@ def main(argv):
 
 
 
-    print "Create DEM in Radar Coordinates is done!"
+    print("Create DEM in Radar Coordinates is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

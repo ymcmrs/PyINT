@@ -74,7 +74,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def write_template(File, Str):
@@ -165,7 +165,7 @@ def main(argv):
     SLCfile = []
     SLCParfile = []
     
-    print "All of the available SAR acquisition datelist is :"  
+    print("All of the available SAR acquisition datelist is :")  
     for kk in range(len(ListSLC)):
         if ( is_number(ListSLC[kk]) and len(ListSLC[kk])==6 ):
             DD=ListSLC[kk]
@@ -174,7 +174,7 @@ def main(argv):
             Day = int(DD[4:6])
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
-                print ListSLC[kk]
+                print(ListSLC[kk])
                 str_slc = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc"
                 str_slc_par = slcDir + "/" + ListSLC[kk] +"/" + ListSLC[kk] + ".slc.par"
                 SLCfile.append(str_slc)
@@ -189,14 +189,13 @@ def main(argv):
     
 
     write_run_extract_burst_all(projectName,Datelist)
-    call_str = 'rm ' + slcDir + '/job*'
+    
+    call_str = 'process_loop_runfile.py ' + slcDir+'/run_extract_burst_all'
     os.system(call_str)
     
-    call_str = 'rm ' + slcDir + '/z_output*'
-    os.system(call_str)
     
-    call_str='$INT_SCR/createBatch.pl ' + slcDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
-    os.system(call_str)
+    #call_str='$INT_SCR/createBatch.pl ' + slcDir+'/run_extract_burst_all memory=' +memory_Extract + ' walltime=' + walltime_Extract 
+    #os.system(call_str)
     
     sys.exit(1)
     

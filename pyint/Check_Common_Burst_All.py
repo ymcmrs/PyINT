@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def common_burst_Ref(La_M,La_S):
@@ -203,26 +203,26 @@ def main(argv):
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
     
-    map(int,Datelist)                
+    list(map(int,Datelist))                
     Datelist.sort()
-    map(str,Datelist)            
+    list(map(str,Datelist))            
     
     if 'masterDate'          in templateContents:
         masterDate0 = templateContents['masterDate']
         if masterDate0 in Datelist:
             masterDate = masterDate0
-            print "masterDate : " + masterDate0
+            print("masterDate : " + masterDate0)
         else:
             masterDate=Datelist[0]
-            print "The selected masterDate is not included in above datelist !!"
-            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            print("The selected masterDate is not included in above datelist !!")
+            print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
             call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
             os.system(call_str)
             
     else:  
         masterDate=Datelist[0]
-        print "masterDate is not found in template!!! "
-        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+        print("masterDate is not found in template!!! ")
+        print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
         call_str = 'echo masterDate  =  ' + masterDate + ' >> ' + templateFile
         os.system(call_str)
     

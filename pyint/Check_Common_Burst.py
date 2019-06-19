@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def common_burst(La_M,La_S):
@@ -194,7 +194,7 @@ def main(argv):
         
         PP = common_burst(La_M,La_S)
         
-        print 'Common bursts of swath' + str(kk+1) + ' : (master) ' + str(PP[0]) + ' ' + str(PP[1]) + ' (slave) ' + str(PP[2]) + ' ' + str(PP[3])
+        print('Common bursts of swath' + str(kk+1) + ' : (master) ' + str(PP[0]) + ' ' + str(PP[1]) + ' (slave) ' + str(PP[2]) + ' ' + str(PP[3]))
         call_str = 'echo ' + str(PP[0]) + ' ' + str(PP[1]) + ' ' + str(PP[2]) + ' ' + str(PP[3]) + ' >>' +  BURST
         os.system(call_str)
         

@@ -119,7 +119,7 @@ def load_gamma2multi_group_h5(fileType, fileName, fileList, RSCList, datatype):
     
     H5FILE = fileName + '.h5'  
     fileNum = len(fileList)  
-    print 'Start to load ' + fileName + ' >>> %s %s files will be loaded for further process' % ( str(fileNum), fileType) 
+    print('Start to load ' + fileName + ' >>> %s %s files will be loaded for further process' % ( str(fileNum), fileType)) 
     f = h5py.File(H5FILE,'w')
     gg=f.create_group(fileType)
     
@@ -132,7 +132,7 @@ def load_gamma2multi_group_h5(fileType, fileName, fileList, RSCList, datatype):
         File = os.path.basename(S)
         group = gg.create_group(File)
         dset  = group.create_dataset(File, data = data, compression='gzip')
-        for key,value in rsc_dic.iteritems():
+        for key,value in rsc_dic.items():
             group.attrs[key] = value
         group.attrs['X_MIN'] = '0'
         group.attrs['X_MAX'] = str(int(nWidth)-1)
@@ -162,9 +162,9 @@ def Get_Datelist(projectName):
             Day = int(DD[4:6])
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
-    Datelist = map(int,Datelist)                
+    Datelist = list(map(int,Datelist))                
     Datelist.sort()
-    Datelist = map(str,Datelist)         
+    Datelist = list(map(str,Datelist))         
     return Datelist
  
 def Get_Inflist(projectName):
@@ -202,7 +202,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def UseGamma2(inFile, task, keyword):
@@ -215,7 +215,7 @@ def UseGamma2(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[2].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def Remove_Inf_List(RemoveNumberStr):
@@ -246,7 +246,7 @@ def Remove_Inf_List(RemoveNumberStr):
                     Addlist.append(str(jj))
     for ii in range(len(Addlist)):
         Addlist[ii]=int(Addlist[ii])-1      
-    Addlist = map(str,Addlist)    
+    Addlist = list(map(str,Addlist))    
     return Addlist
 
     
@@ -333,9 +333,9 @@ def main(argv):
         call_str='mkdir ' + workDir
         os.system(call_str)
     
-    print 'Project : ' + projectName
-    print 'Loading data for timeseries processing >>>'
-    print 'Change process Dir to :' + workDir
+    print('Project : ' + projectName)
+    print('Loading data for timeseries processing >>>')
+    print('Change process Dir to :' + workDir)
     os.chdir(workDir)
        
 
@@ -420,7 +420,7 @@ def main(argv):
     InfList = read_list(IFG_list)   
     NInf = len(InfList)
        
-    print 'RSC_Name is : ' + RSC_list
+    print('RSC_Name is : ' + RSC_list)
     RSCList = read_list(RSC_list)
     RSC =RSCList[0]
     rsc_dic = read_roipac_rsc(RSC)
@@ -431,23 +431,23 @@ def main(argv):
     Flag_K = 0
     if inps.coherence:
         Flag_K = 1
-        print ''
-        print 'COR_Name is : ' + COR_list   
+        print('')
+        print('COR_Name is : ' + COR_list)   
         load_gamma2multi_group_h5('coherence','coherence', CORList, RSCList, dtype_cor)
     elif inps.wrapIfgram:
         Flag_K = 1
-        print ''
-        print 'IFG_Name is : ' + IFG_list 
+        print('')
+        print('IFG_Name is : ' + IFG_list) 
         load_gamma2multi_group_h5('wrapped','wrapIfgram', InfList, RSCList, dtype_inf)
     elif inps.unwrapIfgram:
         Flag_K = 1
-        print ''
-        print 'UNW_Name is : ' + UNW_list
+        print('')
+        print('UNW_Name is : ' + UNW_list)
         load_gamma2multi_group_h5('interferograms','unwrapIfgram', UNWList, RSCList, dtype_unw)
     elif inps.demGeo:
         Flag_K = 1
-        print ''
-        print 'Start to write GEO-DEM into h5 file >>> ' + UTMDEM
+        print('')
+        print('Start to write GEO-DEM into h5 file >>> ' + UTMDEM)
         data = read_data(UTMDEM, dtype_utmdem, nWidthUTM, nLineUTM)
         H5FILE = 'demGeo.h5'
         f =h5py.File(H5FILE,'w')
@@ -471,8 +471,8 @@ def main(argv):
         f.close()
     elif inps.demRdc:
         Flag_K = 1
-        print ''
-        print 'Start to write RDC-DEM into h5 file >>> ' + RDCDEM
+        print('')
+        print('Start to write RDC-DEM into h5 file >>> ' + RDCDEM)
         data = read_data(RDCDEM, dtype_rdcdem, nWidth, nLine)
         H5FILE = 'demRdc.h5'
         f =h5py.File(H5FILE,'w')
@@ -490,8 +490,8 @@ def main(argv):
         f.close()
     elif inps.geo2rdc:
         Flag_K = 1
-        print ''
-        print 'Start to write GEO2RDC into h5 file >>> ' + UTM2RDC
+        print('')
+        print('Start to write GEO2RDC into h5 file >>> ' + UTM2RDC)
         data = read_data(UTM2RDC,dtype_lt,nWidthUTM,nLineUTM)   # real: range     imaginary: azimuth
         H5FILE = 'geo2rdc.h5'
         f =h5py.File(H5FILE,'w')
@@ -517,38 +517,38 @@ def main(argv):
     
     
     if not os.path.isfile('wrapIfgram.h5') and Flag_K==0:
-        print ''
-        print 'IFG_Name is : ' + IFG_list 
+        print('')
+        print('IFG_Name is : ' + IFG_list) 
         load_gamma2multi_group_h5('wrapped','wrapIfgram', InfList, RSCList, dtype_inf)
     else:
-        print ''
-        print 'wrapIfgram.h5 has existed, loading wrapped interferograms is skipped.'
+        print('')
+        print('wrapIfgram.h5 has existed, loading wrapped interferograms is skipped.')
     
 
       
     if not os.path.isfile('unwrapIfgram.h5') and Flag_K==0:
-        print ''
-        print 'UNW_Name is : ' + UNW_list
+        print('')
+        print('UNW_Name is : ' + UNW_list)
         load_gamma2multi_group_h5('interferograms','unwrapIfgram', UNWList, RSCList, dtype_unw)
     else:
-        print ''
-        print 'unwrapIfgram.h5 has existed, loading unwrapped interferograms is skipped.'
+        print('')
+        print('unwrapIfgram.h5 has existed, loading unwrapped interferograms is skipped.')
     
     
     if not os.path.isfile('coherence.h5') and Flag_K==0:        
-        print ''
-        print 'COR_Name is : ' + COR_list   
+        print('')
+        print('COR_Name is : ' + COR_list)   
         load_gamma2multi_group_h5('coherence','coherence', CORList, RSCList, dtype_cor)
     else:
-        print ''
-        print 'coherence.h5 has existed, loading coherence is skipped.'
+        print('')
+        print('coherence.h5 has existed, loading coherence is skipped.')
     
     
 #########  load DEM and lookup table ##########  
     
     if not os.path.isfile('demGeo.h5') and Flag_K==0:
-        print ''
-        print 'Start to write GEO-DEM into h5 file >>> ' + UTMDEM
+        print('')
+        print('Start to write GEO-DEM into h5 file >>> ' + UTMDEM)
         data = read_data(UTMDEM, dtype_utmdem, nWidthUTM, nLineUTM)
         H5FILE = 'demGeo.h5'
         f =h5py.File(H5FILE,'w')
@@ -571,13 +571,13 @@ def main(argv):
         group.attrs['PROCCESSOR'] = 'gamma'
         f.close()
     else:
-        print ''
-        print 'demGeo.h5 has existed, loading GEO-DEM is skipped.'
+        print('')
+        print('demGeo.h5 has existed, loading GEO-DEM is skipped.')
     
     
     if not os.path.isfile('demRdc.h5') and Flag_K==0:
-        print ''
-        print 'Start to write RDC-DEM into h5 file >>> ' + RDCDEM
+        print('')
+        print('Start to write RDC-DEM into h5 file >>> ' + RDCDEM)
         data = read_data(RDCDEM, dtype_rdcdem, nWidth, nLine)
         H5FILE = 'demRdc.h5'
         f =h5py.File(H5FILE,'w')
@@ -594,13 +594,13 @@ def main(argv):
         group.attrs['COORD'] ='radar'
         f.close()
     else:
-        print ''
-        print 'demRdc.h5 has existed, loading RDC-DEM is skipped.'
+        print('')
+        print('demRdc.h5 has existed, loading RDC-DEM is skipped.')
     
     
     if not os.path.isfile('geo2rdc.h5') and Flag_K==0:
-        print ''
-        print 'Start to write GEO2RDC into h5 file >>> ' + UTM2RDC
+        print('')
+        print('Start to write GEO2RDC into h5 file >>> ' + UTM2RDC)
         data = read_data(UTM2RDC,dtype_lt,nWidthUTM,nLineUTM)   # real: range     imaginary: azimuth
         H5FILE = 'geo2rdc.h5'
         f =h5py.File(H5FILE,'w')
@@ -623,11 +623,11 @@ def main(argv):
         group.attrs['PROCCESSOR'] = 'gamma'
         f.close()
     else:
-        print ''
-        print 'geo2rdc.h5 has existed, loading lookup table is skipped.'
+        print('')
+        print('geo2rdc.h5 has existed, loading lookup table is skipped.')
            
-    print ''
-    print 'Done.\nLoading data spend ' + str(time.time()-total) +' secs'
+    print('')
+    print('Done.\nLoading data spend ' + str(time.time()-total) +' secs')
     sys.exit(1)    
 
 

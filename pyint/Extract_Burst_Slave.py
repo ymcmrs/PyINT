@@ -71,7 +71,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def GetDatelist(projectName):
@@ -90,9 +90,9 @@ def GetDatelist(projectName):
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
     
-    map(int,Datelist)                
+    list(map(int,Datelist))                
     Datelist.sort()
-    map(str,Datelist)
+    list(map(str,Datelist))
     
     return Datelist
 
@@ -290,13 +290,12 @@ def main(argv):
     call_str = 'SLC_mosaic_S1_TOPS ' + SLC2_INF_tab + ' ' + SslcImg + ' ' + SslcPar + ' ' + rlks + ' ' +azlks
     os.system(call_str)
     
-    call_str = '$GAMMA_BIN/multi_look ' + SslcImg + ' ' + SslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+    call_str = 'multi_look ' + SslcImg + ' ' + SslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
     os.system(call_str) 
     
     nWidth = UseGamma(SamprlksPar, 'read', 'range_samples')
-    call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+    call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
     os.system(call_str)  
-    ras2jpg(SamprlksImg, SamprlksImg) 
     
     sys.exit(1)
 

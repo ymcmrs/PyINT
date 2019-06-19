@@ -66,7 +66,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -86,7 +86,7 @@ def createBlankFile(strFile):
     
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Coregistrate all SAR or interferograms to one master data
@@ -100,7 +100,7 @@ def usage():
       e.g.  Resamp_all_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -145,7 +145,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)  
 # definition of intermediate and output file variables for slc images and parameters
 
@@ -263,7 +263,7 @@ def main(argv):
             os.rename(rINT, INT)
 
     
-    print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
+    print("Coregistrate "+ igramDir +" to " + masterDate +" is done! ")
     sys.exit(1)
     
 if __name__ == '__main__':

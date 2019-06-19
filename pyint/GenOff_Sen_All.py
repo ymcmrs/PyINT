@@ -67,7 +67,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
         
@@ -79,7 +79,7 @@ def is_number(s):
         return False
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Estimating the offsets of two SAR images based on cross-correlation.
@@ -91,7 +91,7 @@ def usage():
       e.g.  GenOff_Sen_All.py PacayaT163TsxHhA
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -124,17 +124,17 @@ def main(argv):
         masterDate0 = templateContents['masterDate']
         if masterDate0 in Datelist:
             masterDate = masterDate0
-            print "masterDate : " + masterDate0
+            print("masterDate : " + masterDate0)
         else:
             masterDate=Nm[0]
-            print "The selected masterDate is not included in above datelist !!"
-            print "The first date [ %s ] is chosen as the master date! " % Datelist[0]
+            print("The selected masterDate is not included in above datelist !!")
+            print("The first date [ %s ] is chosen as the master date! " % Datelist[0])
            
             
     else:  
         masterDate=Nm[0]
-        print "masterDate is not found in template!!! "
-        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+        print("masterDate is not found in template!!! ")
+        print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
 
    
     run_Genoff_Sen = OFFDIR + '/run_Genoff_Sen'
@@ -151,7 +151,7 @@ def main(argv):
     os.system(call_str)
     
     
-    print "Coregistrating for project %s is done! " % projectName
+    print("Coregistrating for project %s is done! " % projectName)
     sys.exit(1)
     
 if __name__ == '__main__':

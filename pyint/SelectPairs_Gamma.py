@@ -62,7 +62,7 @@ def add_zero(s):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Select interferometry pairs from time series SAR images
@@ -75,7 +75,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -103,15 +103,15 @@ def main(argv):
     INF=JOB    
     if INF=='IFG':
         Suffix=['']
-        print "Time series interferograms will be processed!"
+        print("Time series interferograms will be processed!")
     elif INF=='MAI':
         Suffix=['.F','.B']
-        print "Time series multi-aperture interferograms will be processed!"
+        print("Time series multi-aperture interferograms will be processed!")
     elif INF=='RSI':
         Suffix=['.HF','.LF']
-        print "Time series range split-spectrum interferograms will be processed!"
+        print("Time series range split-spectrum interferograms will be processed!")
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 # define files    
@@ -124,14 +124,14 @@ def main(argv):
     
     if 'Max_Spacial_Baseline'  in templateContents: MaxSB=templateContents['Max_Spacial_Baseline']
     else:
-        print "Max_Spacial_Baseline is not found in template!! "
-        print "500m is chosen as the threshold for spatial baseline!"
+        print("Max_Spacial_Baseline is not found in template!! ")
+        print("500m is chosen as the threshold for spatial baseline!")
         MaxSB = '100'
         
     if 'Max_Temporal_Baseline'  in templateContents: MaxTB=templateContents['Max_Temporal_Baseline']
     else:
-        print "Max_Temporal_Baseline is not found in template!! "
-        print "500 days is chosen as the threshold for temporal baseline!"
+        print("Max_Temporal_Baseline is not found in template!! ")
+        print("500 days is chosen as the threshold for temporal baseline!")
         MaxTB = '100'
     
     
@@ -147,17 +147,16 @@ def main(argv):
             DD=ListSLC[kk]
             Year=int(DD[0:2])
             Month = int(DD[2:4])
-            Day = int(DD[4:6])
-            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
-                Datelist.append(ListSLC[kk])
+            Day = int(DD[4:6])           
+            Datelist.append(ListSLC[kk])
     
-    map(int,Datelist)                
+    list(map(int,Datelist))                
     Datelist.sort()
-    map(str,Datelist)
+    list(map(str,Datelist))
     
-    print "All of the available SAR acquisition datelist is :"      
+    print("All of the available SAR acquisition datelist is :")      
     for kk in range(len(Datelist)):
-        print Datelist[kk]
+        print(Datelist[kk])
         str_slc = slcDir + "/" + Datelist[kk] +"/" + Datelist[kk] + ".slc"
         str_slc_par = slcDir + "/" + Datelist[kk] +"/" + Datelist[kk] + ".slc.par"
         SLCfile.append(str_slc)
@@ -167,16 +166,16 @@ def main(argv):
         masterDate0 = templateContents['masterDate']
         if masterDate0 in Datelist:
             masterDate = masterDate0
-            print "masterDate : " + masterDate0
+            print("masterDate : " + masterDate0)
         else:
             masterDate=Datelist[0]
-            print "The selected masterDate is not included in above datelist !!"
-            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            print("The selected masterDate is not included in above datelist !!")
+            print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
             
     else:  
         masterDate=Datelist[0]
-        print "masterDate is not found in template!!! "
-        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+        print("masterDate is not found in template!!! ")
+        print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
 
     RefPar=slcDir + "/" + masterDate +"/" + masterDate + ".slc.par"
        
@@ -217,11 +216,11 @@ def main(argv):
                     if XX in Datelist:
                         Addlist.append(XX)
                     else:
-                        print XX + ' is not in the SLC datelist! '
+                        print(XX + ' is not in the SLC datelist! ')
                 else:
                     D1=XX.split(':')[0]
                     D2=XX.split(':')[1]
-                    map(int,Datelist)
+                    list(map(int,Datelist))
                     for dd in Datelist:
                         if (int(dd) > int(D1)) and (int(dd) < int(D2)) :
                             Addlist.append(dd) 
@@ -231,18 +230,18 @@ def main(argv):
                 if LL in Datelist:
                     Addlist.append(LL)
                 else:
-                    print LL + ' is not in the SLC date list!'
+                    print(LL + ' is not in the SLC date list!')
                                  
             else:
                 D1=XX.split(':')[0]
                 D2=XX.split(':')[1]
-                map(int,Datelist)
+                list(map(int,Datelist))
                 for dd in Datelist:
                     if (int(dd) > int(D1)) and (int(dd) < int(D2)) :
                         Addlist.append(dd) 
     
     Addlist=list(set(Addlist))      # remove possible repeat date
-    print Addlist
+    print(Addlist)
 ###################################################################################
 
 
@@ -253,7 +252,7 @@ def main(argv):
         if os.path.isfile(run_slc2ifg_gamma):
             os.remove(run_slc2ifg_gamma)
     
-        print "Start to create interferograms directory:"
+        print("Start to create interferograms directory:")
     
         f_slc2ifg =open(run_slc2ifg_gamma,'w')
         for kk in range(len(IFG_Flag)):
@@ -269,7 +268,7 @@ def main(argv):
             SD=str(int(SDatelist[kk]))
             if ((str(MD[2:]) in Addlist) or (str(SD[2:]) in Addlist)): 
                 igramDir.append(str_dir)
-                print 'Add igramDir: ' + str_igram
+                print('Add igramDir: ' + str_igram)
                 str_scrip = 'SLC2Ifg_Gamma.py ' + str_igram + '\n'
                 f_slc2ifg.write(str_scrip)
                 #if not os.path.isdir(str_dir):
@@ -306,14 +305,14 @@ def main(argv):
             f_slc2ifg.write(str_scrip)      
             STR_FLAG = INF + '_' + projectName+"_"+str(int(MDatelist[kk]))[2:]+"-"+str(int(SDatelist[kk]))[2:]
             KK= glob.glob(processDir + '/' + STR_FLAG + '*')
-            print len(KK)
+            print(len(KK))
             if len(KK)< 1:
                 call_str="mkdir " + str_dir
                 os.system(call_str)
-                print 'Add IFG >>> ' + str_dir
+                print('Add IFG >>> ' + str_dir)
         f_slc2ifg.close()
     
-    print "Selection of interferometric pairs is done! "
+    print("Selection of interferometric pairs is done! ")
     sys.exit(1)
     
 if __name__ == '__main__':

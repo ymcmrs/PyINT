@@ -68,11 +68,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
          Split beam of original SLC to generate sub-aperture SLC: backward- and forward-SLCs 
@@ -85,7 +85,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -151,13 +151,13 @@ def main(argv):
     SBslcImg = workDir + "/" + Sdate + ".B.slc"
     SBslcPar = workDir + "/" + Sdate + ".B.slc.par"
     
-    print  MFslcImg + " "+ MslcImg
+    print(MFslcImg + " "+ MslcImg)
     
 # Multi-aperture processing
 
     call_str = '$GAMMA_BIN/sbi_filt '+ MslcImg + ' ' + MslcPar + ' '+SslcPar + ' ' + MFslcImg + ' '+ MFslcPar + ' ' + MBslcImg + ' ' + MBslcPar + ' ' + Squint
     os.system(call_str)
-    print call_str    
+    print(call_str)    
 
     call_str = '$GAMMA_BIN/sbi_filt '+ SslcImg + ' ' + SslcPar + ' '+MslcPar + ' ' + SFslcImg + ' '+ SFslcPar + ' ' + SBslcImg + ' ' + SBslcPar + ' ' + Squint
     os.system(call_str)

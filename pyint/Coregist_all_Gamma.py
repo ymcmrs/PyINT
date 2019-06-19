@@ -69,7 +69,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -89,7 +89,7 @@ def createBlankFile(strFile):
     
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Coregistrate all SAR or interferograms to one master data
@@ -103,7 +103,7 @@ def usage():
       e.g.  Coregist_all_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -148,7 +148,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)  
 # definition of intermediate and output file variables for slc images and parameters
 
@@ -213,12 +213,12 @@ def main(argv):
 ### post coregistration for master image
 
     if not (Mdate == masterDate or os.path.isfile(Moff)):
-        print "post_coregistration would start for " + Mdate
+        print("post_coregistration would start for " + Mdate)
         call_str = "$GAMMA_BIN/create_offset " + BaseslcPar + " " + MslcPar + " " + Moff + " 1 - - 0"
         os.system(call_str)
 
         if coregCoarse == 'both':
-            print 'init offset estimation by both orbit and ampcor'
+            print('init offset estimation by both orbit and ampcor')
             call_str = '$GAMMA_BIN/init_offset_orbit '+ BaseslcPar + ' ' + MslcPar + ' ' + Moff
             os.system(call_str)
 
@@ -229,12 +229,12 @@ def main(argv):
             os.system(call_str)
             
         elif coregCoarse == 'orbit':
-            print 'init offset estimation by orbit only'      
+            print('init offset estimation by orbit only')      
             call_str = '$GAMMA_BIN/init_offset_orbit '+ BaseslcPar + ' ' + MslcPar + ' ' + Moff
             os.system(call_str)
     
         elif coregCoarse == 'ampcor':
-            print 'init offset estimation by ampcor only'       
+            print('init offset estimation by ampcor only')       
             call_str = '$GAMMA_BIN/init_offset '+ BaseslcImg + ' ' + MslcImg + ' ' + BaseslcPar + ' ' + MslcPar + ' ' + Moff + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
             os.system(call_str)
         
@@ -254,12 +254,12 @@ def main(argv):
   
         
     if not ( Sdate == masterDate or os.path.isfile(Soff)):
-        print "post_coregistration would start for " + Sdate
+        print("post_coregistration would start for " + Sdate)
         call_str = "$GAMMA_BIN/create_offset " + BaseslcPar + " " + SslcPar + " " + Soff + " 1 - - 0"
         os.system(call_str)
 
         if coregCoarse == 'both':
-            print 'init offset estimation by both orbit and ampcor'
+            print('init offset estimation by both orbit and ampcor')
             call_str = '$GAMMA_BIN/init_offset_orbit '+ BaseslcPar + ' ' + SslcPar + ' ' + Soff
             os.system(call_str)
 
@@ -270,12 +270,12 @@ def main(argv):
             os.system(call_str)
             
         elif coregCoarse == 'orbit':
-            print 'init offset estimation by orbit only'      
+            print('init offset estimation by orbit only')      
             call_str = '$GAMMA_BIN/init_offset_orbit '+ BaseslcPar + ' ' + SslcPar + ' ' + Soff
             os.system(call_str)
     
         elif coregCoarse == 'ampcor':
-            print 'init offset estimation by ampcor only'       
+            print('init offset estimation by ampcor only')       
             call_str = '$GAMMA_BIN/init_offset '+ BaseslcImg + ' ' + SslcImg + ' ' + BaseslcPar + ' ' + SslcPar + ' ' + Soff + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
             os.system(call_str)
         
@@ -408,7 +408,7 @@ def main(argv):
     os.remove(coffsets)
     os.remove(coffs)
     
-    print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
+    print("Coregistrate "+ igramDir +" to " + masterDate +" is done! ")
     sys.exit(1)
     
 if __name__ == '__main__':

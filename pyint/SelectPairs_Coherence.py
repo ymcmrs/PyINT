@@ -62,7 +62,7 @@ def add_zero(s):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Select interferometry pairs from time series SAR images
@@ -75,7 +75,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -138,8 +138,8 @@ def main(argv):
                 
                 #call_str ='mkdir ' + processDir+'/' + STR
                 #os.system(call_str)
-                print 'Add interferogram directory ' + STR + ' \n'
-    print '%s interferograms are generated. ' % str(len(B))
+                print('Add interferogram directory ' + STR + ' \n')
+    print('%s interferograms are generated. ' % str(len(B)))
 
     sys.exit(1)
     

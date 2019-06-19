@@ -68,18 +68,20 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
     
 def createBlankFile(strFile):
+    call_str = 'touch ' + strFile
+    os.system(call_str)
     f = open(strFile,'w')
     for i in range (10):
         f.write('\n')
@@ -88,7 +90,7 @@ def createBlankFile(strFile):
     
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
          Romoving topography phase and flattening phase from original interferogram.
@@ -102,7 +104,7 @@ def usage():
       e.g.  diffPhase_gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -137,7 +139,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)   
     
 # subtract simulated interferometric phase process
@@ -173,7 +175,7 @@ def main(argv):
 
 
 ########################   Start to process differential Interferometry ########################
-
+    
     BLANK       = workDir + '/' + Mdate + '-' + Sdate + '.blk'
     createBlankFile(BLANK)
     
@@ -220,64 +222,64 @@ def main(argv):
             os.remove(DIFFpar)
     
         if os.path.isfile(OFFlks):    
-            call_str = '$GAMMA_BIN/create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' 0 0 '
+            call_str = 'create_diff_par ' + OFFlks + ' ' + OFFlks + ' ' + DIFFpar + ' 0 0 '
             os.system(call_str)  
-            call_str = '$GAMMA_BIN/extract_gcp ' + HGTSIM + ' ' + OFFlks + ' ' + GCP
+            call_str = 'extract_gcp ' + HGTSIM + ' ' + OFFlks + ' ' + GCP
             os.system(call_str)             
         else:
-            call_str = '$GAMMA_BIN/create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + DIFFpar + ' 1 0 '
+            call_str = 'create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + DIFFpar + ' 1 0 '
             os.system(call_str)     
         
 
-        call_str = '$GAMMA_BIN/sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1'
+        call_str = 'sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1'
         os.system(call_str)   
 
         if not flatteningDiff == 'orbit':
-            call_str = '$GAMMA_BIN/base_est_fft ' + DIFFINTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfftDiff 
+            call_str = 'base_est_fft ' + DIFFINTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfftDiff 
             os.system(call_str)   
 
-            call_str = '$GAMMA_BIN/ph_slope_base ' + DIFFINTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + DIFFINTFFTlks 
+            call_str = 'ph_slope_base ' + DIFFINTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + DIFFINTFFTlks 
             os.system(call_str)
             
             DIFFINTlks = DIFFINTFFTlks
-            call_str = '$GAMMA_BIN/base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
+            call_str = 'base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
             os.system(call_str)
 
             os.rename(BASE+'.tmp', BASE)
 
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - '
+        call_str = 'rasmph_pwr ' + DIFFINTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - '
         os.system(call_str)
         ras2jpg(DIFFINTlks, DIFFINTlks)
 
         DIFFINTFILTlks = DIFFINTlks.replace('diff_', 'diff_filt_')
-        call_str = '$GAMMA_BIN/adf ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
+        call_str = 'adf ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
         os.system(call_str)
       
         if strFilterMethodDiff == 'adapt_filt':
-            call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
+            call_str = 'adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
             os.system(call_str)
         
 ################ calculate coherence based on differential interferogram ####################################
 
-        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        call_str = 'cc_wave '+ DIFFINTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
         os.system(call_str) 
    
-        call_str = '$GAMMA_BIN/rascc ' + CORDIFFlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        call_str = 'rascc ' + CORDIFFlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
         os.system(call_str)
         ras2jpg(CORDIFFlks, CORDIFFlks)
       
-        call_str = '$GAMMA_BIN/cc_wave '+ DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        call_str = 'cc_wave '+ DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
         os.system(call_str)
        
-        call_str = '$GAMMA_BIN/rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        call_str = 'rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
         os.system(call_str)
         ras2jpg(CORDIFFFILTlks, CORDIFFFILTlks)
       
-        call_str = '$GAMMA_BIN/rasmph_pwr ' + DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+        call_str = 'rasmph_pwr ' + DIFFINTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
         os.system(call_str)
         ras2jpg(DIFFINTFILTlks, DIFFINTFILTlks)
         
-    print "Subtraction of topography and flattening phase is done!"
+    print("Subtraction of topography and flattening phase is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

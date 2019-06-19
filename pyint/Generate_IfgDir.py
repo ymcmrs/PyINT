@@ -62,7 +62,7 @@ def add_zero(s):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
            Select interferometry pairs from time series SAR images
@@ -75,7 +75,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -125,7 +125,7 @@ def main(argv):
         if not STR0 in LIST0:
             call_str ='mkdir ' + processDir+'/' + STR
             os.system(call_str)
-            print 'Generate directory ' + STR + ' \n'
+            print('Generate directory ' + STR + ' \n')
         
     
 

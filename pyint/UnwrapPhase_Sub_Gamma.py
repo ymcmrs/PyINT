@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -104,7 +104,7 @@ def GetSubset(Subset):
     return x1,x2,y1,y2      
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Unwrap interferograms based on GAMMA.
@@ -119,7 +119,7 @@ def usage():
       e.g.  UnwrapPhase_Sub_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -156,7 +156,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)     
     
 
@@ -340,7 +340,7 @@ def main(argv):
         
         
 
-    print "Uwrapping interferometric phase is done!"
+    print("Uwrapping interferometric phase is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

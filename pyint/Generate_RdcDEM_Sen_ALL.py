@@ -65,7 +65,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -99,7 +99,7 @@ def add_zero(s):
     return s       
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Generating Radar coordinates-based DEM based on GEO-DEM files.
@@ -112,7 +112,7 @@ def usage():
       e.g.  Generate_RdcDEM_Sen_ALL.py PacayaT163TsxHhA
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -145,7 +145,7 @@ def main(argv):
             if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
                 Datelist.append(ListSLC[kk])
     
-    map(int,Datelist)                
+    list(map(int,Datelist))                
     Datelist.sort()
     
     run_GenDEM_rslc_all = processDir + '/DEM/run_GenDEM_rslc_all'
@@ -157,14 +157,14 @@ def main(argv):
         STR = 'echo Generate_RdcDEM_Sen_Gamma.py ' + projectName + ' ' + kk + ' >>' + run_GenDEM_rslc_all
         os.system(STR)
      
-    call_str='rm job*'
+    call_str = 'process_loop_runfile.py ' + processDir + '/DEM/run_GenDEM_rslc_all'
     os.system(call_str)
     
-    call_str='$INT_SCR/createBatch.pl ' + run_GenDEM_rslc_all + ' memory=5000 ' + ' walltime= 1:00'
-    os.system(call_str)
+    #call_str='$INT_SCR/createBatch.pl ' + run_GenDEM_rslc_all + ' memory=5000 ' + ' walltime= 1:00'
+    #os.system(call_str)
     
 
-    print "Create RdcDEM based on rslcs in Radar Coordinates is done!"
+    print("Create RdcDEM based on rslcs in Radar Coordinates is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

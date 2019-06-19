@@ -56,7 +56,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def UseGamma2(inFile, task, keyword):
@@ -69,11 +69,11 @@ def UseGamma2(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[2].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Get co-registration standard deviation of SLCs for one project
@@ -85,7 +85,7 @@ def usage():
       e.g.  Get_off_std.py GalapagosT061EnvA
 
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     

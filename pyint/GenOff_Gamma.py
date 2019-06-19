@@ -67,11 +67,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Estimating the offsets of two SAR images based on cross-correlation.
@@ -83,7 +83,7 @@ def usage():
       e.g.  GenOff_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -120,7 +120,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)  
         
         
@@ -203,7 +203,7 @@ def main(argv):
     os.system(call_str)
 
     if coregCoarse == 'both':
-        print 'init offset estimation by both orbit and ampcor'
+        print('init offset estimation by both orbit and ampcor')
         call_str = '$GAMMA_BIN/init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
         os.system(call_str)
 
@@ -214,13 +214,13 @@ def main(argv):
         os.system(call_str)
 
     elif coregCoarse == 'orbit':
-        print 'init offset estimation by orbit only'
+        print('init offset estimation by orbit only')
         
         call_str = '$GAMMA_BIN/init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
         os.system(call_str)
     
     elif coregCoarse == 'ampcor':
-        print 'init offset estimation by ampcor only'
+        print('init offset estimation by ampcor only')
         
         call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
         os.system(call_str)
@@ -335,7 +335,7 @@ def main(argv):
             os.system(call_str)
             ras2jpg(SamprlksImg, SamprlksImg)    
     
-    print "Coregistrating for %s and %s images is done! " % ( Mdate, Sdate )
+    print("Coregistrating for %s and %s images is done! " % ( Mdate, Sdate ))
     sys.exit(1)
     
 if __name__ == '__main__':

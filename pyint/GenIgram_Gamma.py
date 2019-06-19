@@ -66,14 +66,14 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
 
@@ -85,7 +85,7 @@ def createBlankFile(strFile):
 
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Generateing Interferograms based on GAMMA
@@ -99,7 +99,7 @@ def usage():
       e.g.  GenIgram_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
     
 def main(argv):
@@ -133,7 +133,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 #################################  Define Interferometry parameters ##########################
@@ -216,10 +216,10 @@ def main(argv):
             SrslcImg = rslcDir + "/" + Sdate + Suffix[i]+".rslc"
             SrslcPar = rslcDir + "/" + Sdate + Suffix[i]+".rslc.par" 
         
-        call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
+        call_str = 'create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/SLC_intf '+ MrslcImg + ' ' + SrslcImg + ' ' + MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' ' + INT + ' 1 1 - - ' + spsflgIgram + ' ' + azfflgIgram + ' ' + rp1flgIgram + ' ' + rp2flgIgram
+        call_str = 'SLC_intf '+ MrslcImg + ' ' + SrslcImg + ' ' + MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' ' + INT + ' 1 1 - - ' + spsflgIgram + ' ' + azfflgIgram + ' ' + rp1flgIgram + ' ' + rp2flgIgram
         os.system(call_str)
 
 ### start co-registartion of raw interferogram w.r.t. master scene  
@@ -233,70 +233,70 @@ def main(argv):
         #if os.path.isfile(OFF):
         #    os.remove(OFF)
             
-        #call_str = '$GAMMA_BIN/create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
+        #call_str = 'create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 - - 0'
         #os.system(call_str)    ## update the OFF file, if do the last step "COREG_all_Flag"
 
-        call_str = '$GAMMA_BIN/base_orbit '+ MrslcPar + ' ' + SrslcPar + ' ' + BASE
+        call_str = 'base_orbit '+ MrslcPar + ' ' + SrslcPar + ' ' + BASE
         os.system(call_str)
 
 #    if flagTDM == 'Y':    ### flag for TanDEM-X bistatic mode case to conside half length of baseline
 #        call_str = '$INT_SCR/halfbase.pl ' + BASE;
 #        os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
+        call_str = 'multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
         os.system(call_str)
 ########################    flatten phase remove ################################
    
-        call_str = '$GAMMA_BIN/ph_slope_base '+ INTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE + ' ' + FLTlks
+        call_str = 'ph_slope_base '+ INTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE + ' ' + FLTlks
         os.system(call_str)
 
         nWidth = UseGamma(OFFlks, 'read', 'interferogram_width')
 
-        call_str = '$GAMMA_BIN/cc_wave '+ INTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        call_str = 'cc_wave '+ INTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
         os.system(call_str)
         
-        call_str = '$GAMMA_BIN/rascc ' + CORlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        call_str = 'rascc ' + CORlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
         os.system(call_str)
         ras2jpg(CORlks, CORlks)
 
         #if flatteningIgram == 'fft':
-        #    call_str = '$GAMMA_BIN/base_est_fft ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfft 
+        #    call_str = 'base_est_fft ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + nAzfft 
         #    os.system(call_str)
 
-        #    call_str = '$GAMMA_BIN/ph_slope_base ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + FLTFFTlks  
+        #    call_str = 'ph_slope_base ' + FLTlks + ' ' + MrslcPar + ' ' + OFFlks + ' ' + BASE_REF + ' ' + FLTFFTlks  
         #    os.system(call_str)
 
         #   FLTlks = FLTFFTlks
-        #   call_str = '$GAMMA_BIN/base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
+        #   call_str = 'base_add ' + BASE + ' ' + BASE_REF + ' ' + BASE + '.tmp'
         #   os.system(call_str)     
         #    os.rename(BASE+'.tmp', BASE)
           
         # FLTFILTlks = FLTlks.replace('flat_', 'filt_')
         
 ########################    filtering  ################################
-        #call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+        #call_str = 'rasmph_pwr ' + FLTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
         #os.system(call_str)
         #ras2jpg(FLTlks, FLTlks)
 
-        #call_str = '$GAMMA_BIN/adf ' + FLTlks + ' ' + FLTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
+        #call_str = 'adf ' + FLTlks + ' ' + FLTFILTlks + ' ' + CORFILTlks + ' ' + nWidth + ' 0.5'
         #os.system(call_str)
 
         #if strFilterMethod == 'adapt_filt':    
-        #    call_str = '$GAMMA_BIN/adapt_filt ' + FLTlks + ' ' + FLTFILTlks + ' ' + nWidth + ' ' + fFiltLength + ' ' + nFiltWindow
+        #    call_str = 'adapt_filt ' + FLTlks + ' ' + FLTFILTlks + ' ' + nWidth + ' ' + fFiltLength + ' ' + nFiltWindow
         #    os.system(call_str)
         
-        #call_str = '$GAMMA_BIN/cc_wave '+ FLTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+        #call_str = 'cc_wave '+ FLTFILTlks + ' ' + MamprlksImg + ' ' + SamprlksImg + ' ' + CORFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
         #os.system(call_str)
              
-        #call_str = '$GAMMA_BIN/rasmph_pwr ' + FLTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
+        #call_str = 'rasmph_pwr ' + FLTFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - 2.0 0.3 - ' 
         #os.system(call_str)
         #ras2jpg(FLTFILTlks, FLTFILTlks)
         
-        #call_str = '$GAMMA_BIN/rascc ' + CORFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+        #call_str = 'rascc ' + CORFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
         #os.system(call_str)
         #ras2jpg(CORFILTlks, CORFILTlks)
 
-    print "Interferogram generation is done!"
+    print("Interferogram generation is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

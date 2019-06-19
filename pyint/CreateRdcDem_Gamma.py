@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -87,7 +87,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Coregistration of SAR images based on cross-correlation by using GAMMA.
@@ -101,7 +101,7 @@ def usage():
       e.g.  CreateRdcDem_Gamma.py MAI_PacayaT163TsxHhA_131021-131101_0011_-0007          
       e.g.  CreateRdcDem_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_-0007            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -147,7 +147,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 
@@ -293,7 +293,7 @@ def main(argv):
 
 
 
-    print "Create DEM in Radar Coordinates is done!"
+    print("Create DEM in Radar Coordinates is done!")
     sys.exit(1)
 
 if __name__ == '__main__':

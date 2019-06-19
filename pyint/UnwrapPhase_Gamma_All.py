@@ -67,7 +67,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def common_burst_Ref(La_M,La_S):
@@ -189,15 +189,18 @@ def main(argv):
     if os.path.isfile(TT):
         os.remove(TT)
     for kk in IFGLIST:
-        print '>>> Process ' + os.path.basename(kk)
+        print('>>> Process ' + os.path.basename(kk))
         if 'S1' in projectName:
             call_str = 'echo UnwrapPhase_Sen_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         else:
             call_str = 'echo UnwrapPhase_Gamma.py  ' + os.path.basename(kk) + ' >> ' + TT
         os.system(call_str)
    
-    call_str ='BatchProcess.py ' + '-p ' + TT + ' -m 8000 ' + ' -t 2:00'  
+    call_str ='process_loop_runfile.py ' + TT
     os.system(call_str)
+    
+    #call_str ='BatchProcess.py ' + '-p ' + TT + ' -m 8000 ' + ' -t 2:00'  
+    #os.system(call_str)
     sys.exit(1)
 
 if __name__ == '__main__':

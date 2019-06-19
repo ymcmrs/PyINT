@@ -66,11 +66,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Coregistration of SAR images based on cross-correlation by using GAMMA.
@@ -86,7 +86,7 @@ def usage():
           
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -158,7 +158,7 @@ def main(argv):
         call_str = 'Geocode_Sen_Gamma.py ' + igramDir
         os.system(call_str)   
 
-    print "Interferometry process for Sentinel-1 is done !" 
+    print("Interferometry process for Sentinel-1 is done !") 
     sys.exit(1)
 
 if __name__ == '__main__':

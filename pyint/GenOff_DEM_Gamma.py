@@ -67,11 +67,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Estimating the offsets of two SAR images based on cross-correlation.
@@ -83,7 +83,7 @@ def usage():
       e.g.  GenOff_DEM_Gamma.py PacayaT163TsxHhA 131021 131101 /Yunmeng/SCRATCH
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -121,7 +121,7 @@ def main(argv):
     elif INF=='RSI':
         Suffix=['.HF','.LF']
     else:
-        print "The folder name %s cannot be identified !" % igramDir
+        print("The folder name %s cannot be identified !" % igramDir)
         usage();sys.exit(1)
 
 #################################  Define coregistration parameters ##########################
@@ -221,66 +221,66 @@ def main(argv):
 
 # real processing
 
-    call_str = "$GAMMA_BIN/multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
+    call_str = "multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/multi_look " + SslcImg + " " + SslcPar + " " + SamprlksImg + " " + SamprlksPar + " " + rlks + " " + azlks
+    call_str = "multi_look " + SslcImg + " " + SslcPar + " " + SamprlksImg + " " + SamprlksPar + " " + rlks + " " + azlks
     os.system(call_str)
 
     
-    call_str = "$GAMMA_BIN/rdc_trans " + MamprlksPar + " " + HGTSIM + " " + SamprlksPar + " " + lt0
+    call_str = "rdc_trans " + MamprlksPar + " " + HGTSIM + " " + SamprlksPar + " " + lt0
     os.system(call_str)
 
     width_Mamp = UseGamma(MamprlksPar, 'read', 'range_samples')
     width_Samp = UseGamma(SamprlksPar, 'read', 'range_samples')
     line_Samp = UseGamma(SamprlksPar, 'read', 'azimuth_lines')
 
-    call_str = "$GAMMA_BIN/geocode " + lt0 + " " + MamprlksImg + " " + width_Mamp + " " + mli0 + " " + width_Samp + " " + line_Samp + " 2 0"
+    call_str = "geocode " + lt0 + " " + MamprlksImg + " " + width_Mamp + " " + mli0 + " " + width_Samp + " " + line_Samp + " 2 0"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/create_diff_par " + SamprlksPar + " - " + diff0 + " 1 0"
+    call_str = "create_diff_par " + SamprlksPar + " - " + diff0 + " 1 0"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/init_offsetm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + rlks + " " + azlks + " - - - - - 512"
+    call_str = "init_offsetm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + rlks + " " + azlks + " - - - - - 512"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rwin4cor + " " + azwin4cor + " " + offsets0 + " 2 " + rsample4cor + " " + azsample4cor
+    call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rwin4cor + " " + azwin4cor + " " + offsets0 + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
   
-    call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 3"
+    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 3"
     os.system(call_str)
     
-    call_str = "$GAMMA_BIN/offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
+    call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
   
-    call_str = "$GAMMA_BIN/offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
+    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
     os.system(call_str)
 
     
     
-    call_str = "$GAMMA_BIN/gc_map_fine " + lt0 + " " + width_Mamp + " " + diff0 + " " + lt1
+    call_str = "gc_map_fine " + lt0 + " " + width_Mamp + " " + diff0 + " " + lt1
     os.system(call_str)
     
     
-    call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    call_str = "SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
     os.system(call_str)
 
 
 # further refinement processing for resampled SLC
 
-    call_str = "$GAMMA_BIN/create_offset " + MslcPar + " " + Srslc0Par + " " + off + " 1 - - 0"
+    call_str = "create_offset " + MslcPar + " " + Srslc0Par + " " + off + " 1 - - 0"
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
+    call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
+    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
     os.system(call_str)
     
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
+    call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
+    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
     os.system(call_str)
     
 ############################################     Resampling     ############################################    
@@ -301,7 +301,7 @@ def main(argv):
         
 ######################## Resampling Slave Image ####################
 
-        call_str = "$GAMMA_BIN/SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
+        call_str = "SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
         os.system(call_str)
 
 
@@ -322,19 +322,19 @@ def main(argv):
         
 
 
-        call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+        call_str = 'multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+        call_str = 'multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
         os.system(call_str)
 
         nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
 
-        call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+        call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
         os.system(call_str)  
         ras2jpg(MamprlksImg, MamprlksImg) 
         
-        call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+        call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
         os.system(call_str)
         ras2jpg(SamprlksImg, SamprlksImg)
 
@@ -363,7 +363,7 @@ def main(argv):
     call_str ='rm -rf ' + workDir
     os.system(call_str)
     
-    print "Coregistration with DEM is done!"
+    print("Coregistration with DEM is done!")
  
     sys.exit(1)
 

@@ -68,7 +68,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
@@ -87,7 +87,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
               Generating the differential interferograms for Sentinel-1A/B
@@ -100,7 +100,7 @@ def usage():
       e.g.  DiffPhase_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
       e.g.  DiffPhase_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -186,7 +186,7 @@ def main(argv):
     os.system(call_str)
 
 
-    print "Generating differential S1 interferogram is done !!"
+    print("Generating differential S1 interferogram is done !!")
     sys.exit(1)
 
 if __name__ == '__main__':

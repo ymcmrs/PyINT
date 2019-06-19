@@ -66,11 +66,11 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
                  Downloading Sentinel-1A/B data from ASF which is supported by WInSAR.
@@ -84,7 +84,7 @@ def usage():
       e.g.  DownloadSen.py PacayaT163TsxHhA
       
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -131,16 +131,16 @@ def main(argv):
     
     
     SSARA_STRA = 'ssara_federated_query.py -p Sentinel-1A -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR + ' --print --download --parallel=10'  
-    print SSARA_STRA
+    print(SSARA_STRA)
     os.system(SSARA_STRA)
     
     
     SSARA_STRB ='ssara_federated_query.py -p Sentinel-1B -r ' + Track + ' -f '+ Frame + STARTSTR + ENDSTR  + ' --print --download --parallel=10'  
-    print SSARA_STRB
+    print(SSARA_STRB)
     os.system(SSARA_STRB)   
     
     
-    print "Downloading Sentinel-1A/B during %s and %s is done " % ( Startdate, Enddate )
+    print("Downloading Sentinel-1A/B during %s and %s is done " % ( Startdate, Enddate ))
     sys.exit(1)
     
 if __name__ == '__main__':

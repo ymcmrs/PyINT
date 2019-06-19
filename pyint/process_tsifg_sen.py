@@ -73,7 +73,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def write_template(File, Str):
@@ -94,7 +94,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     
     
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
       Processing time series Sentinel-1 datasets. 
@@ -106,7 +106,7 @@ def usage():
       e.g.  process_tsifg_sen.py PacayaT163TsxHhA
            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -191,14 +191,14 @@ def main(argv):
         os.system(call_str)      
        
     if SLC2IFG=='1':    
-        call_str='$INT_SCR/createBatch.pl ' + processDir+'/run_slc2ifg_gamma memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
+        call_str='process_loop_runfile.py ' + processDir+'/run_slc2ifg_gamma'
         os.system(call_str)
         
     if Load_Data=='1':
         call_str = 'load_data_gamma.py ' + projectName
         os.system(call_str)     
 
-    print "Time series interferograms processing is done! "    
+    print("Time series interferograms processing is done! ")    
     sys.exit(1)
     
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 def StrNum(S):
@@ -100,7 +100,7 @@ def main(argv):
     else:
         SAT = 'B'
      
-    print 'SAR image is acquired by Sentinel-1%s.' % SAT
+    print('SAR image is acquired by Sentinel-1%s.' % SAT)
     
     call_str = 'Sen_PreOrbit.py ' + DATE + ' ' + SAT
     os.system(call_str)
@@ -109,7 +109,7 @@ def main(argv):
     os.system(call_str)
     
     
-    print 'Download and update the precise orbit date for Sentinel-1%s data %s is finished.' % (SAT,DATE)
+    print('Download and update the precise orbit date for Sentinel-1%s data %s is finished.' % (SAT,DATE))
     
     sys.exit(1)
     

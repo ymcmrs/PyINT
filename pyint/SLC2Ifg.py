@@ -18,7 +18,7 @@ import glob
     
     
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Coregistration of SAR images based on cross-correlation by using GAMMA.
@@ -31,7 +31,7 @@ def usage():
       e.g.  SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048
            
 *******************************************************************************************************
-    '''   
+    ''')   
     
         
 def main(argv):

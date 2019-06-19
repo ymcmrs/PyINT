@@ -104,7 +104,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
 
 #########################################################################
@@ -167,8 +167,8 @@ def main(argv):
     
     if inps.par: 
         Par = inps.par
-        print "SLC_par file is provided:    %s" % Par
-        print "SRTM1 over research region will be downloaded automatically based on %s" % Par
+        print("SLC_par file is provided:    %s" % Par)
+        print("SRTM1 over research region will be downloaded automatically based on %s" % Par)
         call_str = "SLC_corners "+ Par + " > corners.txt"
         os.system(call_str)
         
@@ -195,7 +195,7 @@ def main(argv):
     
     if inps.dem:
         dem = inps.dem
-        print 'Raw dem file is provided: %s .' % dem
+        print('Raw dem file is provided: %s .' % dem)
         
     if inps.out: Name = inps.out
     else: Name = "out"
@@ -214,11 +214,11 @@ def main(argv):
     
     if not inps.dem:
         
-        print 'Research region: %s(west)  %s(south)  %s(east)  %s(north)' % (west,south,east,north)
-        print '>>> Ready to download SRTM1 dem over research region.'
+        print('Research region: %s(west)  %s(south)  %s(east)  %s(north)' % (west,south,east,north))
+        print('>>> Ready to download SRTM1 dem over research region.')
         call_str='wget -q -O dem.tif "http://ot-data1.sdsc.edu:9090/otr/getdem?north=%f&south=%f&east=%f&west=%f&demtype=SRTMGL1"' % (north,south,east,west)
         os.system(call_str)
-        print '>>> DEM download finished.'
+        print('>>> DEM download finished.')
         
         DEM_TYPE='SRTM1'
         Proj = 'EQA'
@@ -285,9 +285,9 @@ def main(argv):
         write_demrsc_file(DEMPAR,Corner_LON,Corner_LAT,Post_LON,Post_LAT,WIDTH,FILE_LENGTH)
     
     BB =Byteorder + ' endian'
-    print ''
-    print '%s %s and %s are generated.' % (BB,DEMDATA,DEMPAR)
-    print 'Congratulations! Done!'
+    print('')
+    print('%s %s and %s are generated.' % (BB,DEMDATA,DEMPAR))
+    print('Congratulations! Done!')
     #print "Generating %s processor %s and %s is done!" % (processor,DEMDATA,DEMPAR)
     sys.exit(1)
        

@@ -73,7 +73,7 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def write_template(File, Str):
@@ -94,7 +94,7 @@ def write_run_coreg_all(projectName,master,slavelist,workdir):
     
     
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
        Process time series of interferograms from downloading data or SLC images.
@@ -106,7 +106,7 @@ def usage():
       e.g.  process_tsifg_gamma.py PacayaT163TsxHhA
            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -151,20 +151,23 @@ def main(argv):
 
     if 'GenRdcDem_Rslc_all' in templateContents :  GenRdcDem_Rslc_all =  templateContents['GenRdcDem_Rslc_all']
     else: GenRdcDem_Rslc_all = '1'
+        
+    if 'Load_Data' in templateContents :  Load_Data =  templateContents['Load_Data']
+    else: Load_Data = '0'
 
 ##########################    Check DEM   ###############################################
 
     if 'DEM' in templateContents :  
         DEM =  templateContents['DEM']
         if not os.path.isfile(DEM):
-            print 'Provided DEM is not available, a new DEM based on SRTM-1 will be generated.'
+            print('Provided DEM is not available, a new DEM based on SRTM-1 will be generated.')
             call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
             os.system(call_str)
             
             call_str = 'echo DEM = ' + DEMDIR + '/' + projectName + '/' + projectName +'.dem >> ' + templateFile
             os.system(call_str)
     else:
-        print 'DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.'
+        print('DEM is not provided in the template file,  a DEM based on SRTM-1 will be generated.')
         call_str = 'Makedem_PyInt.py ' + projectName + ' gamma'
         os.system(call_str)
             
@@ -179,23 +182,22 @@ def main(argv):
             DD=ListSLC[kk]
             Year=int(DD[0:2])
             Month = int(DD[2:4])
-            Day = int(DD[4:6])
-            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
-                Datelist.append(ListSLC[kk])
+            Day = int(DD[4:6])          
+            Datelist.append(ListSLC[kk])
 
 
     if 'masterDate' in templateContents : 
         masterDate = templateContents['masterDate']
         if masterDate in Datelist:
-            print "masterDate: %s" % masterDate
+            print("masterDate: %s" % masterDate)
         else:
-            print "The selected masterdate %s is not in the date list!! " % masterDate
-            print "The first date is chosen as the master date: %s" % str(Datelist[0])
+            print("The selected masterdate %s is not in the date list!! " % masterDate)
+            print("The first date is chosen as the master date: %s" % str(Datelist[0]))
             masterDate = Datelist[0]
             Str = 'masterDate   =   %s \n' %masterDate
             write_template(templateFile, Str)           
     else:
-        print "The first date is chosen as the master date: %s" % str(Datelist[0])
+        print("The first date is chosen as the master date: %s" % str(Datelist[0]))
         masterDate = Datelist[0]
         Str = 'masterDate   =   %s \n' %masterDate
         write_template(templateFile, Str)
@@ -234,10 +236,14 @@ def main(argv):
         os.system(call_str)
     
     
-    call_str='$INT_SCR/createBatch.pl ' + run_slc2ifg_gamma + ' memory=' + memory_Ifg + ' walltime=' + walltime_Ifg
+    call_str='process_loop_runfile.py ' + run_slc2ifg_gamma
     os.system(call_str)
+    
+    if Load_Data =='1':
+        call_str = 'load_data.py -t ' + templateFile
+        os.system(call_str) 
 
-    print "Time series interferograms processing is done! "    
+    print("Time series interferograms processing is done! ")    
     sys.exit(1)
     
 if __name__ == '__main__':

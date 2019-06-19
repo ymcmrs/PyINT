@@ -29,12 +29,12 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
               Transform lat and lon to SAR coordinates based on SLCPar and DEM
@@ -46,7 +46,7 @@ def usage():
       e.g.  UTM2SARPIX.py 31.1 -108.2 /Yunmeng/2010.slc.par /Yunmeng/2010.dem
 
 *******************************************************************************************************
-    '''   
+    ''')   
     
     
 def main(argv):

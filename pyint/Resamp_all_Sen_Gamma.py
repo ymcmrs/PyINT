@@ -66,14 +66,14 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
     
@@ -86,7 +86,7 @@ def createBlankFile(strFile):
     
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
           Resampling all Sentinel-1 based intferograms into one master date coordinates.
@@ -100,7 +100,7 @@ def usage():
       e.g.  Resamp_all_Sen_Gamma.py RSI_PacayaT163TsxHhA_131021-131101_0011_0007          
             
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -219,10 +219,10 @@ def main(argv):
         call_str = 'create_offset ' + MrslcPar0 + ' ' + MrslcPar0 + ' ' + int_off + ' 1 - - 0'
         os.system(call_str)
     
-        call_str = '$GAMMA_BIN/SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
+        call_str = 'SLC_intf ' + MrslcImg0 + ' ' + SrslcImg0 + ' ' + MrslcPar0 + ' ' + SrslcPar0 + ' ' + int_off + ' ' + INT + ' 1 1 - - - - - -'
         os.system(call_str)
     
-        call_str = "$GAMMA_BIN/SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar  + " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
+        call_str = "SLC_interp_lt " + INT + " " + Baseslc4Par + " " + INTpar  + " " + M_lt + " " + MLI1PAR + " " + MLI2PAR + " " + M_off + " " + rINT + " " + rINTpar
         os.system(call_str)
         os.rename(rINT, INT)
     
@@ -230,29 +230,29 @@ def main(argv):
         os.remove(OFF)
     call_str = 'create_offset ' + MrslcPar + ' ' + MrslcPar + ' ' + OFF + ' 1 - - 0'
     os.system(call_str)
-    call_str = '$GAMMA_BIN/multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
+    call_str = 'multi_cpx '+ INT + ' ' + OFF + ' ' + INTlks + ' ' + OFFlks + ' ' + rlks + ' ' + azlks
     os.system(call_str)
     
     #call_str = 'create_offset ' +  MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' 1 ' + rlks + ' ' + azlks + ' 0'
     #os.system(call_str)
     
-    call_str = '$GAMMA_BIN/phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW
+    call_str = 'phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFFlks + ' ' + HGTSIM + ' ' + SIMUNW
     os.system(call_str)
     
     if os.path.isfile(DIFFpar):
         os.remove(DIFFpar)
-    call_str = '$GAMMA_BIN/create_diff_par ' + MLI1PAR + ' ' + MLI1PAR + ' ' + DIFFpar + ' 1 0 '
+    call_str = 'create_diff_par ' + MLI1PAR + ' ' + MLI1PAR + ' ' + DIFFpar + ' 1 0 '
     os.system(call_str)     
         
-    call_str = '$GAMMA_BIN/sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1 0'
+    call_str = 'sub_phase ' + INTlks + ' ' + SIMUNW + ' ' + DIFFpar + ' ' + DIFFINTlks + ' 1 0'
     os.system(call_str)   
     
     #os.remove(INT)
     
-     #call_str = '$GAMMA_BIN/adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
+     #call_str = 'adapt_filt ' + DIFFINTlks + ' ' + DIFFINTFILTlks + ' ' + nWidth + ' ' + fFiltLengthDiff + ' ' + nFiltWindowDiff
      #os.system(call_str)
         
-    print "Coregistrate "+ igramDir +" to " + masterDate +" is done! "
+    print("Coregistrate "+ igramDir +" to " + masterDate +" is done! ")
     sys.exit(1)
     
 if __name__ == '__main__':

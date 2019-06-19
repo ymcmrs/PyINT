@@ -110,23 +110,24 @@ def main(argv):
             Year=int(DD[0:2])
             Month = int(DD[2:4])
             Day = int(DD[4:6])
-            if  ( 0 < Year < 20 and 0 < Month < 13 and 0 < Day < 32 ):            
-                Datelist.append(ListSLC[kk])
+            #if  ((0 < Year < 20 | 80 < Year < 100 ) and 0 < Month < 13 and 0 < Day < 32 ):            
+            Datelist.append(ListSLC[kk])
+    print(Datelist)
     
     if 'masterDate'          in templateContents:
         masterDate0 = templateContents['masterDate']
         if masterDate0 in Datelist:
             masterDate = masterDate0
-            print "masterDate : " + masterDate0
+            print("masterDate : " + masterDate0)
         else:
             masterDate=Datelist[0]
-            print "The selected masterDate is not included in above datelist !!"
-            print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+            print("The selected masterDate is not included in above datelist !!")
+            print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
             
     else:  
         masterDate=Datelist[0]
-        print "masterDate is not found in template!!! "
-        print "The first date [ %s ] is chosen as the master date! " % Datelist[0] 
+        print("masterDate is not found in template!!! ")
+        print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
 
     SLC_PAR = slcDir + '/' + masterDate + '/'+ masterDate + '.slc.par'
     
@@ -141,7 +142,7 @@ def main(argv):
     call_str= 'makedem.py ' + '-s ' + SLC_PAR + ' -p ' + processor + ' -o ' + projectName
     os.system(call_str)
     
-    print 'Generate DEM for project %s is done.' % projectName
+    print('Generate DEM for project %s is done.' % projectName)
     sys.exit(1)
     
 if __name__ == '__main__':

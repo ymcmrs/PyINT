@@ -68,14 +68,14 @@ def UseGamma(inFile, task, keyword):
                 strtemp = line.split(":")
                 value = strtemp[1].strip()
                 return value
-        print "Keyword " + keyword + " doesn't exist in " + inFile
+        print("Keyword " + keyword + " doesn't exist in " + inFile)
         f.close()
         
 def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM):
     if inFile.rsplit('.')[1] == 'int':
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 1'
     else:
-        call_str = '$GAMMA_BIN/geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' 0 0'
     os.system(call_str)
     
 def createBlankFile(strFile):
@@ -87,7 +87,7 @@ def createBlankFile(strFile):
        
 
 def usage():
-    print '''
+    print('''
 ******************************************************************************************************
  
               Unwrapping the differential interferograms for Sentinel-1A/B
@@ -100,7 +100,7 @@ def usage():
       e.g.  UnwrapPhase_Sen_Gamma.py MAI_PacayaT163S1A_131021-131101_0011_-0007          
       e.g.  UnwrapPhase_Sen_Gamma.py RSI_PacayaT163S1A_131021-131101_0011_-0007            
 *******************************************************************************************************
-    '''   
+    ''')   
     
 def main(argv):
     
@@ -218,58 +218,55 @@ def main(argv):
     else: Ref_Azimuth = nCenterLine
 
 
-    call_str = '$GAMMA_BIN/adapt_filt ' + DIFFlks + ' ' + DIFFFILTlks +  ' ' + nWidth + ' ' +  fFiltLengthDiff + ' ' + nFiltWindowDiff
+    call_str = 'adapt_filt ' + DIFFlks + ' ' + DIFFFILTlks +  ' ' + nWidth + ' ' +  fFiltLengthDiff + ' ' + nFiltWindowDiff
     os.system(call_str)
 
 ####################  Unwrap ##########################
 
-    call_str= '$GAMMA_BIN/cc_wave ' + DIFFFILTlks + ' ' + MamprlksImg + ' - ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
+    call_str= 'cc_wave ' + DIFFFILTlks + ' ' + MamprlksImg + ' - ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + rWinCor + ' ' + aWinCor
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
+    call_str = 'rascc ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - '  
     os.system(call_str)
-    ras2jpg(CORDIFFFILTlks, CORDIFFFILTlks)
 
 
     CORDIFFFILTlksbmp = CORDIFFFILTlks + '_mask.bmp'
-    call_str = '$GAMMA_BIN/rascc_mask ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
+    call_str = 'rascc_mask ' + CORDIFFFILTlks + ' ' + MamprlksImg + ' ' + nWidth + ' 1 1 0 1 1 ' + unwrappedThreshold + ' 0.0 0.1 0.9 1. .35 1 ' + CORDIFFFILTlksbmp   # based on diff coherence
     os.system(call_str)
     
-    #call_str = '$GAMMA_BIN/rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
+    #call_str = 'rascc_mask_thinning ' + CORDIFFFILTlksbmp + ' ' + CORDIFFFILTlks + ' ' + nWidth + ' ' + MASKTHINDIFFlks + ' 5 0.3 0.4 0.5 0.6 0.7'
     #os.system(call_str)
 
-    call_str = '$GAMMA_BIN/mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + CORDIFFFILTlksbmp + ' ' + UNWlks + ' ' + nWidth + ' 0 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
+    call_str = 'mcf ' + DIFFFILTlks + ' ' + CORDIFFFILTlks + ' ' + CORDIFFFILTlksbmp + ' ' + UNWlks + ' ' + nWidth + ' 0 0 0 - - ' + unwrappatrDiff + ' ' + unwrappatazDiff + ' - ' + Ref_Range + ' ' + Ref_Azimuth   #choose the reference point center
     os.system(call_str)
 
-    #call_str = '$GAMMA_BIN/interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
+    #call_str = 'interp_ad ' + UNWlks + ' ' + UNWINTERPlks + ' ' + nWidth
     #os.system(call_str)
 
-    #call_str = '$GAMMA_BIN/unw_model ' + DIFFFILTlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
+    #call_str = 'unw_model ' + DIFFFILTlks + ' ' + UNWINTERPlks + ' ' + UNWlks + ' ' + nWidth
     #os.system(call_str)
 
-    call_str = '$GAMMA_BIN/rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
+    call_str = 'rasrmg ' + UNWlks + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
     os.system(call_str)
 
-    ras2jpg(UNWlks, UNWlks)
 
     if flatteningUnwrap == 'Y':
         if os.path.isfile(DIFFpar):
             os.remove(DIFFpar)
             
         OUTUNWQUAD    = UNWlks.replace('.unw','.quad_fit.unw')
-        call_str = '$GAMMA_BIN/create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + DIFFpar + ' 1 0'
+        call_str = 'create_diff_par ' + MamprlksPar + ' ' + MamprlksPar + ' ' + DIFFpar + ' 1 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORDIFFFILTlks + '_mask.bmp ' + QUADFIT + ' 0'
+        call_str = 'quad_fit ' + UNWlks + ' ' + DIFFpar + ' 32 32 ' + CORDIFFFILTlks + '_mask.bmp ' + QUADFIT + ' 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
+        call_str = 'quad_sub ' + UNWlks + ' ' + DIFFpar + ' ' + OUTUNWQUAD + ' 0 0'
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/rasrmg ' + OUTUNWQUAD + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
+        call_str = 'rasrmg ' + OUTUNWQUAD + ' ' + MamprlksImg + ' ' + nWidth + ' - - - - - - - - - - ' 
         os.system(call_str)
 
-        ras2jpg(OUTUNWQUAD, OUTUNWQUAD)
 
     if Clear_IntFile =='1':
         os.remove(INT)
@@ -284,7 +281,7 @@ def main(argv):
             os.remove(kk)
         
 
-    print "Unwrapping for S1 interferogram is done !"
+    print("Unwrapping for S1 interferogram is done !")
     sys.exit(1)
 
 if __name__ == '__main__':
