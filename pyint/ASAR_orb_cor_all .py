@@ -49,17 +49,16 @@ INTRODUCTION = '''
 #############################################################################
    Copy Right(c): 2017-2019, Yunmeng Cao   @PyINT v1.0   
    
-   Precise ERS orbit data from Delft (http://www.deos.tudelft.nl/).
-   Correct the orbit parameters using DELFT_vec2
+   Correct ASAR orbit using precise DORIS data.
      
 '''
 
 EXAMPLE = '''
     Usage:
-            ERS_orb_cor_all.py projectName
+            ASAR_orb_cor_all.py projectName
  
     Examples:
-            ERS_orb_cor_all.py AqabaERSA
+            ASAR_orb_cor_all.py AqabaERSA
 
 ##############################################################################
 '''
