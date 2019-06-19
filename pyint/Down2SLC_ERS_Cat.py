@@ -207,7 +207,7 @@ def main(argv):
     AMPPAR = Date6+'.amp.par'
     if Na==1:
         os.rename(SLCm,SLC)
-        os.rename(SLCPAR,SLCPAR)
+        os.rename(SLCm_par,SLCPAR)
         os.rename(MamprlksImg,AMP)
         os.rename(AMPPAR,AMPPAR)
     
