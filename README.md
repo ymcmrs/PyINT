@@ -22,8 +22,8 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     endif
     
     ##--------- Anaconda ---------------## 
-    setenv PYTHON2DIR    ~/python/anaconda2
-    setenv PATH          ${PATH}:${PYTHON2DIR}/bin
+    setenv PYTHON3DIR    ~/python/anaconda3
+    setenv PATH          ${PATH}:${PYTHON3DIR}/bin
     
     ##--------- PyINT ------------------## 
     setenv PYINT_HOME    ~/python/PyINT       
