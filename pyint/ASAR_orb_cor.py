@@ -50,10 +50,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            ERS_orb_cor.py projectName Date
+            ASAR_orb_cor.py projectName Date
  
     Examples:
-            ERS_orb_cor.py AqabaERSA 960101
+            ASAR_orb_cor.py AqabaERSA 960101
 
 ##############################################################################
 '''
