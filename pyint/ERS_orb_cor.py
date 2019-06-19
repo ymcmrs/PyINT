@@ -110,7 +110,7 @@ def main(argv):
         print('The SAR data is invalid.')
         sys.exit(1) 
     
-    call_str = 'DELFT_vec2 ' + slcpar + ' ' + Dir
+    call_str = 'DELFT_vec2 ' + slcpar + ' ' + Dir + ' 30'
     os.system(call_str)
     
     
