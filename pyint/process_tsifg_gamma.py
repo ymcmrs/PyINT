@@ -142,7 +142,9 @@ def main(argv):
     if 'walltime_Ifg' in templateContents :  walltime_Ifg =  templateContents['walltime_Ifg']
     else: walltime_Ifg = '1:00'
         
-        
+    if 'slc_cat_all' in templateContents :  slc_cat_all =  templateContents['slc_cat_all']
+    else: slc_cat_all = '0'
+    
     if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
     else: Coreg_all = '1'
         
