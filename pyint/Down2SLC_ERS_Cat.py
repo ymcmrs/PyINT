@@ -150,6 +150,7 @@ def main(argv):
     
     AA= np.loadtxt(te,dtype=np.str)
     Na = AA.size
+    AA=AA.reshape(Na,)
     
     for i in range(Na):
         Date0 = Date+'_' + str(i)
@@ -167,9 +168,11 @@ def main(argv):
  
     Date0 = Date
     if len(Date)==6:
+        Date6 = Date
         Date0 = Date
     elif len(Date)==8:
         Date0 = Date[2:8]
+        Date6 = Date[2:8]
     else:
         print('The input Date is invalid.')
         sys.exit(1)
@@ -197,6 +200,16 @@ def main(argv):
         nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
         call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
         os.system(call_str)  
+    
+    SLC = Date6+'.slc'
+    SLCPAR = Date6 + '.slc.par'
+    AMP = Date6+'.amp'
+    AMPPAR = Date6+'.amp.par'
+    if Na==1:
+        os.rename(SLCm,SLC)
+        os.rename(SLCPAR,SLCPAR)
+        os.rename(MamprlksImg,AMP)
+        os.rename(AMPPAR,AMPPAR)
     
     for i in range(Na-1):
         if i==0:
