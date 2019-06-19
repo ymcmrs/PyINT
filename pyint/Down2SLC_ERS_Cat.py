@@ -209,7 +209,7 @@ def main(argv):
         os.rename(SLCm,SLC)
         os.rename(SLCm_par,SLCPAR)
         os.rename(MamprlksImg,AMP)
-        os.rename(AMPPAR,AMPPAR)
+        os.rename(MamprlksPar,AMPPAR)
     
     for i in range(Na-1):
         if i==0:
