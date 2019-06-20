@@ -150,6 +150,7 @@ def main(argv):
     
     AA= np.loadtxt(te,dtype=np.str)
     Na = AA.size
+    AA=AA.reshape(Na,)
     
     for i in range(Na):
         Date0 = Date+'_' + str(i)
