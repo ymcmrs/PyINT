@@ -15,6 +15,7 @@ import getopt
 import time
 import glob
 import argparse
+import matplotlib.pyplot as plt
 
 def check_variable_name(path):
     s=path.split("/")[0]
