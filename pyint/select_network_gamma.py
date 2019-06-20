@@ -143,7 +143,7 @@ def yymmdd2yyyymmdd(date):
         date = '20'+date
     return date
 
-def plot_network(m_date,s_date, dateList, pbaseList, plot_dict={}, date12List_drop=[], print_msg=True):
+def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop=[], print_msg=True):
     """Plot Temporal-Perp baseline Network
     Inputs
         ax : matplotlib axes object
@@ -205,7 +205,7 @@ def plot_network(m_date,s_date, dateList, pbaseList, plot_dict={}, date12List_dr
     tbaseList = date_list2tbase(dateList)[0]
 
     ## maxBperp and maxBtemp
-    date12List = yyyymmdd_date12(m_date,s_date)
+    date12List = yyyymmdd_date12(mdate,sdate)
     ifgram_num = len(date12List)
     pbase12 = np.zeros(ifgram_num)
     tbase12 = np.zeros(ifgram_num)
