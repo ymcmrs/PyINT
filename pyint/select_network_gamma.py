@@ -427,8 +427,9 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
         solid_line = mlines.Line2D([], [], color='k', ls='solid',  label='Ifg used')
         dash_line  = mlines.Line2D([], [], color='k', ls='dashed', label='Ifg dropped')
         ax.legend(handles=[solid_line, dash_line])
-
-    return ax
+    
+    plt.show()
+    #return ax
 
 #########################################################################
 
