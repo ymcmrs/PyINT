@@ -45,6 +45,24 @@ def read_template(File, delimiter='='):
             template_dict[atrName] = atrValue
     return template_dict
 
+
+def yyyymmdd(dates):
+    if isinstance(dates, str):
+        if len(dates) == 6:
+            datesOut = yymmdd2yyyymmdd(dates)
+        else:
+            datesOut = dates
+    elif isinstance(dates, list):
+        datesOut = []
+        for date in dates:
+            if len(date) == 6:
+                date = yymmdd2yyyymmdd(date)
+            datesOut.append(date)
+    else:
+        # print 'Un-recognized date input!'
+        return None
+    return datesOut
+
 def yymmdd(dates):
     if isinstance(dates, str):
         if len(dates) == 8:
