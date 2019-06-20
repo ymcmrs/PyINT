@@ -54,6 +54,7 @@ def read_template(File, delimiter='='):
 
 def yyyymmdd(dates):
     if isinstance(dates, str):
+        dates = str(dates)
         if len(dates) == 6:
             datesOut = yymmdd2yyyymmdd(dates)
         else:
@@ -61,6 +62,7 @@ def yyyymmdd(dates):
     elif isinstance(dates, list):
         datesOut = []
         for date in dates:
+            date = str(date)
             if len(date) == 6:
                 date = yymmdd2yyyymmdd(date)
             datesOut.append(date)
@@ -68,15 +70,6 @@ def yyyymmdd(dates):
         # print 'Un-recognized date input!'
         return None
     return datesOut
-
-def yyyymmdd_list(dates):
-    
-    N = len(dates)
-    dates_out = []
-    for i in range(N):
-        dates_out.append(yyyymmdd(dates[i]))
-    
-    return dates_out
 
 def auto_adjust_xaxis_date(ax, datevector, fontsize=12, every_year=1):
     """Adjust X axis
@@ -269,7 +262,8 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
     if not 'number'      in plot_dict.keys():  plot_dict['number']      = None
 
         
-    ax = plt.gca()
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
         
     cohList = plot_dict['cohList']
     disp_min = plot_dict['disp_min']
@@ -280,8 +274,8 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
     # Date Convert
     #dateList = ptime.yyyymmdd(sorted(dateList))
     dateList = yyyymmdd(sorted(dateList))
-    mdate = yyyymmdd_list(mdate)
-    sdate = yyyymmdd_list(sdate)
+    mdate = yyyymmdd(mdate)
+    sdate = yyyymmdd(sdate)
     dates, datevector = date_list2vector(dateList)
     tbaseList = date_list2tbase(dateList)[0]
 
@@ -297,6 +291,8 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
         pbase12[i] = pbaseList[s_idx] - pbaseList[m_idx]
         tbase12[i] = tbaseList[s_idx] - tbaseList[m_idx]
     if print_msg:
+        print('Number of the SAR acquisitions: ' + str(len(dateList)))
+        print('Number of the Interferograms: ' + str(len(mdate)))
         print('max perpendicular baseline: {:.2f} m'.format(np.max(np.abs(pbase12))))
         print('max temporal      baseline: {} days'.format(np.max(tbase12)))
 
@@ -498,6 +494,10 @@ def main(argv):
     SLC_Tab = processDir + "/SLC_Tab"
     TS_Berp = processDir + "/TS_Berp"
     TS_Itab = processDir + "/TS_Itab"
+    
+    SLC_Tab_all = processDir + "/SLC_Tab_all"
+    TS_Berp_all = processDir + "/TS_Berp_all"
+    TS_Itab_all = processDir + "/TS_Itab_all"
     itab_type = '1'
     pltflg = '0'
     
@@ -532,46 +532,36 @@ def main(argv):
     list(map(int,Datelist))                
     Datelist.sort()
     list(map(str,Datelist))
-    
-    print("All of the available SAR acquisition datelist is :")      
+    masterDate=Datelist[0]
+    #print("All of the available SAR acquisition datelist is :")      
     for kk in range(len(Datelist)):
-        print(Datelist[kk])
+        #print(Datelist[kk])
         str_slc = slcDir + "/" + Datelist[kk] +"/" + Datelist[kk] + ".slc"
         str_slc_par = slcDir + "/" + Datelist[kk] +"/" + Datelist[kk] + ".slc.par"
         SLCfile.append(str_slc)
         SLCParfile.append(str_slc_par)       
-    
-    if 'masterDate'          in templateContents:
-        masterDate0 = templateContents['masterDate']
-        if masterDate0 in Datelist:
-            masterDate = masterDate0
-            print("masterDate : " + masterDate0)
-        else:
-            masterDate=Datelist[0]
-            print("The selected masterDate is not included in above datelist !!")
-            print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
-            
-    else:  
-        masterDate=Datelist[0]
-        print("masterDate is not found in template!!! ")
-        print("The first date [ %s ] is chosen as the master date! " % Datelist[0]) 
 
     RefPar=slcDir + "/" + masterDate +"/" + masterDate + ".slc.par"
        
     File= open(SLC_Tab,'w')
-    
     for kk in range(len(SLCfile)):
         File.write(str(SLCfile[kk])+ ' '+str(SLCParfile[kk])+'\n')
         
     File.close()
      
-    call_str = "base_calc " + SLC_Tab + " " + RefPar + " " + TS_Berp + " " + TS_Itab + " " + '1 0 ' + '- ' + MaxSB + ' - ' + MaxTB
+    call_str = "base_calc " + SLC_Tab + " " + RefPar + " " + TS_Berp + " " + TS_Itab + " " + '1 0 ' + '- ' + MaxSB + ' - ' + MaxTB + '  >/dev/null'
+    os.system(call_str)
+    
+    call_str = "base_calc " + SLC_Tab + " " + RefPar + " " + TS_Berp_all + " " + TS_Itab_all + " " + '1 0 ' + '- - - -  >/dev/null'
     os.system(call_str)
 
     TS_Net=np.loadtxt(TS_Berp)
+    TS_Net_all=np.loadtxt(TS_Berp_all)
+
+    Berplist0=TS_Net_all[0:len(Datelist)-1,3]
+    Bperplist1 = np.zeros((len(Datelist),))
+    Bperplist1[1:len(Datelist)]=TS_Net_all[0:len(Datelist)-1,3]
     
-#    print TS_Net[:,0]
-#    print TS_Net[:,1]
     IFG_Flag=TS_Net[:,0]
     MDatelist=TS_Net[:,1]
     SDatelist=TS_Net[:,2]
@@ -580,7 +570,20 @@ def main(argv):
     
     MDatelist = np.array(MDatelist,dtype=int)
     SDatelist = np.array(SDatelist,dtype=int)
-    plot_network(MDatelist,SDatelist, Datelist, Berplist, plot_dict={}, date12List_drop=[], print_msg=True)
+    
+    MDatelist = np.array(MDatelist,dtype=str)
+    SDatelist = np.array(SDatelist,dtype=str)
+    
+    mdate = yyyymmdd(list(MDatelist))
+    sdate = yyyymmdd(list(SDatelist))
+
+    Datelist = list(Datelist)
+    Datelist = yyyymmdd(Datelist)
+    Datelist = map(int,Datelist)
+    Datelist = sorted(Datelist)
+
+
+    plot_network(mdate,sdate,Datelist, Bperplist1, plot_dict={}, date12List_drop=[], print_msg=True)
     
 ###############################    Add or Remove Date  #############################    
 
