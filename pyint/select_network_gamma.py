@@ -15,7 +15,11 @@ import getopt
 import time
 import glob
 import argparse
-import matplotlib.pyplot as plt
+from matplotlib import (dates as mdates,
+                        lines as mlines,
+                        pyplot as plt,
+                        ticker,
+                        transforms)
 import datetime
 from datetime import datetime as dt, timedelta
 
