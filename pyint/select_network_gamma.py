@@ -135,6 +135,13 @@ def add_zero(s):
         s="0"+s
     return s
 
+def yymmdd2yyyymmdd(date):
+    if date[0] == '9':
+        date = '19'+date
+    else:
+        date = '20'+date
+    return date
+
 def plot_network(m_date,s_date, dateList, pbaseList, plot_dict={}, date12List_drop=[], print_msg=True):
     """Plot Temporal-Perp baseline Network
     Inputs
