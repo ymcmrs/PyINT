@@ -146,14 +146,17 @@ def main(argv):
     else: slc_cat_all = '0'
     
     if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
-    else: Coreg_all = '1'
-        
-    if 'Select_pairs' in templateContents :  Select_pairs =  templateContents['Select_pairs']
-    else: Select_pairs = '1'
+    else: Coreg_all = '1'  
 
     if 'GenRdcDem_Rslc_all' in templateContents :  GenRdcDem_Rslc_all =  templateContents['GenRdcDem_Rslc_all']
     else: GenRdcDem_Rslc_all = '1'
         
+    if 'Select_pairs' in templateContents :  Select_pairs =  templateContents['Select_pairs']
+    else: Select_pairs = '1'
+        
+    if 'process_GenIfg' in templateContents :  process_GenIfg =  templateContents['process_GenIfg']
+    else: process_GenIfg = '1'   
+    
     if 'Load_Data' in templateContents :  Load_Data =  templateContents['Load_Data']
     else: Load_Data = '0'
 
@@ -240,9 +243,9 @@ def main(argv):
         call_str = 'echo SLC2Ifg_Gamma.py ' + os.path.basename(kk) + ' >>' + run_slc2ifg_gamma
         os.system(call_str)
     
-    
-    call_str='process_loop_runfile.py ' + run_slc2ifg_gamma
-    os.system(call_str)
+    if process_GenIfg == '1':
+        call_str='process_loop_runfile.py ' + run_slc2ifg_gamma
+        os.system(call_str)
     
     if Load_Data =='1':
         call_str = 'load_data.py -t ' + templateFile
