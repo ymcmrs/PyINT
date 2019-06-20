@@ -64,6 +64,71 @@ def yyyymmdd(dates):
         return None
     return datesOut
 
+def auto_adjust_xaxis_date(ax, datevector, fontsize=12, every_year=1):
+    """Adjust X axis
+    Input:
+        ax : matplotlib figure axes object
+        datevector : list of float, date in years
+                     i.e. [2007.013698630137, 2007.521917808219, 2007.6463470319634]
+    Output:
+        ax  - matplotlib figure axes object
+        dss - datetime.datetime object, xmin
+        dee - datetime.datetime object, xmax
+    """
+    # convert datetime.datetime format into date in years
+    if isinstance(datevector[0], datetime.datetime):
+        datevector = [i.year + (i.timetuple().tm_yday-1)/365.25 for i in datevector]
+
+    # Min/Max
+    ts = datevector[0]  - 0.2;  ys=int(ts);  ms=int((ts - ys) * 12.0)
+    te = datevector[-1] + 0.3;  ye=int(te);  me=int((te - ye) * 12.0)
+    if ms > 12:   ys = ys + 1;   ms = 1
+    if me > 12:   ye = ye + 1;   me = 1
+    if ms < 1:    ys = ys - 1;   ms = 12
+    if me < 1:    ye = ye - 1;   me = 12
+    dss = datetime.datetime(ys, ms, 1, 0, 0)
+    dee = datetime.datetime(ye, me, 1, 0, 0)
+    ax.set_xlim(dss, dee)
+
+    # Label/Tick format
+    ax.fmt_xdata = mdates.DateFormatter('%Y-%m-%d %H:%M:%S')
+    ax.xaxis.set_major_locator(mdates.YearLocator(every_year))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+    ax.xaxis.set_minor_locator(mdates.MonthLocator())
+
+    # Label font size
+    ax.tick_params(labelsize=fontsize)
+    # fig2.autofmt_xdate()     #adjust x overlap by rorating, may enble again
+    return ax, dss, dee
+
+
+def auto_adjust_yaxis(ax, dataList, fontsize=12, ymin=None, ymax=None):
+    """Adjust Y axis
+    Input:
+        ax       : matplot figure axes object
+        dataList : list of float, value in y axis
+        fontsize : float, font size
+        ymin     : float, lower y axis limit
+        ymax     : float, upper y axis limit
+    Output:
+        ax
+    """
+    # Min/Max
+    dataRange = max(dataList) - min(dataList)
+    if ymin is None:
+        ymin = min(dataList) - 0.1*dataRange
+    if ymax is None:
+        ymax = max(dataList) + 0.1*dataRange
+    ax.set_ylim([ymin, ymax])
+    # Tick/Label setting
+    #xticklabels = plt.getp(ax, 'xticklabels')
+    #yticklabels = plt.getp(ax, 'yticklabels')
+    #plt.setp(yticklabels, 'color', 'k', fontsize=fontsize)
+    #plt.setp(xticklabels, 'color', 'k', fontsize=fontsize)
+
+    return ax
+
+
 def yymmdd(dates):
     if isinstance(dates, str):
         if len(dates) == 8:
