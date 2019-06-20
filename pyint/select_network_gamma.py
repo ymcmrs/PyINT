@@ -69,6 +69,15 @@ def yyyymmdd(dates):
         return None
     return datesOut
 
+def yyyymmdd_list(dates):
+    
+    N = len(dates)
+    dates_out = []
+    for i in range(N):
+        dates_out.append(yyyymmdd(dates[i]))
+    
+    return dates_out
+
 def auto_adjust_xaxis_date(ax, datevector, fontsize=12, every_year=1):
     """Adjust X axis
     Input:
@@ -271,8 +280,8 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
     # Date Convert
     #dateList = ptime.yyyymmdd(sorted(dateList))
     dateList = yyyymmdd(sorted(dateList))
-    mdate = yyyymmdd(mdate)
-    sdate = yyyymmdd(sdate)
+    mdate = yyyymmdd_list(mdate)
+    sdate = yyyymmdd_list(sdate)
     dates, datevector = date_list2vector(dateList)
     tbaseList = date_list2tbase(dateList)[0]
 
