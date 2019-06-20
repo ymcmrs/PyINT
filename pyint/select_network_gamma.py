@@ -271,6 +271,8 @@ def plot_network(mdate,sdate, dateList, pbaseList, plot_dict={}, date12List_drop
     # Date Convert
     #dateList = ptime.yyyymmdd(sorted(dateList))
     dateList = yyyymmdd(sorted(dateList))
+    mdate = yyyymmdd(mdate)
+    sdate = yyyymmdd(sdate)
     dates, datevector = date_list2vector(dateList)
     tbaseList = date_list2tbase(dateList)[0]
 
