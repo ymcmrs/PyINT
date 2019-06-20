@@ -128,7 +128,7 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir     = scratchDir + '/' + projectName + "/RSLC"
-    if os.path.isdir(rslcDir):
+    if not os.path.isdir(rslcDir):
         call_str ='mkdir ' + rslcDir
         print('Generate RSLC folder: ' + rslcDir )
         os.system(call_str)
