@@ -116,7 +116,7 @@ def add_zero(s):
         s="0"+s
     return s
 
-def plot_network(ax, m_date,s_date, dateList, pbaseList, plot_dict={}, date12List_drop=[], print_msg=True):
+def plot_network(m_date,s_date, dateList, pbaseList, plot_dict={}, date12List_drop=[], print_msg=True):
     """Plot Temporal-Perp baseline Network
     Inputs
         ax : matplotlib axes object
@@ -162,6 +162,9 @@ def plot_network(ax, m_date,s_date, dateList, pbaseList, plot_dict={}, date12Lis
 
     if not 'number'      in plot_dict.keys():  plot_dict['number']      = None
 
+        
+    ax = plt.gca()
+        
     cohList = plot_dict['cohList']
     disp_min = plot_dict['disp_min']
     disp_max = plot_dict['disp_max']
@@ -466,7 +469,7 @@ def main(argv):
     Berplist=TS_Net[:,3]
     TBaselist=TS_Net[:,4]
     
-    plot_network(ax, MDatelist,SDatelist, Datelist, Berplist, plot_dict={}, date12List_drop=[], print_msg=True)
+    plot_network(MDatelist,SDatelist, Datelist, Berplist, plot_dict={}, date12List_drop=[], print_msg=True)
     
 ###############################    Add or Remove Date  #############################    
 
