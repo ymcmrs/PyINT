@@ -169,8 +169,10 @@ def main(argv):
     Date0 = Date
     if len(Date)==6:
         Date0 = Date
+        Date6 = Date
     elif len(Date)==8:
         Date0 = Date[2:8]
+        Date6 = Date[2:8]
     else:
         print('The input Date is invalid.')
         sys.exit(1)
@@ -198,6 +200,17 @@ def main(argv):
         nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
         call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
         os.system(call_str)  
+    
+    SLC = Date6+'.slc'
+    SLCPAR = Date6 + '.slc.par'
+    AMP = Date6+'.amp'
+    AMPPAR = Date6+'.amp.par'
+    if Na==1:
+        os.rename(SLCm,SLC)
+        os.rename(SLCm_par,SLCPAR)
+        os.rename(MamprlksImg,AMP)
+        os.rename(MamprlksPar,AMPPAR)
+    
     
     for i in range(Na-1):
         if i==0:
