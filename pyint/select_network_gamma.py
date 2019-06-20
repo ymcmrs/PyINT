@@ -14,6 +14,7 @@ import subprocess
 import getopt
 import time
 import glob
+import argparse
 
 def check_variable_name(path):
     s=path.split("/")[0]
@@ -340,10 +341,10 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-              select_network.py ProjectName
+              select_network_gamma.py ProjectName
       
-    Example:  select_network.py PacayaT163TsxHhA
-              select_network.py PacayaT163TsxHhA --display  
+    Example:  select_network_gamma.py PacayaT163TsxHhA
+              select_network_gamma.py PacayaT163TsxHhA --display  
 
 ###################################################################################################
 '''
