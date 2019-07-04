@@ -189,7 +189,8 @@ def main(argv):
     SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
     SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
     OFFSTD = workDir + "/" + Mdate + '-' + Sdate +".off_std"	
-    
+    OFFSTD0 = workDir + "/" + Mdate + '-' + Sdate +".off_fitm_std"    
+
     simDir = scratchDir + '/' + projectName  + "/PROCESS/DEM" 
 
     HGTSIM      = simDir + '/sim_' + Mdate + '_' + rlks+'rlks.rdc.dem'
@@ -253,7 +254,7 @@ def main(argv):
     call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
   
-    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
+    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4 >" + OFFSTD0 
     os.system(call_str)
 
     

@@ -199,49 +199,49 @@ def main(argv):
  
 
 
-    call_str = "$GAMMA_BIN/create_offset " + MslcPar + " " + SslcPar + " " + off + " 1 - - 0"
+    call_str = "create_offset " + MslcPar + " " + SslcPar + " " + off + " 1 - - 0"
     os.system(call_str)
 
     if coregCoarse == 'both':
         print('init offset estimation by both orbit and ampcor')
-        call_str = '$GAMMA_BIN/init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
+        call_str = 'init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
         os.system(call_str)
 
-        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
+        call_str = 'init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
         os.system(call_str)
         
-        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' 1 1 - - '
+        call_str = 'init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' 1 1 - - '
         os.system(call_str)
 
     elif coregCoarse == 'orbit':
         print('init offset estimation by orbit only')
         
-        call_str = '$GAMMA_BIN/init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
+        call_str = 'init_offset_orbit '+ MslcPar + ' ' + SslcPar + ' ' + off
         os.system(call_str)
     
     elif coregCoarse == 'ampcor':
         print('init offset estimation by ampcor only')
         
-        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
+        call_str = 'init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' ' + rlks4cor + ' ' + azlks4cor + ' ' + rpos4cor + ' ' + azpos4cor
         os.system(call_str)
         
-        call_str = '$GAMMA_BIN/init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' 1 1 - - '
+        call_str = 'init_offset '+ MslcImg + ' ' + SslcImg + ' ' + MslcPar + ' ' + SslcPar + ' ' + off + ' 1 1 - - '
         os.system(call_str)
         
 ######################## 1st time  ############################
 
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 "+ rsample4cor + " " + azsample4cor
+    call_str = "offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 "+ rsample4cor + " " + azsample4cor
     os.system(call_str)
 
-    call_str = "$GAMMA_BIN/offset_fit " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 3" 
+    call_str = "offset_fit " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 3" 
     os.system(call_str)
     
 ########################  2nd time  #############################
 
-    call_str = "$GAMMA_BIN/offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor   
+    call_str = "offset_pwr " + MslcImg + " " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor   
     os.system(call_str)
     
-    call_str = "$GAMMA_BIN/offset_fit " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 4 >" + off_std 
+    call_str = "offset_fit " + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +" 4 >" + off_std 
     os.system(call_str)
 
     os.remove(offs)
@@ -252,7 +252,7 @@ def main(argv):
 #############################################################################################################    
  
    
-    call_str = "$GAMMA_BIN/SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
+    call_str = "SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
     os.system(call_str)
  
     call_str = "cp " + MslcImg + " " + MrslcImg
@@ -264,19 +264,19 @@ def main(argv):
 
 ####################  multi-looking for RSLC #########################################
 
-    call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+    call_str = 'multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
     os.system(call_str)
 
-    call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+    call_str = 'multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
     os.system(call_str)
 
     nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
 
-    call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+    call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
     os.system(call_str)  
     ras2jpg(MamprlksImg, MamprlksImg) 
         
-    call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+    call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
     os.system(call_str)
     ras2jpg(SamprlksImg, SamprlksImg)        
        
@@ -307,7 +307,7 @@ def main(argv):
 
         
     
-            call_str = "$GAMMA_BIN/SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
+            call_str = "SLC_interp " + SslcImg + " " + MslcPar + " " + SslcPar + " " + off + " " + SrslcImg + " " + SrslcPar
             os.system(call_str)
 
             call_str = "cp " + MslcImg + " " + MrslcImg
@@ -319,19 +319,19 @@ def main(argv):
 
 ####################  multi-looking for RSLC #########################################
 
-            call_str = '$GAMMA_BIN/multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
+            call_str = 'multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
             os.system(call_str)
 
-            call_str = '$GAMMA_BIN/multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+            call_str = 'multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
             os.system(call_str)
 
             nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
 
-            call_str = '$GAMMA_BIN/raspwr ' + MamprlksImg + ' ' + nWidth 
+            call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
             os.system(call_str)  
             ras2jpg(MamprlksImg, MamprlksImg) 
         
-            call_str = '$GAMMA_BIN/raspwr ' + SamprlksImg + ' ' + nWidth 
+            call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
             os.system(call_str)
             ras2jpg(SamprlksImg, SamprlksImg)    
     

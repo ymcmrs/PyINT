@@ -104,7 +104,7 @@ def main(argv):
     rspec = date + '.rspec'
     rc = date + '.rc'
     autof = date + '.autof'
-    
+    dop_ambig = date  + '.dop_ambig'
     
     if not os.path.isfile(par):
         call_str = 'cp $GAMMA_HOME/MSP/sensors/' + par + ' .'
@@ -129,9 +129,12 @@ def main(argv):
     call_str = 'ERS_ENVISAT_proc ' + SAR_IM_0P + ' ' + par + ' ' + pslc_par + ' ' + raw
     os.system(call_str)
     
-    call_str = 'DELFT_proc2 ' + pslc_par + ' ' + orbdir
+    call_str = 'DELFT_proc2 ' + pslc_par + ' ' + orbdir + ' 20'
     os.system(call_str)
     
+    cal_str = 'dop_ambig ' + par + ' ' + pslc_par + ' ' + raw + ' 2 - ' + dop_ambig 
+    os.system(call_str)
+
     call_str = 'azsp_IQ ' + par + ' ' + pslc_par + ' ' + raw + ' ' + azsp
     os.system(call_str)
     
@@ -150,7 +153,7 @@ def main(argv):
     call_str = 'autof ' + par + ' ' + pslc_par + ' ' + rc + ' ' + autof + ' 2.0 ' 
     os.system(call_str)
     
-    call_str = 'az_proc ' + par + ' ' + pslc_par + ' ' + rc + ' ' + slc + ' 4096 1 57.2 0 2.120 '
+    call_str = 'az_proc ' + par + ' ' + pslc_par + ' ' + rc + ' ' + slc + ' 4096 1 ' + ' 57.2 0 2.120 '
     os.system(call_str)
 
     call_str = 'par_MSP ' + par + ' ' + pslc_par + ' ' + slc_par + ' 1'
