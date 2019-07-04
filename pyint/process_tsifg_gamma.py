@@ -144,6 +144,9 @@ def main(argv):
         
     if 'slc_cat_all' in templateContents :  slc_cat_all =  templateContents['slc_cat_all']
     else: slc_cat_all = '0'
+
+    if 'raw2slc_cat_all' in templateContents : raw2slc_cat_all =  templateContents['raw2slc_cat_all']
+    else: raw2slc_cat_all = '0'
     
     if 'Coreg_all' in templateContents :  Coreg_all =  templateContents['Coreg_all']
     else: Coreg_all = '1'  
@@ -160,12 +163,17 @@ def main(argv):
     if 'Load_Data' in templateContents :  Load_Data =  templateContents['Load_Data']
     else: Load_Data = '0'
 
-##########################    Check DEM   ###############################################
+######################## down2slc or raw2slc & slc_cat ###############################
 
     if slc_cat_all == '1':
         call_str = 'down2slc_cat_all.py ' + projectName
         os.system(call_str)
 
+    if raw2slc_cat_all == '1':
+        call_str = 'Raw2SLC_ERS_Cat_All.py ' + projectName
+        os.system(call_str)
+
+##########################    Check DEM   ###############################################
 
     if 'DEM' in templateContents :  
         DEM =  templateContents['DEM']
