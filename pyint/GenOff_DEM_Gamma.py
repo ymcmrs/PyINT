@@ -248,17 +248,15 @@ def main(argv):
     call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rwin4cor + " " + azwin4cor + " " + offsets0 + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
   
-    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 3"
+    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " " + thresh4cor +  " 3 " 
     os.system(call_str)
     
     call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " " + rfwin4cor + " " + azfwin4cor + " " + offsets0 + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
   
-    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4 >" + OFFSTD0 
+    call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " " + thresh4cor +  " 4 >" + OFFSTD0 
     os.system(call_str)
 
-    
-    
     call_str = "gc_map_fine " + lt0 + " " + width_Mamp + " " + diff0 + " " + lt1
     os.system(call_str)
     
@@ -275,13 +273,13 @@ def main(argv):
     call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
     os.system(call_str)
 
-    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
+    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +  " 3 " 
     os.system(call_str)
     
     call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
 
-    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
+    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " " + thresh4cor +  " 3 >" + OFFSTD 
     os.system(call_str)
     
 ############################################     Resampling     ############################################    
