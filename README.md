@@ -70,4 +70,7 @@ You also can process step by step:
        
        
 PS:  All of the above codes are based on the hypothesis that you have installed GAMMA (https://www.gamma-rs.ch/). 
-    
+
+### 4 Citing this work
+
+    Y.M., Cao, "PyINT: Python&GAMMA based interferometry toolbox", Remote Sensing Code Library, doi:10.21982/vd48-7p51, April, 2019. 
