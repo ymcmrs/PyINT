@@ -66,8 +66,8 @@ GEO_Flag      =   0
 
 ## ------------------------  load-data for timeseries analysis (mintpy) -----------------------------
 
-Load_Date       =  0
-Byte_order           =   big      # [option: big, little ]    Except GAMMA, usually it should be little
+Load_Date     =  0         # [option: 0 , 1]
+Byte_order    =   big      # [option: big, little ]    Except GAMMA, usually it should be little
 
 ##-----------Interferogram datasets:
 mintpy.load.unwFile        = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/IFG_*/*rlks.unw  #[path2unw_file]
