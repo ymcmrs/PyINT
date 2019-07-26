@@ -21,7 +21,7 @@ def usage():
     print('''
 ******************************************************************************************************
  
-       Coregistration of SAR images based on cross-correlation by using GAMMA.
+       Generate interferograms from SLC to unwrapIfg using GAMMA.
        Be suitable for conventional InSAR, MAI, Range Split-Spectrum InSAR.
 
    usage:
