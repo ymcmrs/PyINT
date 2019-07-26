@@ -1,3 +1,11 @@
+########################################### Template  #################################################
+masterDate    =  180101
+
+Start_Swath  =  1          # [option (for Sentinel-1 only)]
+End_Swath  =  1            # [option (for Sentinel-1 only)]
+Start_Burst  =  1          # [option: bursts position is based on the master image (for Sentinel-1 only)]
+End_Burst =  4             # [option: bursts position is based on the master image (for Sentinel-1 only)]
+
 
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
