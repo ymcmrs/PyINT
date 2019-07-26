@@ -1,5 +1,8 @@
 ########################################### Template  #################################################
-masterDate    =  180101
+
+# -------------------         Basic parameters    -----------------------
+
+masterDate    =  180101    # [If not provided, the first date in the date_list will be selected as the master date]
 
 Start_Swath  =  1          # [option (for Sentinel-1 only)]
 End_Swath  =  1            # [option (for Sentinel-1 only)]
@@ -10,20 +13,12 @@ End_Burst =  4             # [option: bursts position is based on the master ima
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
 
-########################################   all below are options #####################################
-memory_Coreg       =   3700          # memory used for coregistrate all SLCs to the master SLC
-walltime_Coreg     =   1:00          # walltime for the coregistration jobs
+# ---------------------      Coregistration parameters ---------------------
 
-memory_slc2ifg       =   5000            # memory for generating time series interferograms, adjust based on zimuth and range pixel numbers.
-walltime_slc2ifg     =   2:00            # walltime for generating time series interferograms
-
-# DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem                
-# If the DEM is not provided or the DEM file is not exsited, a 30 SRTM based dem will be generated autamatically.
-
-Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
-GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
-     
-#################################################  Coregistration ############################################
+DEM = /nethome/yxc773/insarlab/DEMDIR/GAMMA_BIGENDIAN/PacayaT172F270AlosA/PacayaT172F270AlosA.dem       
+# [ If the DEM is not provided or the DEM file is not exsited, a 30 SRTM based dem will be generated autamatically.]
+Simphase_Lat_Ovr  =  1   # in order to make the resolution before/after geocode keep similar, should according to the resolution of DEM and multi-looked SAR
+Simphase_Lon_Ovr  =  1   
 
 rwin4cor           =   256       #  rfwin4cor = 1/2 * rwin4cor
 azwin4cor          =   256       #  azfwin4cor = 1/2 * azwin4cor
@@ -34,10 +29,9 @@ thresh4cor         =   0.15      # 2016 GAMMA, for 2015 GAMMA should be SNR, not
 coreCoarse         =  both       # [option: orbit, ampcor]
 coregMethod        =  DEM        # [option: DEM, init ]
 
-swath = 2:3                     # for Sentinel-1:  swath 1~3   
-burst = 6:9                     # for Sentinel-1: burst usually 1~ 9.   concrete number should be check from TOPS_Par file
+# Note: repeated two ~ three times for coregistration, window length will be half, and samples will be double.
 
-###################   Interferomery ############################
+# ---------------------- interferometry paramters --------------------------
 
 Igram_Spsflg       = 1           # [option: 0, 1]   Range sprctral filtering  
 Igram_Azfflg       = 1           # [option: 0, 1]    Azimuth common band filtering
@@ -45,45 +39,48 @@ Igram_Azfflg       = 1           # [option: 0, 1]    Azimuth common band filteri
 Igram_Flattening   = orbit       #  [option: orbit, fft]    fft > orbit
 Igram_FilterMethod = adapt_filt  #  adapt filtering
 
-#######################  Geocoding & Sim Phase ###################
-Simphase_Lat_Ovr  =  1   # should according to the resolution of DEM and multi-looked SAR
-Simphase_Lon_Ovr  =  1  
-
-
-####################  Differential Interferometry ################
-UnwrappedThreshold = 0.4
-Diff_Flattening    = orbit     # [option: orbit, fft]
-
-###################    Unwrapping   ################################
+# ----------------------- unwrap parameters ----------------------
 
 unwrapMethod         =  branch_cut   # [option: mcf,  branch_cut]
-branch_length        =  32            # maximum branch length for unwrap
+branch_length        =  32            # maximum branch length for unwrap (for branch only)
+UnwrappedThreshold = 0.4
 
-Unwrap_Flattening    =  Y  #[ option: Y, N ]
-orbitTopo_Flag    = Y    #[option: Y,N] remove topography phases or not
-Unwrap_patr  = 1    # unwrap patch number in range direction
-Unwrap_pataz = 1    # unwrap patch number in azimuth direction
+#----------------------- time-series processing parameters -------------
 
-####################  slc2ifg #####################################
+JOB = IFG # [option: IFG, MAI, RSI ]
 
-Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
-INT_Flag      =   1   
-DIFF_Flag     =   1
-UNW_Flag      =   1
-UNW_SUB_Flag  =   1
-GEO_Flag      =   0 
-
-#######################################   Time series GAMMA      ######################################
 Max_Spacial_Baseline =   500      # spatial baseline threshold for selecting pairs
 Max_Temporal_Baseline =  500      # temporal baseline threshold for selecting pairs
 
-JOB = IFG # [option: IFG, MAI, RSI ]
 Select_pairs    =  1              # select pairs and generate interferograms directory  
-Load_Date       =  1
-############ load data ##############
 
+Coreg_all            = 1      # coregistrate all of the SAR images to the master one. [option: 0 or 1]
+GenRdcDem_Rslc_all   = 1      # [option:1 or 0]   Generate RdcDEM based on rslcs for the whole project.
+
+Coreg_int         =  1      # [option: 1 or 0]   1: doing coregistration again for interferometry; 0: based on the Coreg_all results.
+INT_Flag      =   1         # [do interferometry]
+DIFF_Flag     =   1         
+UNW_Flag      =   1
+GEO_Flag      =   0 
+
+
+## ------------------------  load-data for timeseries analysis (mintpy) -----------------------------
+
+Load_Date       =  0
 Byte_order           =   big      # [option: big, little ]    Except GAMMA, usually it should be little
 
-
-
-
+##-----------Interferogram datasets:
+mintpy.load.unwFile        = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/IFG_*/*rlks.unw  #[path2unw_file]
+mintpy.load.corFile        = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/IFG_*/diff_filt*rlks.cor  #[path2cor_file]
+mintpy.load.connCompFile   = auto  #[path2conn_file]
+mintpy.load.intFile        = auto  #[path2int_file]
+mintpy.load.ionoFile       = auto  #[path2iono_file]
+##---------geometry datasets:
+mintpy.load.demFile        = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/DEM/sim_071104_2rlks.rdc.dem  #[path2hgt_file]
+mintpy.load.lookupYFile    = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/DEM/sim_071104_2rlks.UTM_TO_RDC  #[path2lat_file]]
+mintpy.load.lookupXFile    = /home/caoy0a/Documents/SCRATCH/AqabaEnvT78F2997D/PROCESS/DEM/sim_071104_2rlks.UTM_TO_RDC  #[path2lon_file]
+mintpy.load.incAngleFile   = auto  #[path2los_file]
+mintpy.load.azAngleFile    = auto  #[path2los_file]
+mintpy.load.shadowMaskFile = auto  #[path2shadow_file]
+mintpy.load.waterMaskFile  = auto  #[path2water_mask_file]
+mintpy.load.bperpFile      = auto  #[path2bperp_file]
