@@ -1,4 +1,5 @@
-########################################### Template  #################################################
+# *********************************** Template  *******************************************#
+Modifed July, 2019 - YM.Cao
 
 # -------------------         Basic parameters    -----------------------
 
@@ -8,7 +9,6 @@ Start_Swath  =  1          # [option (for Sentinel-1 only)]
 End_Swath  =  1            # [option (for Sentinel-1 only)]
 Start_Burst  =  1          # [option: bursts position is based on the master image (for Sentinel-1 only)]
 End_Burst =  4             # [option: bursts position is based on the master image (for Sentinel-1 only)]
-
 
 Range_Looks       =  5      #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
 Azimuth_Looks     =  5     
@@ -63,7 +63,6 @@ DIFF_Flag     =   1
 UNW_Flag      =   1
 GEO_Flag      =   0 
 
-
 ## ------------------------  load-data for timeseries analysis (mintpy) -----------------------------
 
 Load_Date     =  0         # [option: 0 , 1]
@@ -84,3 +83,5 @@ mintpy.load.azAngleFile    = auto  #[path2los_file]
 mintpy.load.shadowMaskFile = auto  #[path2shadow_file]
 mintpy.load.waterMaskFile  = auto  #[path2water_mask_file]
 mintpy.load.bperpFile      = auto  #[path2bperp_file]
+
+################################################################################################################################
