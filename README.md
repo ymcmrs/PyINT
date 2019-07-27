@@ -63,9 +63,9 @@ You also can process step by step:
     step1: Download S1 data by setting "DOWNLOAD" to "1"  and input Track/Frame/Time in the template file (only for Sentinel-1).   
     step2: Check DEM, if no DEM is available, using Makedem_PyInt.py
     step3: Coregistration.   Using coreg_all.py
-    step4: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
+    step4: Selecting interferometry pairs. Using SelectPairs.py
     Step5: Generating interferograms. Using SLC2Ifg.py
-    Step6: Loading data for further time-series processing. Please check [mintPy](https://github.com/ymcmrs/MintPy).
+    Step6: Loading data for further time-series analysis. Please check mintPy (https://github.com/ymcmrs/MintPy).
               
 PS:  All of the above codes are based on the hypothesis that you have installed [GAMMA](https://www.gamma-rs.ch/). 
 
