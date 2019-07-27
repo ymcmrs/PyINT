@@ -65,10 +65,9 @@ You also can process step by step:
     step3: Coregistration.   Using coreg_all.py
     step4: Selecting interferometry pairs. Using SelectPairs.py    (Generate_IfgDir.py for available ifg_list file)
     Step5: Generating interferograms. Using SLC2Ifg.py
-    Step6: Loading data for further time-series processing (Rightnow,[mintPy](https://github.com/ymcmrs/MintPy) is supported). 
-           Using Load_data.py 
-       
-       
+    Step6: Loading data for further time-series processing
+   As to load_data for time-series analysis please see check details in [mintPy](https://github.com/ymcmrs/MintPy).
+              
 PS:  All of the above codes are based on the hypothesis that you have installed [GAMMA](https://www.gamma-rs.ch/). 
 
 ### 4 Citing this work
