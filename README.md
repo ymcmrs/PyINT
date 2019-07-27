@@ -67,7 +67,7 @@ You also can process step by step:
     Step5: Generating interferograms. Using SLC2Ifg.py
     Step6: Loading data for further time-series analysis. Please check mintPy (https://github.com/ymcmrs/MintPy).
               
-PS:  All of the above codes are based on the hypothesis that you have installed [GAMMA](https://www.gamma-rs.ch/). 
+Note:  All of the above codes are based on the hypothesis that you have installed [GAMMA](https://www.gamma-rs.ch/). 
 
 ### 4 Citing this work
 
