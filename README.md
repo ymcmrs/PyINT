@@ -1,6 +1,6 @@
 # PyINT
-## (Python&GAMMA based interfermetry toolbox)
-##### Single or time-series of interferograms processing based on python and GAMMA for all of the present SAR datasets.       
+## (Python&GAMMA based INterfermetry Toolbox)
+##### Single or time-series of interferograms processing based on python and GAMMA for all of the present SAR datasets. 
 
 ### 1 Download
 
