@@ -1,5 +1,6 @@
 # PyINT
 [![Language](https://img.shields.io/badge/python-3.5%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-GPL-yellow.svg)](https://github.com/ymcmrs/PyINT/blob/master/LICENSE)
 
 ### Single or time-series of interferograms processing based on python and GAMMA for all of the present SAR datasets. 
 
