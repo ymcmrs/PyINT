@@ -121,12 +121,12 @@ def main(argv):
                 
     call_str = 'grep SAFE ttt0 > ttt'
     os.system(call_str)
-    SAFE = np.loadtxt('ttt',dtype = np.str)
+    SAFE = np.loadtxt('ttt',dtype  = np.string_)
     N = SAFE.size
     
     if N >1:
         for i in range(N):
-            RAWNAME = SAFE[i]
+            RAWNAME = SAFE[i].decode("utf-8")
             Date = RAWNAME[19:25]
             if (not (Date in DATE)) and len(Date)>0:
                 DATE.append(Date) 
