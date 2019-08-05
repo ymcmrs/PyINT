@@ -129,7 +129,7 @@ def main(argv):
     if Na1 == 0:
         if Na2 > 0:
             if Na2 == 1:
-                downName = str(A2[0].decode("utf-8"))
+                downName = str(A2.decode("utf-8"))
             else:
                 downName = str(A2[0].decode("utf-8"))
             FileDir = downDir + '/' + downName
@@ -139,7 +139,7 @@ def main(argv):
             
     else:
         if Na1 == 1:
-            RAWNAME = str(A1[0].decode("utf-8"))
+            RAWNAME = str(A1.decode("utf-8"))
         else:
             RAWNAME = str(A1[0].decode("utf-8"))
     
