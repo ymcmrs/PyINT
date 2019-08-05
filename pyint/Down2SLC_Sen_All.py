@@ -108,13 +108,13 @@ def main(argv):
     
     call_str = 'grep .zip ttt0 > ttt'
     os.system(call_str)
-    ZIP = np.loadtxt('ttt',dtype = np.str)
+    ZIP = np.loadtxt('ttt',dtype = np.string_)
     N = ZIP.size
     DATE = []
     
     if N>1:
         for i in range(N):
-            RAWNAME = ZIP[i]
+            RAWNAME = ZIP[i].decode("utf-8")
             Date = RAWNAME[19:25]
             if (not (Date in DATE)) and len(Date)>0:
                 DATE.append(Date) 
