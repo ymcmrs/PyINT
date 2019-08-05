@@ -135,7 +135,7 @@ def main(argv):
     else: walltime_Ifg = '1:00'
     
     if 'DOWNLOAD' in templateContents :  DOWNLOAD =  templateContents['DOWNLOAD']
-    else: DOWNLOAD = '1'
+    else: DOWNLOAD = '0'
     
     if 'DOWN2SLC' in templateContents :  DOWN2SLC =  templateContents['DOWN2SLC']
     else: DOWN2SLC = '1'
@@ -156,7 +156,7 @@ def main(argv):
     else: SLC2IFG = '1' 
         
     if 'Load_Data' in templateContents :  Load_Data =  templateContents['Load_Data']
-    else: Load_Data = '1' 
+    else: Load_Data = '0' 
     
     
     if DOWNLOAD == '1':
