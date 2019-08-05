@@ -116,20 +116,22 @@ def main(argv):
     call_str = "grep zip " + tt + " > " + tz 
     os.system(call_str)
     
-    A1= np.loadtxt(ts,dtype=np.str)
+    A1= np.loadtxt(ts,dtype=np.string_)
     Na1 = A1.size
-
-    A2= np.loadtxt(tz,dtype=np.str)
+    A1 = np.asarray(A1)
+    
+    A2= np.loadtxt(tz,dtype=np.string_)
     Na2 = A2.size
+    A2 = np.asarray(A2)
     
     rm(t0);rm(tt);rm(ts);rm(tz)
     
     if Na1 == 0:
         if Na2 > 0:
             if Na2 == 1:
-                downName = str(A2)
+                downName = str(A2[0].decode("utf-8"))
             else:
-                downName = str(A2[0])
+                downName = str(A2[0].decode("utf-8"))
             FileDir = downDir + '/' + downName
             RAWNAME = downName.split('.')[0]+'.SAFE'  
             call_str = 'unzip '+ FileDir
@@ -137,9 +139,9 @@ def main(argv):
             
     else:
         if Na1 == 1:
-            RAWNAME = str(A1)
+            RAWNAME = str(A1[0].decode("utf-8"))
         else:
-            RAWNAME = str(A1[0])
+            RAWNAME = str(A1[0].decode("utf-8"))
     
     print(RAWNAME)
     RAWFILEDir = downDir + '/'+str(RAWNAME)    
