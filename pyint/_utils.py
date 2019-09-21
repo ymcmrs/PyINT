@@ -11,6 +11,7 @@ import numpy as np
 import random
 import h5py
 from pathlib import Path
+import linecache
 
 from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -128,6 +129,103 @@ def sort_unique_list(numb_list):
     list_out = sorted(set(numb_list))
     return list_out 
 
+
+############################# download data ###################################
+def StrNum(S):
+    S = str(S)
+    if len(S)==1:
+        S='0' +S
+    return S
+
+def download_s1_orbit(date,save_path,satellite='A'):
+    
+    DATE = date
+    if len(DATE)==6:
+        DATE = '20' + DATE
+    ST = satellite
+    YEAR = int(DATE[0:4])
+    MON = int(DATE[4:6])
+    DAY = int(DATE[6:8])
+ 
+    MON_DAY = [31,28,31,30,31,30,31,31,30,31,30,31]
+    
+    if YEAR%4==0:
+        MON_DAY[1]=29
+      
+    if MON ==1 and DAY ==1:
+        DAY0 = 31
+        MON0 = 12
+        YEAR0 =YEAR -1
+    elif MON!=1 and DAY ==1:
+        DAY0 = MON_DAY[MON-2]
+        MON0 = MON-1
+        YEAR0 = YEAR
+    else:
+        DAY0 = DAY -1
+        MON0 = MON
+        YEAR0 = YEAR
+    
+    MONDAY0 = MON_DAY[MON0-1]
+    
+    TT = [1,4,7,10,13,16,19,22,25,28,MONDAY0] 
+
+    T0 = []
+    for k in range(len(TT)):
+        T0.append(TT[k])
+        TT[k] = TT[k]-DAY0
+
+    for k in range(len(TT)):
+        if k == len(TT)-1:
+            if TT[k]==0: 
+                ff = k-1
+        else:
+            if TT[k]<=0 and TT[k+1]>0:
+                ff = k
+            
+  
+    DAY1 = T0[ff]
+    DAY2 = T0[ff+1]
+    
+    S1 = StrNum(YEAR0) + '-' + StrNum(MON0)
+    S2 = StrNum(YEAR0) + '-' + StrNum(MON0) + '-' + StrNum(DAY1)
+    S3 = StrNum(YEAR0) + '-' + StrNum(MON0) + '-' + StrNum(DAY2)
+    S4 = StrNum(YEAR0) + '-' + StrNum(MON0) + '-' + StrNum(DAY0)
+    
+    #SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?mission=S1' + ST + '&validity_start_time=' + StrNum(YEAR0) + '&validity_start_time=' + S1 + '&validity_start_time=' + S2 + '..' + S3 + '&validity_start_time=' + S4
+    SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?validity_start=' + StrNum(YEAR0) + '&validity_start=' + S1 + '&validity_start=' + S2 + '..' + S3 + '&validity_start=' +S4 + '&sentinel1__mission=S1'+ST+ '&sentinel1_mission=S1'+ST+ '&sentinel1_mission=S1'+ST+ '&sentinel1_mission=S1'+ST
+
+    tt ='tt_orb_' + date
+    tt0 ='tt0_orb_' + date
+    tt00 ='tt00_orb_' + date
+    tt000 ='tt000_orb_' + date
+    SS = "'" + SS + "'"
+    #print(SS)
+    call_str = 'curl -s -l ' + SS + ' > ' + tt
+    os.system(call_str)
+    
+    call_str = "grep 'EOF' -C 0 " + tt + " >" + tt0
+    os.system(call_str)
+    
+    call_str="awk -F'href=' '{print $2}' " + tt0 +' >' + tt00
+    os.system(call_str)
+    
+    call_str= "awk -F'>' '{print $1}' " + tt00 + '> ' + tt000
+    os.system(call_str)
+    
+    SS=linecache.getline(tt000, 1)
+    SS = SS.split('"')[1]
+    filename = os.path.basename(SS)
+    call_str = 'wget -q --no-check-certificate ' + SS + ' -O ' + save_path + '/' +filename
+    os.system(call_str)
+    
+    filename = os.path.basename(SS)
+    os.remove(tt)
+    os.remove(tt0)
+    os.remove(tt00)
+    os.remove(tt000)
+    
+    return filename
+    
 
 ############################# write & read #####################################
 def read_attr(fname):

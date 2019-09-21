@@ -39,6 +39,7 @@ EXAMPLE = """Usage:
 Example: 
 
   download_s1_orb.py 20180101 A
+  download_s1_orb.py 20180101 A --dir /Yunmeng/test
   
   
 ------------------------------------------------------------------- 
@@ -52,6 +53,7 @@ def cmdLineParse():
 
     parser.add_argument('date',help='SAR date that need precise orbital data.')
     parser.add_argument('satellite',help='satellite type: A (Sentinel-1A) or B(Sentinel-1B).')
+    parser.add_argument('--dir', dest='save_dir',help='Directory for saving the orbit file. [Default: current dir]')
     
     inps = parser.parse_args()
     return inps
@@ -63,6 +65,8 @@ def main(argv):
       
     total = time.time()
     inps = cmdLineParse()
+    if inps.save_dir: root_path = inps.save_dir
+    else: root_path = os.getcwd()
     
     DATE = inps.date
     
@@ -120,27 +124,38 @@ def main(argv):
     #SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?mission=S1' + ST + '&validity_start_time=' + StrNum(YEAR0) + '&validity_start_time=' + S1 + '&validity_start_time=' + S2 + '..' + S3 + '&validity_start_time=' + S4
     SS = 'https://qc.sentinel1.eo.esa.int/aux_poeorb/?validity_start=' + StrNum(YEAR0) + '&validity_start=' + S1 + '&validity_start=' + S2 + '..' + S3 + '&validity_start=' +S4 + '&sentinel1__mission=S1'+ST+ '&sentinel1_mission=S1'+ST+ '&sentinel1_mission=S1'+ST+ '&sentinel1_mission=S1'+ST
 
-    
+    date = DATE
     SS = "'" + SS + "'"
     print(SS)
-    call_str = 'curl ' + SS + ' >tt'
+    tt ='tt_orb_' + date
+    tt0 ='tt0_orb_' + date
+    tt00 ='tt00_orb_' + date
+    tt000 ='tt000_orb_' + date
+
+    call_str = "curl -s -l " + SS + " > " + tt
     os.system(call_str)
     
-    call_str = "grep 'EOF' -C 0 tt >t0"
+    call_str = "grep 'EOF' -C 0 " + tt + " > " + tt0
+    os.system(call_str)
+    
+    call_str="awk -F'href=' '{print $2}' " + tt0 +" > " + tt00
+    os.system(call_str)
+    
+    call_str= "awk -F'>' '{print $1}' " + tt00 + '> ' + tt000
+    os.system(call_str)
+    
+    SS=linecache.getline(tt000, 1)
+    SS = SS.split('"')[1]
+    filename = os.path.basename(SS)
+    print(filename)
+    call_str = "wget -q --no-check-certificate " + SS + " -O " + root_path + "/" + filename
     os.system(call_str)
     
     
-    call_str="awk -F'href=' '{print $2}' t0 >t00"
-    os.system(call_str)
-    
-    call_str= "awk -F'>' '{print $1}' t00 > t0"
-    os.system(call_str)
-    
-    SS=linecache.getline('t0', 1)
-    print(SS)
-    
-    call_str = 'wget -q --no-check-certificate ' + SS
-    os.system(call_str)
+    os.remove(tt)
+    os.remove(tt0)
+    os.remove(tt00)
+    os.remove(tt000)
     
     
     print("Download precise orbital data for %s is done." % DATE)

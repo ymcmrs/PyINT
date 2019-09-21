@@ -22,9 +22,18 @@ def get_s1_date(raw_file):
     file0 = os.path.basename(raw_file)
     date = file0[17:25]
     return date
+
+def get_satellite(raw_file):
+    if 'S1A_IW_SLC_' in raw_file:
+        s0 = 'A'
+    else:
+        s0 = 'B'
     
+    return s0
+        
+
 def cmdLineParse():
-    parser = argparse.ArgumentParser(description='Generate SLC from S1 raw file using GAMMA.',\
+    parser = argparse.ArgumentParser(description='Generate SLC from Sentinel-1 raw data with orbit correction using GAMMA.',\
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
@@ -39,8 +48,8 @@ def cmdLineParse():
 INTRODUCTION = '''
 -------------------------------------------------------------------  
 
-   Generate SLC from Sentinel-1 raw data using GAMMA.
-   
+   Generate SLC from Sentinel-1 raw data with orbit correction using GAMMA.
+   [Precise orbit data will be downloaded automatically]
 '''
 
 EXAMPLE = """Usage:
@@ -55,7 +64,7 @@ def main(argv):
     inps = cmdLineParse() 
     raw_file = inps.s1_raw
     root_dir = inps.root_path
-    
+    satellite = get_satellite(raw_file)
     date = get_s1_date(raw_file)
     if not os.path.isdir(root_dir):
         os.mkdir(root_dir)
@@ -110,26 +119,41 @@ def main(argv):
             #call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
             #os.system(call_str)
             
-            if int(date) > 180311:
+            if not os.path.isfile(NOISE[0]):
                 call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' - ' + SLCPar + ' ' + SLC + ' ' + TOPPar
             else:
                 call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+                
+            #if int(date) > 180311:
+            #    call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' - ' + SLCPar + ' ' + SLC + ' ' + TOPPar
+            #else:
+            #    call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
             
             os.system(call_str)
             
             call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
             os.system(call_str)
-        
+    
+    # orbit correction
+    slc_pars = glob.glob(slc_dir + '/*.IW*.slc.par')
+    orbit_file0 = ut.download_s1_orbit(date,slc_dir,satellite=satellite)
+    orbit_file = slc_dir + '/' + orbit_file0
+    
+    for i in range(len(slc_pars)):
+        call_str = 'S1_OPOD_vec ' + slc_pars[i] + ' ' + orbit_file
+        os.system(call_str)
+    
+    # generate amp file for check image quality
     TSLC = slc_dir + '/' + date + '.slc'
     TSLCPar = slc_dir + '/' + date + '.slc.par'
     
-    TMLI =  slc_dir + '/' + date + '_20rlks.amp'
-    TMLIPar = slc_dir + '/' + date + '_20rlks.amp.par'
+    TMLI =  slc_dir + '/' + date + '_40rlks.amp'
+    TMLIPar = slc_dir + '/' + date + '_40rlks.amp.par'
     
     call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' 10 2'
     os.system(call_str)
    
-    call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' 20 4' 
+    call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' 40 8' 
     os.system(call_str)
     
     nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')

@@ -27,7 +27,7 @@ INTRODUCTION = '''
 
 EXAMPLE = '''
     Usage:
-            s1_orbit_cor.py projectName Date
+            s1_orbit_cor.py s1_par
  
 -------------------------------------------------------------------  
 '''
