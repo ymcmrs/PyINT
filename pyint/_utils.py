@@ -172,7 +172,29 @@ def get_filelist_filesize(url0):
         
     return A_name, A_size
 
-
+def yyyymmdd(date0):
+    if len(date0) ==6:
+        if float(date0[0:2]) > 90:
+            date1 = '19' + date0
+        else:
+            date1 = '20' + date0         
+    elif len(date0) ==8:
+        date1 = date0
+    else:
+        print('The input date is invalid!!')
+        date1 = ''
+    return date1
+    
+def yymmdd(date0):
+    if len(date0) ==6:
+        date1 = date0        
+    elif len(date0) ==8:
+        date1 = date0[2:8]
+    else:
+        print('The input date is invalid!!')
+        date1 = ''
+    return date1
+    
 def parallel_process(array, function, n_jobs=16, use_kwargs=False):
     """
         A parallel version of the map function with a progress bar. 
