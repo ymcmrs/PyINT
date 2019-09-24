@@ -160,8 +160,8 @@ def main(argv):
     #call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
     #os.system(call_str)
 
-    #call_str = 'rm -rf ' + raw_dir
-    #os.system(call_str)    
+    call_str = 'rm -rf ' + raw_dir
+    os.system(call_str)    
 
     print("Down to SLC for %s is done! " % date)
     sys.exit(1)
