@@ -30,7 +30,7 @@ def work(data0):
         aa = stderr
         
     if aa:
-        str0 = cmd[0] + ' ' + cmd[1] + ' ' + cmd[2] + '\n'
+        str0 = cmd[0] + ' ' + cmd[1] + ' ' + cmd[2] + ' ' + cmd[3] + '\n'
         #print(aa)
         with open(err_txt, 'a') as f:
             f.write(str0)
