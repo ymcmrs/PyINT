@@ -24,7 +24,12 @@ def work(data0):
     p = subprocess.run(cmd, shell=False,stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     stdout = p.stdout
     stderr = p.stderr
-    aa=stderr.decode("utf-8")
+    
+    if type(stderr) == bytes:
+        aa=stderr.decode("utf-8")
+    else:
+        aa = stderr
+    
     if aa:
         str0 = cmd[0] + ' ' + cmd[1] + ' ' + cmd[2] + '\n'
         #print(aa)
