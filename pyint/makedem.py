@@ -1,13 +1,10 @@
 #! /usr/bin/env python
 #################################################################
-###  This program is part of PyINT  v1.0                      ### 
-###  Copy Right (c): 2017, Yunmeng Cao                        ###  
+###  This program is part of PyINT  v2.1                      ### 
+###  Copy Right (c): 2017-2019, Yunmeng Cao                   ###  
 ###  Author: Yunmeng Cao                                      ###                                                          
-###  Email : ymcmrs@gmail.com                                 ###
-###  Univ. : Central South University & University of Miami   ###   
+###  Contact : ymcmrs@gmail.com                               ###
 #################################################################
-
-
 import numpy as np
 import os
 import sys
@@ -15,6 +12,8 @@ import getopt
 import array
 import argparse
 from skimage import io
+
+from pyint import _utils as ut
 
 def get_sufix(STR):
     n = len(STR.split('.'))
@@ -111,7 +110,7 @@ def UseGamma(inFile, task, keyword):
 
 INTRODUCTION = '''
 #############################################################################
-   Copy Right(c): 2017, Yunmeng Cao   [ymcmrs@gmail.com]
+   Copy Right(c): 2017-2019, Yunmeng Cao   [ymcmrs@gmail.com]
    
    Generating DEM used in interferometry both for GAMMA and ROI_PAC processor.  
    

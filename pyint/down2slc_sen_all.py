@@ -9,13 +9,31 @@
 import numpy as np
 import os
 import sys  
-import subprocess
 import getopt
 import time
 import glob
 import argparse
 
-from pyint import _utils at ut
+import subprocess
+from pyint import _utils as ut
+
+
+def work(data0):
+    cmd = data0[0]
+    err_txt = data0[1]
+    p = subprocess.run(cmd, shell=False,stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    stdout = p.stdout
+    stderr = p.stderr
+    aa=stderr.decode("utf-8")
+    if aa:
+        str0 = cmd[0] + ' ' + cmd[1] + ' ' + cmd[2] + '\n'
+        #print(aa)
+        with open(err_txt, 'a') as f:
+            f.write(str0)
+            f.write(aa)
+            f.write('\n')
+
+    return 
 #########################################################################
 
 INTRODUCTION = '''
@@ -40,110 +58,41 @@ def cmdLineParse():
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
     parser.add_argument('projectName',help='projectName for processing.')
-    
+    parser.add_argument('--parallel', dest='parallelNumb', type=int, default=1, help='Enable parallel processing and Specify the number of processors.')
     
     inps = parser.parse_args()
     return inps
 
 
 def main(argv):
+    start_time = time.time()
     inps = cmdLineParse() 
     projectName = inps.projectName
     scratchDir = os.getenv('SCRATCHDIR')
-    templateDir = os.getenv('TEMPLATEDIR')
     projectDir = scratchDir + '/' + projectName 
     downDir    = scratchDir + '/' + projectName + "/DOWNLOAD"
-
+    raw_file_list = glob.glob(downDir + '/S1*.zip')
     
+    slc_dir = scratchDir + '/' + projectName + '/SLC'
+    if not os.path.isdir(slc_dir):
+        os.mkdir(slc_dir)
+    
+    err_txt = scratchDir + '/' + projectName + '/down2slc_sen_all.err'
+    if os.path.isfile(err_txt): os.remove(err_txt)
+        
+    data_para = []
+    for i in range(len(raw_file_list)):
+        cmd0 = ['down2slc_sen.py',raw_file_list[i],slc_dir]
+        data0 = [cmd0,err_txt]
+        data_para.append(data0)
+    
+    ut.parallel_process(data_para, work, n_jobs=inps.parallelNumb, use_kwargs=False)
     os.chdir(downDir)
-    
-    call_str = 'ls  > ttt0'
-    os.system(call_str)
-    
-    
-    call_str = 'grep .zip ttt0 > ttt'
-    os.system(call_str)
-    ZIP = np.loadtxt('ttt',dtype = np.string_)
-    N = ZIP.size
-    DATE = []
-    
-    if N>1:
-        for i in range(N):
-            RAWNAME = ZIP[i].decode("utf-8")
-            Date = RAWNAME[19:25]
-            if (not (Date in DATE)) and len(Date)>0:
-                DATE.append(Date) 
-                
-    call_str = 'grep SAFE ttt0 > ttt'
-    os.system(call_str)
-    SAFE = np.loadtxt('ttt',dtype  = np.string_)
-    N = SAFE.size
-    
-    if N >1:
-        for i in range(N):
-            RAWNAME = SAFE[i].decode("utf-8")
-            Date = RAWNAME[19:25]
-            if (not (Date in DATE)) and len(Date)>0:
-                DATE.append(Date) 
-    
-    N = len(DATE)
-    
-    run_down2slc_sen = downDir + '/run_down2slc_sen'
-    f_down2slc =open(run_down2slc_sen,'w')
-    
-    for i in range(N):
-        str_script = 'Down2SLC_Sen_Gamma.py ' + projectName + ' ' + DATE[i] + '\n'
-        f_down2slc.write(str_script)
-        print('Add download raw S1 data: ' + DATE[i])
-    f_down2slc.close()
-    
-    print('')
-    print('Start processing down2sl for project: ' + projectName)
-    
-    #call_str='$INT_SCR/createBatch.pl ' + run_down2slc_sen + ' memory=7000  walltime=0:30'
-    #os.system(call_str)
-    
-    call_str='process_loop_runfile.py ' + run_down2slc_sen
-    os.system(call_str)
-    
-    
     print("Down to SLC for project %s is done! " % projectName)
+    ut.print_process_time(start_time, time.time())
+    
     sys.exit(1)
     
 if __name__ == '__main__':
     main(sys.argv[:])    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-        
-        
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     

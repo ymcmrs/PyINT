@@ -144,24 +144,24 @@ def main(argv):
         os.system(call_str)
     
     # generate amp file for check image quality
-    TSLC = slc_dir + '/' + date + '.slc'
-    TSLCPar = slc_dir + '/' + date + '.slc.par'
+    #TSLC = slc_dir + '/' + date + '.slc'
+    #TSLCPar = slc_dir + '/' + date + '.slc.par'
     
-    TMLI =  slc_dir + '/' + date + '_40rlks.amp'
-    TMLIPar = slc_dir + '/' + date + '_40rlks.amp.par'
+    #TMLI =  slc_dir + '/' + date + '_40rlks.amp'
+    #TMLIPar = slc_dir + '/' + date + '_40rlks.amp.par'
     
-    call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' 10 2'
-    os.system(call_str)
+    #call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' 10 2'
+    #os.system(call_str)
    
-    call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' 40 8' 
-    os.system(call_str)
+    #call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' 40 8' 
+    #os.system(call_str)
     
-    nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')
-    call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
-    os.system(call_str)
+    #nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')
+    #call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
+    #os.system(call_str)
 
-    call_str = 'rm -rf ' + raw_dir
-    os.system(call_str)    
+    #call_str = 'rm -rf ' + raw_dir
+    #os.system(call_str)    
 
     print("Down to SLC for %s is done! " % date)
     sys.exit(1)

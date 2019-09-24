@@ -1,5 +1,5 @@
 ############################################################
-# Program is part of PyINT                                 #
+# Program is part of PyINT V2.1                            #
 # Copyright 2017-2019 Yunmeng Cao                          #
 # Contact: ymcmrs@gmail.com                                #
 ############################################################
@@ -12,9 +12,99 @@ import random
 import h5py
 from pathlib import Path
 import linecache
+import time
 
 from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor, as_completed
+
+#######################  update template #############################
+def update_template(template_file):
+    
+    templateDict = {}
+    templateDict['start_swath'] = '1' 
+    templateDict['end_swath'] = '3'
+    
+    templateDict['start_burst'] = '1'    
+    templateDict['end_burst'] = '20'
+    
+    templateDict['dem_lat_ovr'] = '0.5'  # get 30m resolution of lookup table, 0.5 to 60m, 2 to 15m
+    templateDict['dem_lon_ovr'] = '0.5'  # get 30m resolution of lookup table
+    
+    templateDict['Igram_Spsflg'] = '1'  # Range spectral filtering
+    templateDict['Igram_Azfflg'] = '1'  # Azimuth common band filtering
+    
+    templateDict['rwin4cor'] = '256'  # range window length for coregistration
+    templateDict['awin4cor'] = '256'  # azimuth window length for coregistration
+    
+    templateDict['rsample4cor']  = '32'        #  range samples used for fitting the coregistration parameters
+    templateDict['asample4cor']  = '32'        #  azimuth samples used for fitting the coregistration parameters
+    
+    templateDict['thresh4cor']   = '0.15'      # 2016 GAMMA or higher version, for 2015 GAMMA or lower version should be SNR
+
+    templateDict['coreCoarse']  = 'both'  # initial coregistration method, [options: orbit, ampcor, both]
+    templateDict['coreMethod']  = 'DEM'   # coregistration method [option: DEM, init]  DEM means with DEM assistant
+    
+    templateDict['Igram_Cor_rwin'] = '5' # used for cc_wave
+    templateDict['Igram_Cor_awin'] = '5'  # used for cc_wave
+    
+    templateDict['Igram_Cor_Win'] = '5' # used for adf
+    templateDict['adf_alpha'] = '0.4' # used for adf
+    ######## sim phase ##################
+    templateDict['Igram_Flag_TDM'] = 'N'
+    templateDict['Simphase_rpos'] = '-'
+    templateDict['Simphase_azpos'] = '-'               
+    templateDict['Simphase_rwin'] = '256'
+    templateDict['Simphase_azwin'] = '256'
+    templateDict['Simphase_thresh'] = '-'
+    
+    #### unwrap phase ###########
+    templateDict['mcf_triangular'] = '0'    # triangular type of mcf [0: regular; 1: delaunay;] 
+    templateDict['unwrap_patr'] = '1'
+    templateDict['unwrap_pataz'] = '1'
+    templateDict['unwrapThreshold'] = '0.1'  # minimum coherence used for unwrap
+    
+    #### geocode #########
+    templateDict['geo_interp'] = '0' #  [0: nearest; 1: bicubic spline]
+    
+    ############## interferometry ################
+    templateDict['int_flag'] = '1'       # 1 means do interferometry 
+    templateDict['diff_flag'] = '1'      # differential process, i.e., remove DEM phase
+    templateDict['unw_flag'] = '1'       # unwrap process
+    templateDict['geo_flag'] = '0'       # geocode process  
+    
+    ############## select network #############
+    templateDict['endDate'] = '99999999'
+    templateDict['startDate'] = '19000101'
+    templateDict['network_method'] = 'sbas'     # sbas, sequential, delaunay, stars
+    templateDict['conNumb'] = '3'               # connect number for sequential
+    templateDict['max_tb'] = '50000'  
+    templateDict['max_sb'] = '50000'
+    
+     ############## time-series ################
+    templateDict['coreg_all'] = '1'     
+    templateDict['select_pairs'] = '1'  
+    templateDict['load_data'] = '0'
+    
+    templateDict0 = read_template(template_file, delimiter='=')
+    for key, value in templateDict0.items():
+        templateDict[key] = str(value)
+    
+    return templateDict
+    
+####################### time-related function ################
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+def print_process_time(start, end):
+    hours, rem = divmod(end-start, 3600)
+    minutes, seconds = divmod(rem, 60)
+    print("Total process time: "+"{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+    return
 
 def date_add1d(date0):
     format_str = '%Y%m%d' # The format
@@ -228,6 +318,12 @@ def download_s1_orbit(date,save_path,satellite='A'):
     
 
 ############################# write & read #####################################
+def createBlankFile(strFile):
+    f = open(strFile,'w')
+    for i in range (10):
+        f.write('\n')
+    f.close()
+    
 def read_attr(fname):
     # read hdf5
     with h5py.File(fname, 'r') as f:
@@ -315,9 +411,8 @@ def write_h5(datasetDict, out_file, metadata=None, ref_file=None, compression=No
     print('finished writing to {}'.format(out_file))
         
     return out_file 
-
-#######################################################################
-
+    
+######################################################################
 class progressBar:
     """Creates a text-based progress bar. Call the object with 
     the simple print command to see the progress bar, which looks 
