@@ -75,7 +75,6 @@ def main(argv):
     projectDir = scratchDir + '/' + projectName 
     downDir    = scratchDir + '/' + projectName + "/DOWNLOAD"
     raw_file_list = glob.glob(downDir + '/S1*.zip')
-    raw_file_dir = os.path.dirname(raw_file_list[0])
     
     slc_dir = scratchDir + '/' + projectName + '/SLC'
     if not os.path.isdir(slc_dir):
@@ -86,7 +85,7 @@ def main(argv):
         
     data_para = []
     for i in range(len(raw_file_list)):
-        cmd0 = ['unzip',raw_file_list[i],'-d',slc_dir]
+        cmd0 = ['unzip',raw_file_list[i],'-d',downDir]
         data0 = [cmd0,err_txt]
         data_para.append(data0)
     
