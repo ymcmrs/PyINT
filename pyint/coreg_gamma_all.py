@@ -86,7 +86,8 @@ def main(argv):
     if os.path.isfile(err_txt): os.remove(err_txt)
     
     data_para = []
-    slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    #slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    slc_list = ut.get_project_slcList(projectName)
     for i in range(len(slc_list)):
         cmd0 = [cmd_command,projectName,slc_list[i]]
         data0 = [cmd0,err_txt]
