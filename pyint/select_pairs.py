@@ -189,8 +189,9 @@ def main(argv):
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir    = scratchDir + '/' + projectName + '/RSLC'
     
-    slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
- 
+    #slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    slc_list = ut.get_project_slcList(projectName)
+    
     masterDate = templateDict['masterDate'] 
     
     SLCfile = []

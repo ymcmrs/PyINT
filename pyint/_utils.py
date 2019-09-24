@@ -340,6 +340,19 @@ def download_s1_orbit(date,save_path,satellite='A'):
     
 
 ############################# write & read #####################################
+def get_project_slcList(projectName):
+    scratchDir = os.getenv('SCRATCHDIR')    
+    slcDir     = scratchDir + '/' + projectName + "/SLC"    
+    slc_list0 = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    
+    slc_list = []
+    for k0 in slc_list0:
+        if is_number(k0):
+            slc_list.append(k0)
+    slc_list = sorted(slc_list)
+    
+    return slc_list
+            
 def createBlankFile(strFile):
     f = open(strFile,'w')
     for i in range (10):
