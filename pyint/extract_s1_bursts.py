@@ -55,7 +55,7 @@ def get_common_burst(Mslc_dir,Sslc_dir,common_burst_txt):
         MBURST = Mpar_list[kk]
         SBURST = Spar_list[kk]
         
-        Mtt = MBURST.replace('burst.par','tt0')
+        Mtt = Sslc_dir + os.path.basename(MBURST.replace('burst.par','tt0'))
         Stt = SBURST.replace('burst.par','tt0')
         call_str = "grep 'Burst:' " + MBURST + ' >' + Mtt
         os.system(call_str)
