@@ -76,8 +76,8 @@ def main(argv):
     
     SLC1_INF_tab0 = MslcDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = SslcDir + '/' + Sdate + '_SLC_Tab'
-    RSLC_tab = SslcDir + '/' + Sdate + '_RSLC_tab'
-    SLC1_INF_tab = SslcDir + '/' + Mdate + '_SLC_tab_coreg'
+    RSLC_tab = SslcDir + '/' + Sdate + '_RSLC_Tab'
+    SLC1_INF_tab = SslcDir + '/' + Mdate + '_SLC_Tab_coreg'
     
     HGTSIM0      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
     if not os.path.isfile(HGTSIM0):
