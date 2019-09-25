@@ -17,9 +17,8 @@ Download the development version using git:
     
 ### 2 Installation
 
- To make pyint importable in python, by adding the path PyINT directory to your $PYTHONPATH
-
-For csh/tcsh user, add to your **_~/.cshrc_** file for example:   
+ 1） To make pyint importable in python, by adding the path PyINT directory to your $PYTHONPATH
+     For csh/tcsh user, add to your **_~/.cshrc_** file for example:   
 
     ############################  Python  ###############################
     if ( ! $?PYTHONPATH ) then
@@ -34,6 +33,11 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
     setenv PYINT_HOME    ~/python/PyINT       
     setenv PYTHONPATH    ${PYTHONPATH}:${PYINT_HOME}
     setenv PATH          ${PATH}:${PYINT_HOME}/pyint
+    
+ 2） Install [elevation](https://pypi.org/project/elevation/) module:
+       
+        conda install elevation
+    or  pip install elevation   
    
 ### 3 Running PyINT
 
