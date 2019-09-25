@@ -63,12 +63,26 @@ def main(argv):
     rslcDir    = scratchDir + '/' + projectName + '/RSLC'
     ifgDir     = scratchDir + '/' + projectName + '/ifgrams'
     
-    Mamp = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    Samp = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampPar = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     Pair = Mdate + '-' + Sdate
     workDir = ifgDir + '/' + Pair
+    
+    ################ copy file for parallel processing ###############
+    Mamp0    = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar0 = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Samp0    = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar0 = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    
+    
+    Mamp    = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar = workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Samp    = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    
+    ut.copy_file(Mamp0,Mamp)
+    ut.copy_file(Samp0,Samp)
+    ut.copy_file(MampPar0,MampPar)
+    ut.copy_file(SampPar0,SampPar)
+    ###############################################################  
 
     nWidth = ut.read_gamma_par(MampPar, 'read', 'range_samples')
     nLine =  ut.read_gamma_par(MampPar, 'read', 'azimuth_lines')
@@ -91,6 +105,10 @@ def main(argv):
     call_str = 'rasrmg ' + UNWlks + ' ' + Mamp + ' ' + nWidth + ' - - - - - - - - - - ' 
     os.system(call_str)
 
+    os.remove(Mamp)
+    os.remove(Samp)
+    os.remove(MampPar)
+    os.remove(SampPar)
     print("Uwrapping interferometric phase is done!")
     sys.exit(1)
 

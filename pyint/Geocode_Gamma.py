@@ -73,9 +73,18 @@ def main(argv):
     rslcDir    = scratchDir + '/' + projectName + "/RSLC"
     demDir     = scratchDir + '/' + projectName + '/DEM'
     
-    Mamp = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp'
-    MampPar = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
+    ######### copy common file for parallel processing #############
     
+    Mamp0    = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp'
+    MampPar0 = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
+    
+    Mamp     = workDir + '/' + masterDate + '_' + rlks + 'rlks.amp'
+    MampPar  = workDir + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
+    
+    ut.copy_file(Mamp0,Mamp)
+    ut.copy_file(MampPar0,MampPar)
+    
+    #################################################################
     UNWIFG     =  workDir + '/' + Pair + '_' + rlks + 'rlks.diff_filt.unw'
     DIFFIFG    =  workDir + '/' + Pair + '_' + rlks + 'rlks.diff_filt'
     CORIFG     =  workDir + '/' + Pair + '_' + rlks + 'rlks.diff_filt.cor'
@@ -105,6 +114,9 @@ def main(argv):
     
     call_str = 'rasrmg ' + GeoUNW + ' ' + GeoMamp + ' ' + nWidthUTMDEM + ' - - - - - - - - - - - '  + GeoCOR + ' - - ' 
     os.system(call_str)
+    
+    os.remove(Mamp)
+    os.remove(MampPar)
     
     print("Geocoding is done!") 
     sys.exit(1)

@@ -61,23 +61,10 @@ def main(argv):
     masterDate = templateDict['masterDate']
     
     projectDir = scratchDir + '/' + projectName 
-    demDir = scratchDir + '/' + projectName  + '/DEM'
+    demDir    = scratchDir + '/' + projectName  + '/DEM'
     
     slcDir    = scratchDir + '/' + projectName + '/SLC'
-    rslcDir    = scratchDir + '/' + projectName + '/RSLC'
-    
-    Mamp = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    Samp = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampPar = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
-    
-    Mrslc = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
-    MrslcPar = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
-    
-    MasterPar = rslcDir  + '/' + masterDate + '/' + masterDate + '.rslc.par'
-    
-    Srslc = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
-    SrslcPar = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
+    rslcDir   = scratchDir + '/' + projectName + '/RSLC'
     
     ifgDir = projectDir + '/ifgrams'
     if not os.path.isdir(ifgDir): os.mkdir(ifgDir)
@@ -85,12 +72,55 @@ def main(argv):
     Pair = Mdate + '-' + Sdate
     workDir = ifgDir + '/' + Pair
     if not os.path.isdir(workDir): os.mkdir(workDir)
+    
+    #######################################################################
+    Mamp0     = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar0  = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Samp0     = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar0  = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    
+    Mrslc0    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
+    MrslcPar0 = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
+    Srslc0    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
+    SrslcPar0 = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
+    
+    HGT0      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
+    
+    MasterPar0 = rslcDir  + '/' + masterDate + '/' + masterDate + '.rslc.par'
+    
+    ################# copy file for parallel processing ##########################
+    Mamp     =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar  =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Samp     =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar  =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    
+    Mrslc    =   workDir + '/' + Mdate + '.rslc'
+    MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
+    Srslc    =   workDir + '/' + Sdate + '.rslc'
+    SrslcPar =   workDir + '/' + Sdate + '.rslc.par'
+    
+    HGT      =   workDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
+    MasterPar = workDir + '/' + masterDate + '.rslc.par'
+    
+    ut.copy_file(Mamp0,Mamp)
+    ut.copy_file(MampPar0,MampPar)
+    ut.copy_file(Samp0,Samp)
+    ut.copy_file(SampPar0,SampPar)
+    
+    ut.copy_file(Mrslc0,Mrslc)
+    ut.copy_file(MrslcPar0,MrslcPar)
+    ut.copy_file(Srslc0,Srslc)
+    ut.copy_file(SrslcPar0,SrslcPar)
+    
+    ut.copy_file(HGT0,HGT)
+    ut.copy_file(MasterPar0,MasterPar)
+    
+    ############################################################################    
         
     OFF = workDir + '/' +  Pair +'_' + rlks + 'rlks.off'   
     call_str = 'create_offset '+ MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' 1 ' + rlks + ' ' + azlks +  ' 0'
     os.system(call_str)
-    
-    HGT = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+   
     SIM_UNW = workDir + '/' +  Pair + '.sim_unw'
     call_str = 'phase_sim_orb ' + MrslcPar + ' ' + SrslcPar + ' ' + OFF + ' ' + HGT + ' ' + SIM_UNW + ' ' + MasterPar + ' - - 1 1' 
     os.system(call_str)
@@ -121,6 +151,19 @@ def main(argv):
     
     call_str = 'rascc ' + COHFILT + ' ' + Mamp + ' ' + nWIDTH
     os.system(call_str)
+    
+    os.remove(Mamp)
+    os.remove(MampPar)
+    os.remove(Samp)
+    os.remove(SampPar)
+    
+    os.remove(Mrslc)
+    os.remove(MrslcPar)
+    os.remove(Srslc)
+    os.remove(SrslcPar)
+    
+    os.remove(HGT)
+    os.remove(MasterPar)
     
     print("Subtraction of topography and flattening phase is done!")
     sys.exit(1)
