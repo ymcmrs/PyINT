@@ -64,19 +64,45 @@ def main(argv):
 #  Definition of file
     MslcDir     = slcDir  + '/' + Mdate
     SslcDir     = slcDir  + '/' + Sdate
-    Mslc = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
-    Mslcpar = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
-    Mamp = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Mslc0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
+    Mslcpar0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
+    Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
     
-    SLC1_INF_tab = MslcDir + '/' + Mdate + '_SLC_Tab'
+    SLC1_INF_tab0 = MslcDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = SslcDir + '/' + Sdate + '_SLC_Tab'
     RSLC_tab = SslcDir + '/' + Sdate + '_RSLC_tab'
-
-    HGTSIM      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
-    if not os.path.isfile(HGTSIM):
+    SLC1_INF_tab = SslcDir + '/' + Mdate + '_SLC_tab_coreg'
+    
+    HGTSIM0      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM0):
         call_str = 'generate_rdc_dem.py ' + projectName
         os.system(call_str)
+    
+    ############## copy master files into slave folder for parallel process ###########
+    Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
+    Mslcpar = slcDir  + '/' + Sdate + '/' + Mdate + '.slc.par'
+    Mamp = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    HGTSIM      = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    SLC1_INF_tab1 = SslcDir + '/' + Mdate + '_SLC_Tab'
+    
+    ut.copy_file(Mslc0,Mslc)
+    ut.copy_file(Mslcpar0,Mslcpar)
+    ut.copy_file(Mamp0,Mamp)
+    ut.copy_file(MampPar0,MampPar)
+    ut.copy_file(HGTSIM0,HGTSIM)
+    ut.copy_file(SLC1_INF_tab0,SLC1_INF_tab1) 
+    ##############################################################################
+    with open(SLC1_INF_tab1, "r") as f:
+        lines = f.readlines()
+    
+    with open(SLC1_INF_tab, "w") as fw:
+        lines_coreg = []
+        for k0 in lines:
+            k00 = k0.replace(MslcDir,SslcDir)
+            lines_coreg.append(k00)
+            fw.write(k00)
     
     #RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
     #if os.path.isfile(RSLC_tab):

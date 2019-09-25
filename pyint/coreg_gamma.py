@@ -61,59 +61,50 @@ def main(argv):
     Mdate = templateDict['masterDate']
     
     demDir = scratchDir + '/' + projectName + '/DEM' 
+    
+    SslcDir     = slcDir  + '/' + Sdate  
+    Samp = slcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar = slcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    Sramp = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SrampPar = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    
+    Sslc = slcDir  + '/' + Sdate + '/' + Sdate + '.slc'
+    SslcPar = slcDir  + '/' + Sdate + '/' + Sdate + '.slc.par'
+    
+    SrslcDir = rslcDir + "/" + Sdate
 
-#  Definition of file
-    MslcDir     = slcDir  + '/' + Mdate
-    SslcDir     = slcDir  + '/' + Sdate
-    Mslc = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
-    Mslcpar = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
-    Mamp = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Srslc    = rslcDir + "/" + Sdate + ".rslc"
+    SrslcPar = rslcDir + "/" + Sdate + ".rslc.par"
+    
+    Srslc0    = rslcDir + "/" + Sdate + ".rslc0"
+    SrslcPar0 = rslcDir + "/" + Sdate + ".rslc0.par"
 
-    HGTSIM      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
-    if not os.path.isfile(HGTSIM):
+#####################################################
+## copy all of the master files into slave folder for parallel processing
+    remove_file = []
+    Mslc0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
+    MslcPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
+    Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    HGTSIM0      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM0):
         call_str = 'generate_rdc_dem.py ' + projectName
         os.system(call_str)
+   
+    Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
+    MslcPar = slcDir  + '/' + Sdate + '/' + Mdate + '.slc.par'
+    Mamp = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    HGTSIM  = slcDir  + '/' + Sdate + '/'  + Mdate + '_' + rlks + 'rlks.rdc.dem'
     
+    ut.copy_file(HGTSIM0,HGTSIM)
+    ut.copy_file(Mslc0,Mslc)
+    ut.copy_file(MslcPar0,MslcPar)
+    ut.copy_file(Mamp0,Mamp)
+    ut.copy_file(MampPar0,MampPar)
     
-# input slcs
-
-    SslcDir = rslcDir + "/" + Sdate
-    MslcDir = rslcDir + "/" + Mdate
-
-    MslcImg = rslcDir + "/" + Mdate + ".rslc"
-    MslcPar = rslcDir+ "/" + Mdate + ".rslc.par"
-    SslcImg = rslcDir + "/" + Sdate + ".rslc"
-    SslcPar = rslcDir + "/" + Sdate + ".rslc.par"
-
-# output slcs
-
-    MrslcImg = workDir + "/" + Mdate + ".rslc"
-    MrslcPar = workDir + "/" + Mdate + ".rslc.par"
-    SrslcImg = workDir + "/" + Sdate + ".rslc"
-    SrslcPar = workDir + "/" + Sdate + ".rslc.par"
-    Srslc0Img = workDir + "/" + Sdate + ".rslc0"
-    Srslc0Par = workDir + "/" + Sdate + ".rslc0.par"
-    
-    
-    
-# output multi-looked amplitude
-
-    MamprlksImg = workDir + "/" + Mdate + "_" + rlks+"rlks.amp"	
-    MamprlksPar = workDir + "/" + Mdate + "_" + rlks+"rlks.amp.par"
-    SamprlksImg = workDir + "/" + Sdate + "_" + rlks+"rlks.amp"
-    SamprlksPar = workDir + "/" + Sdate + "_" + rlks+"rlks.amp.par"
-    
-    OFFSTD = workDir + "/" + Mdate + "-" + Sdate + ".off_std"
-    
-    simDir = scratchDir + '/' + projectName + "/PROCESS" + "/SIM" 
-    simDir = simDir + '/sim_' + Mdate + '-' + Sdate
-
-    HGTSIM      = demDir + '/sim_' + masterDate + '_'+rlks+'rlks.rdc.dem'
-    if not os.path.isfile(HGTSIM):       
-        call_str = 'Generate_RdcDEM_Gamma.py ' + projectName + ' ' + masterDate
-        os.system(call_str)
-    
+#######################################################    
+#   define process files #
     lt0 = workDir + "/lt0" 
     lt1 = workDir + "/lt1"
     mli0 = workDir + "/mli0" 
@@ -129,38 +120,25 @@ def main(argv):
     offsets = workDir + "/offsets"
     coffs = workDir + "/coffs"
     coffsets = workDir + "/coffsets"
-
-    if os.path.isfile(diff0):
-        os.remove(diff0)
-    if os.path.isfile(off):
-        os.remove(off)
-
-# real processing
-
-    call_str = "multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
-    os.system(call_str)
-
-    call_str = "multi_look " + SslcImg + " " + SslcPar + " " + SamprlksImg + " " + SamprlksPar + " " + rlks + " " + azlks
-    os.system(call_str)
-
+##############################################
     
-    call_str = "rdc_trans " + MamprlksPar + " " + HGTSIM + " " + SamprlksPar + " " + lt0
+    call_str = "rdc_trans " + MampPar + " " + HGTSIM + " " + SampPar + " " + lt0
     os.system(call_str)
 
-    width_Mamp = UseGamma(MamprlksPar, 'read', 'range_samples')
-    width_Samp = UseGamma(SamprlksPar, 'read', 'range_samples')
-    line_Samp = UseGamma(SamprlksPar, 'read', 'azimuth_lines')
+    width_Mamp = ut.read_gamma_par(MampPar, 'read', 'range_samples')
+    width_Samp = ut.read_gamma_par(SampPar, 'read', 'range_samples')
+    line_Samp = ut.read_gamma_par(SampPar, 'read', 'azimuth_lines')
 
     call_str = "geocode " + lt0 + " " + MamprlksImg + " " + width_Mamp + " " + mli0 + " " + width_Samp + " " + line_Samp + " 2 0"
     os.system(call_str)
 
-    call_str = "create_diff_par " + SamprlksPar + " - " + diff0 + " 1 0"
+    call_str = "create_diff_par " + SampPar + " - " + diff0 + " 1 0"
     os.system(call_str)
 
-    call_str = "init_offsetm " + mli0 + " " + SamprlksImg + " " + diff0 + " 1 1"
+    call_str = "init_offsetm " + mli0 + " " + Samp + " " + diff0 + " 1 1"
     os.system(call_str)
 
-    call_str = "offset_pwrm " + mli0 + " " + SamprlksImg + " " + diff0 + " " + offs0 + " " + snr0 + " 256 256 " + offsets0 + " 2 32 32"
+    call_str = "offset_pwrm " + mli0 + " " + Samp + " " + diff0 + " " + offs0 + " " + snr0 + " 256 256 " + offsets0 + " 2 32 32"
     os.system(call_str)
   
     call_str = "offset_fitm " + offs0 + " " + snr0 + " " + diff0 + " " + coffs0 + " " + coffsets0 + " - 4"
@@ -170,7 +148,7 @@ def main(argv):
     os.system(call_str)
     
     
-    call_str = "SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " - " + Srslc0Img + " " + Srslc0Par
+    call_str = "SLC_interp_lt " + Sslc + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MampPar + " " + SampPar + " - " + Srslc0 + " " + Srslc0Par
     os.system(call_str)
 
 
@@ -185,74 +163,35 @@ def main(argv):
     #call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
     #os.system(call_str)
     
-    call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rwin4cor + " " + azwin4cor + " " + offsets + " 2 " + rsample4cor + " " + azsample4cor
+    call_str = "offset_pwr " + Mslc + " " + Srslc0 + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + templateDict['rwin4cor'] + " " + templateDict['azwin4cor'] + " " + offsets + " 2 " + templateDict['rsample4cor'] + " " + templateDict['azsample4cor']
     os.system(call_str)
 
     call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
     os.system(call_str)
     
-    call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
-    os.system(call_str)
-
+    rfwin4cor = str(int(1/2*int(templateDict['rwin4cor'])))
+    azfwin4cor = str(int(1/2*int(templateDict['azwin4cor'])))
     
+    rfsample4cor = str(2*int(templateDict['rsample4cor']))
+    azfsample4cor = str(2*int(templateDict['azsample4cor']))
+    
+    call_str = "offset_pwr " + MslcImg + " " + Srslc0 + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
+    os.system(call_str)
     
     call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
     os.system(call_str)
     
 ############################################     Resampling     ############################################    
-    
-    
-    for i in range(len(Suffix)):
-        if not INF=='IFG':
-            MslcImg = workDir + "/" + Mdate + Suffix[i]+".slc"
-            MslcPar = workDir + "/" + Mdate + Suffix[i]+".slc.par"
-            SslcImg = workDir + "/" + Sdate + Suffix[i]+".slc"
-            SslcPar = workDir + "/" + Sdate + Suffix[i]+".slc.par"
-        
-        MrslcImg = workDir + "/" + Mdate + Suffix[i]+".rslc"
-        MrslcPar = workDir + "/" + Mdate + Suffix[i]+".rslc.par"
-        SrslcImg = workDir + "/" + Sdate + Suffix[i]+".rslc"
-        SrslcPar = workDir + "/" + Sdate + Suffix[i]+".rslc.par"
 
-        
-######################## Resampling Slave Image ####################
+    call_str = "SLC_interp_lt " + Sslc + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MampPar + " " + SampPar + " " + off + " " + Srslc + " " + SrslcPar
+    os.system(call_str)
 
-        call_str = "SLC_interp_lt " + SslcImg + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MamprlksPar + " " + SamprlksPar + " " + off + " " + SrslcImg + " " + SrslcPar
-        os.system(call_str)
+    call_str = 'multi_look ' + Srslc + ' ' + SrslcPar + ' ' + Sramp + ' ' + SrampPar + ' ' + rlks + ' ' + azlks
+    os.system(call_str)
 
-
-        call_str = "cp " + MslcImg + " " + MrslcImg
-        os.system(call_str)
-
-        call_str = "cp " + MslcPar + " " + MrslcPar
-        os.system(call_str)
-
-
-####################  multi-looking for RSLC #########################################
-
-        MamprlksImg = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        MamprlksPar = workDir + "/" + Mdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-        SamprlksImg = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp"
-        SamprlksPar = workDir + "/" + Sdate + '_'+rlks+'rlks'+Suffix[i]+".ramp.par"
-        
-
-        call_str = 'multi_look ' + MrslcImg + ' ' + MrslcPar + ' ' + MamprlksImg + ' ' + MamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
-
-        call_str = 'multi_look ' + SrslcImg + ' ' + SrslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
-
-        nWidth = UseGamma(MamprlksPar, 'read', 'range_samples')
-
-        call_str = 'raspwr ' + MamprlksImg + ' ' + nWidth 
-        os.system(call_str)  
-        ras2jpg(MamprlksImg, MamprlksImg) 
-        
-        call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
-        os.system(call_str)
-        ras2jpg(SamprlksImg, SamprlksImg)
-
+    nWidth = ut.read_gamma_par(SrampPar, 'read', 'range_samples')
+    call_str = 'raspwr ' + Sramp + ' ' + nWidth 
+    os.system(call_str)
 
     os.remove(lt0)
     os.remove(lt1)
@@ -269,8 +208,12 @@ def main(argv):
     os.remove(offsets)
     os.remove(coffs)
     os.remove(coffsets)
-    os.remove(Srslc0Img)
+    os.remove(Srslc0)
     os.remove(Srslc0Par)
+    
+    os.remove(Mslc)
+    os.remove(Mamp)
+    os.remove(HGTSIM)
 
     print("Coregistration with DEM is done!")
  

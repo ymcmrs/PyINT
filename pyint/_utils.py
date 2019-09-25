@@ -35,10 +35,10 @@ def update_template(template_file):
     templateDict['Igram_Azfflg'] = '1'  # Azimuth common band filtering
     
     templateDict['rwin4cor'] = '256'  # range window length for coregistration
-    templateDict['awin4cor'] = '256'  # azimuth window length for coregistration
+    templateDict['azwin4cor'] = '256'  # azimuth window length for coregistration
     
     templateDict['rsample4cor']  = '32'        #  range samples used for fitting the coregistration parameters
-    templateDict['asample4cor']  = '32'        #  azimuth samples used for fitting the coregistration parameters
+    templateDict['azsample4cor']  = '32'        #  azimuth samples used for fitting the coregistration parameters
     
     templateDict['thresh4cor']   = '0.15'      # 2016 GAMMA or higher version, for 2015 GAMMA or lower version should be SNR
 
@@ -341,6 +341,12 @@ def download_s1_orbit(date,save_path,satellite='A'):
     
 
 ############################# write & read #####################################
+def copy_file(file0,file1):
+    call_str = 'cp ' + file0 + ' ' + file1
+    os.system(call_str)
+    
+    return
+
 def get_project_slcList(projectName):
     scratchDir = os.getenv('SCRATCHDIR')    
     slcDir     = scratchDir + '/' + projectName + "/SLC"    
