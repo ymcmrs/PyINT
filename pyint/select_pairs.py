@@ -157,7 +157,15 @@ def cmdLineParse():
     parser.add_argument('--end-date', dest='endDate', type=str, help='end/max date of network')
     parser.add_argument('--max-sb', dest='maxSB', type=float, help='maximum spatial baseline')
     parser.add_argument('--max-tb', dest='maxTB', type=str, help='maximum temporal baseline')
-    
+    parser.add_argument('--method', dest='method', default='sbas', choices={'sbas', 'sequential', 'delaunay', 'stars'},
+                        help='network selection method:\n' +
+                       'sbas - select based on the threshold values of the spatio-temporal baselines\n' +
+                       'sequential - select based on the sequential of the SAR acquisitions\n' +
+                       'delaunay - select based on delaunay triangulars\n' +
+                       'stars - one master image network, like PS.')
+    parser.add_argument('--conNumb', dest='conNumb', type=int, default=2,
+                        help='Number of the neibour-connected SAR images at one side for sequential method.')
+
     inps = parser.parse_args()
     return inps
 
@@ -165,14 +173,17 @@ def cmdLineParse():
 INTRODUCTION = '''
 -------------------------------------------------------------------  
        Select interferometric pairs based on SLC_TAB. 
-       [sbas, sequential, delaunay, stars (as PS) are supported.]
+       [sbas, sequential, delaunay, stars are supported.]
 
 '''
 
 EXAMPLE = '''
-    Usage: 
-            select_pairs.py projectName 
+    Examples: 
             select_pairs.py PacayaT163TsxHhA 
+            select_pairs.py PacayaT163TsxHhA --max-tb 300 --max-sb 100
+            select_pairs.py PacayaT163TsxHhA --method sequential --conNumb 3
+            select_pairs.py PacayaT163TsxHhA --method denaulay --max-tb 100 --max-sb 100
+            select_pairs.py PacayaT163TsxHhA --method stars
 -------------------------------------------------------------------  
 '''
 
@@ -184,6 +195,8 @@ def main(argv):
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
+    templateDict['network_method'] = inps.method
+    templateDict['conNumb'] = inps.conNumb
     
     processDir = scratchDir + '/' + projectName
     slcDir     = scratchDir + '/' + projectName + "/SLC"

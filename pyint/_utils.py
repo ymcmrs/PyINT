@@ -77,7 +77,7 @@ def update_template(template_file):
     templateDict['endDate'] = '99999999'
     templateDict['startDate'] = '19000101'
     templateDict['network_method'] = 'sbas'     # sbas, sequential, delaunay, stars
-    templateDict['conNumb'] = '3'               # connect number for sequential
+    templateDict['conNumb'] = '2'               # connect number for sequential
     templateDict['max_tb'] = '50000'  
     templateDict['max_sb'] = '50000'
     
