@@ -26,8 +26,6 @@ def cmdLineParse():
     parser.add_argument('projectName', help='name of the project.')
 
     inps = parser.parse_args()
-    root_path = os.getcwd()
-
     return inps
 
 
