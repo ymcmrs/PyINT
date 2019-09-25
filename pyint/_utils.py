@@ -22,6 +22,15 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 def update_template(template_file):
     
     templateDict = {}
+    
+    ######### download using SSARA ######
+    #templateDict['sensor'] = 'sentinel-1' 
+    #templateDict['track'] = '14' 
+    #templateDict['frame'] = '75' 
+    templateDict['start_time'] = '1989-01-01'
+    templateDict['end_time'] = '2189-01-01'
+    
+    ####### basic parameters for interferometry ######
     templateDict['start_swath'] = '1' 
     templateDict['end_swath'] = '3'
     
@@ -74,7 +83,7 @@ def update_template(template_file):
     templateDict['geo_flag'] = '0'       # geocode process  
     
     ############## select network #############
-    templateDict['endDate'] = '99999999'
+    templateDict['endDate'] = '21000101'
     templateDict['startDate'] = '19000101'
     templateDict['network_method'] = 'sbas'     # sbas, sequential, delaunay, stars
     templateDict['conNumb'] = '2'               # connect number for sequential
@@ -82,9 +91,30 @@ def update_template(template_file):
     templateDict['max_sb'] = '50000'
     
      ############## time-series ################
-    templateDict['coreg_all'] = '1'     
-    templateDict['select_pairs'] = '1'  
-    templateDict['load_data'] = '0'
+    templateDict['download_data'] = '0'         # if 1, track, frame, or time informations should be provided  
+    templateDict['down_parallel'] = '1'         # multi-processor number used for downloading
+    
+    templateDict['raw2slc_all'] = '0'           # i.e., download 2 slc
+    templateDict['raw2slc_all_parallel'] = '1'       # multi-processor number used 
+    
+    templateDict['extract_burst_all'] = '0'     # for TOPS SLC only
+    templateDict['extract_all_parallel'] = '1'         # multi-processor number used 
+    
+    templateDict['coreg_all'] = '1' 
+    templateDict['coreg_all_parallel'] = '1'         # multi-processor number used [4 or 8]
+    
+    templateDict['select_pairs'] = '1' 
+    
+    templateDict['diff_all'] = '1' 
+    templateDict['diff_all_parallel'] = '1'         # multi-processor number used  [4 or 8]
+    
+    templateDict['unwrap_all'] = '1' 
+    templateDict['unwrap_all_parallel'] = '1'         # multi-processor number used [8 or 10]
+    
+    templateDict['geocode_all'] = '0'            
+    templateDict['geocode_all_parallel'] = '1'         # multi-processor number used
+    
+    templateDict['load_data'] = '0'              # loading data for mintpy processing
     
     templateDict0 = read_template(template_file, delimiter='=')
     for key, value in templateDict0.items():
