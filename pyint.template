@@ -1,0 +1,108 @@
+# *********************************** Template  *******************************************#
+Modifed Sep. , 2019 - YM.Cao
+
+# -------------------         Basic parameters    -----------------------
+
+masterDate     =    20180101    # [If not provided, the first date in the date_list will be selected as the master date]
+
+start_swath    =    1           # [option (for Sentinel-1 only)]
+end_swath      =    1           # [option (for Sentinel-1 only)]
+start_burst    =    1           # [option: bursts position is based on the master image (for Sentinel-1 only)]
+end_burst      =    4           # [option: bursts position is based on the master image (for Sentinel-1 only)]
+
+range_looks    =    20          #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
+azimuth_looks  =    4     
+
+# -------------------         download data    -----------------------
+
+sensor         =   Sentinel-1A    # Envisat, ERS-1/2, ..  please check SSARA for details
+track          =    14
+frame          =    75
+start_time     =    1989-01-01
+end_time       =    2189-01-01
+
+# -------------------   basic parameters for interferometry    -----------------------
+
+dem_lat_ovr    =    0.5          # as to SRTM-1, 0.5 for 60 m, 2 for 15 m
+dem_lon_ovr    =    0.5
+
+Igram_Spsflg   =     1           # Implement range spectral filtering
+Igram_Azfflg   =     1           # Implement azimuth common band filtering
+
+rwin4cor       =     256         # range window length for coregistration
+azwin4cor      =     256         # azimuth window length for coregistration
+rsample4cor    =     32          #  range samples used for fitting the coregistration parameters
+azsample4cor   =     32          #  azimuth samples used for fitting the coregistration parameters
+
+thresh4cor     =     0.15        # 2016 GAMMA or higher version, for 2015 GAMMA or lower version should be SNR
+
+Igram_Cor_rwin =     5           # range window length for cc_wave coherence estimation
+Igram_Cor_awin =     5           # azimuth window length for cc_wave coherence estimation
+
+Igram_Cor_Win  =     5            # cc estimation in adf 
+adf_alpha      =     0.4          # adf alpha for Gold-Stein filtering
+
+# -------------------   sim phase    -----------------------
+
+Igram_Flag_TDM =     N            # Y for Tandem-X
+Simphase_rpos  =     -
+Simphase_azpos =     -
+Simphase_rwin  =     256
+Simphase_azwin =     256
+Simphase_thresh =    - 
+
+# -------------------   unwrap phase    -----------------------  
+
+mcf_triangular  =     0               # triangular type of mcf [0: regular; 1: delaunay;] 
+unwrap_patr     =     1               # unwrap patches in range direction
+unwrap_pataz    =     1               # unwrap patches in azimuth direction
+unwrapThreshold =     0.1             # coherence threshold used for unwrap
+
+# -------------------   geocode    -----------------------  
+
+geo_interp      =     0                #  [0: nearest; 1: bicubic spline]
+
+
+# -------------------   select interferometric pairs  --------------     
+
+endDate          =     21000101
+startDate        =     19000101
+network_method   =     sbas             # sbas, sequential, delaunay, stars
+conNumb          =     2                # connect number for sequential
+max_tb           =     50000            # temporal baseline threshold in days 
+max_sb           =     50000            # spatial baseline threshold in meters
+
+# -------------------   interferometry switch  --------------  
+
+diff_flag        =     1                # do diff
+unwrap_flag      =     1                # do unwrap
+geo_flag         =     1                # do geocode
+
+# -------------------   time-series process [0: skip; 1: process]    --------------     
+
+download_data   =      0                 # if 1, track, frame, or time informations should be provided 
+down_parallel   =      1                 # multi-processor number used for downloading
+
+raw2slc_all     =      0                  # i.e., download2slc
+raw2slc_all_parallel = 1                  # multi-processor number used 
+    
+extract_burst_all    = 0                  # for TOPS SLC only
+extract_all_parallel = 1                  # multi-processor number used 
+    
+coreg_all            = 1                  # do coregister 
+coreg_all_parallel   = 1                  # multi-processor number used [4 or 8]
+     
+select_pairs         = 1                  # if 0: skip, and use the ifgram_list.txt under PROJECTNAME folder
+    
+diff_all             = 1 
+diff_all_parallel    = 1                  # multi-processor number used  [4 or 8]
+    
+unwrap_all           = 1 
+unwrap_all_parallel  = 1                  # multi-processor number used [8 or 10]
+    
+geocode_all          = 0           
+geocode_all_parallel = 1                  # multi-processor number used
+    
+load_data            = 0                  # loading data for mintpy processing
+
+# -------------------  Good Luck  --------------
