@@ -50,28 +50,43 @@ For csh/tcsh user, add to your **_~/.cshrc_** file for example:
 
 3). Single interferogram processing:
 
-     SLC2Ifg.py IfgramDir     ## typical name style of the ifgdir:  < IFG_PROJECTNAME_MASTER-SLAVE_PB_TB > 
- 
+     slc2ifg.py projectName Mdate Sdate     # start from SLC to unwrapped-differential Ifg 
+     raw2ifg.py projectName Mdate Sdate     # start from raw data to unwrapped-differential Ifg 
+  
      e.g. :
-         SLC2Ifg.py IFG_MexicoCityT143F529S1D_20180506-20180518_034_048     ## general interferometry processing
-         SLC2Ifg.py MAI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Multi-aperture interferometry
-         SLC2Ifg.py RSI_MexicoCityT143F529S1D_20180506-20180518_034_048     ## Range-split interferometry
+         slc2ifg.py HawaiiT87F526S1D 20150101 20160201
+         raw2ifg.py HawaiiT87F526S1D 20150101 20160201
 
 4). Time-series of interferograms processing.
 
-     process_tsifg.py PROJECTNAME
+     pyintApp.py projectName
   
      e.g. :
-       process_tsifg.py MexicoCityT143F529S1D
-       
-You also can process step by step:
+        pyintApp.py MexicoCityT143F529S1D   # template file MexicoCityT143F529S1D.template should be availabe in TEMPLATEDIR
+        
+   General work-flow: 
+   
+     1) download data  :  download SLCs using SSARA (please check https://github.com/bakerunavco/SSARA)
+                        [You should provide Sensor, Track, Frame, or Time information in template]                     
+     2) generate SLC   :  raw 2 slc (multi-frame processing is also supported)
+                        [include orbit correction for S1,ASAR,ERS and burst-extraction for S1]                      
+     3) generate DEM   :  reference image related geo-dem, rdc-dem, lookup table will be generated. 
+                        [SRTM-1 will be downloaded and processed automatically if not provided]                       
+     4) coregister SLC :  coregister SLCs to the reference SLC iamge.
+                        [with assistant of DEM]  
+     5) select pairs   :  select interferometric pairs for time-series processing.
+                        [networks of sbas, sequential, delaunay, and stars are supported]                     
+     6) interferometry :  generate unwrapped differential interferograms.
+                        [include differential, unwrapping, and geocoding]
+     7) load data      : loading data for time-series analysis, mintPy is supported presently.
+                         
+     Note: 
+     
+     i  ) Single interferogram processing please use slc2ifg.py or raw2ifg.py
+     ii ) Multi-processor parallel processing is supported, but keep in mind GAMMA calls multi-threads already.  
+     iii) You can using pyintApp.py from downloading data to generate time-series of unwrapped-differential Ifgs, 
+          or you also can process step by step.
 
-    step1: Download S1 data by setting "DOWNLOAD" to "1"  and input Track/Frame/Time in the template file (only for Sentinel-1).   
-    step2: Check DEM, if no DEM is available, using Makedem_PyInt.py
-    step3: Coregistration.   Using coreg_all.py
-    step4: Selecting interferometry pairs. Using SelectPairs.py
-    Step5: Generating interferograms. Using SLC2Ifg.py
-    Step6: Loading data for further time-series analysis. Please check mintPy (https://github.com/ymcmrs/MintPy).
               
 Note:  All of the above codes are based on the hypothesis that you have installed [GAMMA](https://www.gamma-rs.ch/). 
 
