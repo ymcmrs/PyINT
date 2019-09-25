@@ -3,6 +3,9 @@ Modifed Sep. , 2019 - YM.Cao
 
 # -------------------         Basic parameters    -----------------------
 
+DEM = /Users/caoy0a/Documents/SCRATCH/DEM/HawaiiT87F526S1D/HawaiiT87F526S1D.dem    
+# if not provide, SRTM-1 will be downloaded and processed automatically.
+
 masterDate     =    20180101    # [If not provided, the first date in the date_list will be selected as the master date]
 
 start_swath    =    1           # [option (for Sentinel-1 only)]
