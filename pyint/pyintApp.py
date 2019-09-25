@@ -32,7 +32,7 @@ def get_satellite(raw_file):
         
 
 def cmdLineParse():
-    parser = argparse.ArgumentParser(description='Generate Ifg from SLC using GAMMA.',\
+    parser = argparse.ArgumentParser(description='Generate Ifg from Sentinel-1 raw data with orbit correction using GAMMA.',\
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
@@ -46,18 +46,19 @@ def cmdLineParse():
 
 
 INTRODUCTION = '''
---------------------------------------------------------------
-   Generate unwrapped differential Ifg from SLC using GAMMA.
+---------------------------------------------------------------------------------------------------
+   Generate unwrapped differential Ifg from Sentinel-1 raw data with orbit correction using GAMMA.
    
-   Note: SRTM-1 will be downloaded and processed automatically 
-         if not provided in the template file.
-   
+   Note: 1) Precise orbit data will be downloaded and processed automatically
+         2) SRTM-1 will be downloaded and processed automatically if not provided 
+            in the template file.
+
 '''
 
 EXAMPLE = """Usage:
   
-  slc2ifg.py projectName Mdate Sdate
---------------------------------------------------------------
+        raw2ifg_s1.py projectName Mdate Sdate
+---------------------------------------------------------------------------------------------------- 
 """
 
 def main(argv):
@@ -75,44 +76,37 @@ def main(argv):
     rlks = templateDict['range_looks']
     azlks = templateDict['azimuth_looks']
     masterDate = templateDict['masterDate']
-    #downDir = scratchDir + '/' + projectName + '/DOWNLOAD'
-    #M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
-    #S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
+    downDir = scratchDir + '/' + projectName + '/DOWNLOAD'
+    M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
+    S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
     slcDir    = scratchDir + '/' + projectName + '/SLC'
     
     
     ######### down 2 slc #############
-    #call_str = 'down2slc_sen.py ' + M_raw + ' ' + slcDir
-    #os.system(call_str)
+    call_str = 'down2slc_sen.py ' + M_raw + ' ' + slcDir
+    os.system(call_str)
     
-    #call_str = 'down2slc_sen.py ' + S_raw + ' ' + slcDir
-    #os.system(call_str)
+    call_str = 'down2slc_sen.py ' + S_raw + ' ' + slcDir
+    os.system(call_str)
     
     ########## extract common bursts ##
-    if 'S1' in projectName:
-        call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
-        os.system(call_str)
+    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
+    os.system(call_str)
     
-        call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
-        os.system(call_str)
+    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
+    os.system(call_str)
     
     ######### generate rdc_dem ##########
     call_str = 'generate_rdc_dem.py ' + projectName
     os.system(call_str)
     
     ########## coregister SLC ########
-    if 'S1' in projectName:
-        call_str = 'coreg_s1_gamma.py ' + projectName + ' ' + Mdate
-        os.system(call_str)
     
-        call_str = 'coreg_s1_gamma.py ' + projectName + ' ' + Sdate
-        os.system(call_str)
-    else:
-        call_str = 'coreg_gamma.py ' + projectName + ' ' + Mdate
-        os.system(call_str)
+    call_str = 'coreg_s1_gamma.py ' + projectName + ' ' + Mdate
+    os.system(call_str)
     
-        call_str = 'coreg_gamma.py ' + projectName + ' ' + Sdate
-        os.system(call_str)
+    call_str = 'coreg_s1_gamma.py ' + projectName + ' ' + Sdate
+    os.system(call_str)
     
     ######## Interferometry process ###########
     call_str = 'diff_gamma.py ' + projectName + ' ' + Mdate + ' ' + Sdate
@@ -124,7 +118,7 @@ def main(argv):
     call_str = 'geocode_gamma.py ' + projectName + ' ' + Mdate + '-' + Sdate
     os.system(call_str)
 
-    print("Generate Ifg from SLC data is done! ")
+    print("Generate Ifg from raw-TOPs data is done! ")
     ut.print_process_time(start_time, time.time()) 
     sys.exit(1)
     

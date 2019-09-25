@@ -166,6 +166,7 @@ def main(argv):
     os.remove(MasterPar)
     
     print("Subtraction of topography and flattening phase is done!")
+    ut.print_process_time(start_time, time.time())
     sys.exit(1)
 
 if __name__ == '__main__':
