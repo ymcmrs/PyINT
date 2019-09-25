@@ -64,10 +64,15 @@ def main(argv):
 #  Definition of file
     MslcDir     = slcDir  + '/' + Mdate
     SslcDir     = slcDir  + '/' + Sdate
+    Samp = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    Sampbmp = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.bmp'
+    
     Mslc0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
     Mslcpar0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
     Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
     MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Mampbmp = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.bmp'
     
     SLC1_INF_tab0 = MslcDir + '/' + Mdate + '_SLC_Tab'
     SLC2_INF_tab = SslcDir + '/' + Sdate + '_SLC_Tab'
@@ -104,6 +109,16 @@ def main(argv):
             lines_coreg.append(k00)
             fw.write(k00)
     
+    M_IW = ut.read_txt2array(SLC1_INF_tab1)
+    M_IW = M_IW.flatten()
+    S_IW = ut.read_txt2array(SLC1_INF_tab)  
+    S_IW = S_IW.flatten()
+    
+    for i in range(len(M_IW)):
+        #print(M_IW[i])
+        #print(S_IW[i])
+        ut.copy_file(M_IW[i],S_IW[i])
+    
     #RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
     #if os.path.isfile(RSLC_tab):
     #    os.remove(RSLC_tab)
@@ -132,16 +147,34 @@ def main(argv):
         sslc = workDir + '/' + Sdate + '.slc'
         srslc = workDir + '/' + Sdate + '.rslc'
         srslcPar = workDir + '/' + Sdate + '.rslc.par'
-        
-        samp = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-        samppar = workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-        
-        call_str = 'multi_look ' + srslc + ' ' + srslcPar + ' ' + samp + ' ' + samppar + ' ' + rlks + ' ' + azlks
+
+        call_str = 'multi_look ' + srslc + ' ' + srslcPar + ' ' + Samp + ' ' + SampPar + ' ' + rlks + ' ' + azlks
         os.system(call_str)
-    
+        nWIDTH = ut.read_gamma_par(SampPar,'read', 'range_samples')
         if os.path.isfile(mslc):  os.remove(mslc)
         if os.path.isfile(mrslc): os.remove(mrslc)
         if os.path.isfile(sslc): os.remove(sslc)
+        
+        call_str = 'raspwr ' + Samp + ' ' + nWIDTH
+        os.system(call_str)
+        
+        call_str = 'rm *mli*'
+        os.system(call_str)
+        
+        call_str = 'rm *IW*'
+        os.system(call_str)
+        
+        call_str = 'rm *off*'
+        os.system(call_str)
+        
+        call_str = 'rm *diff'
+        os.system(call_str)
+        
+        call_str = 'rm *diff_par*'
+        os.system(call_str)
+        
+        call_str = 'rm ' + Mdate + '.*'
+        os.system(call_str)
         
     else:
         call_str = 'cp ' + Mslc + ' ' + workDir + '/' + Mdate + '.rslc'
@@ -155,8 +188,23 @@ def main(argv):
         
         call_str = 'cp ' + MampPar + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp.par'
         os.system(call_str)
-         
-    print("Generating differential S1 interferogram is done !!")
+
+        ut.copy_file(Mampbmp,Sampbmp)
+        
+    ################   clean redundant files #############
+    
+    if not Mdate ==Sdate: 
+        for i in range(len(S_IW)):
+            if os.path.isfile(S_IW[i]):
+                os.remove(S_IW[i])
+    
+        if os.path.isfile(Mslc): os.remove(Mslc)
+        if os.path.isfile(Mslcpar): os.remove(Mslcpar)
+        if os.path.isfile(Mamp): os.remove(Mamp)   
+        if os.path.isfile(MampPar): os.remove(MampPar)       
+    
+    if os.path.isfile(HGTSIM): os.remove(HGTSIM)
+    print("Coregister TOP SLC image to the reference TOPS image is done !!")
     sys.exit(1)
 
 if __name__ == '__main__':
