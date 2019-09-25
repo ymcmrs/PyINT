@@ -181,7 +181,7 @@ def select_pairs_hierarchical(date_list, pbase_list, temp_perp_list, date12_form
     return date12_list
 
 
-def select_pairs_delaunay(date_list, pbase_list, norm=True, date12_format='YYMMDD-YYMMDD'):
+def select_pairs_delaunay(date_list, tbase_list, pbase_list, norm=True, date12_format='YYMMDD-YYMMDD'):
     """Select Pairs using Delaunay Triangulation based on temporal/perpendicular baselines
     Inputs:
         date_list  : list of date in YYMMDD/YYYYMMDD format
@@ -199,7 +199,7 @@ def select_pairs_delaunay(date_list, pbase_list, norm=True, date12_format='YYMMD
     # Get temporal baseline in days
     date6_list = yymmdd(date_list)
     date8_list = yyyymmdd(date_list)
-    tbase_list = date_list2tbase(date8_list)[0]
+    #tbase_list = date_list2tbase(date8_list)[0]
 
     # Normalization (Pepe and Lanari, 2006, TGRS)
     if norm:

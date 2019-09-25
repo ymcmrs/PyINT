@@ -76,7 +76,7 @@ def select_network_candidate(date_list,tbase_list,pbase_list,templateDict):
     if method == 'sbas':
         date12_list = nt.select_pairs_sbas(date_list)
     elif method == 'delaunay':
-        date12_list = nt.select_pairs_delaunay(date_list, pbase_list, norm = True)
+        date12_list = nt.select_pairs_delaunay(date_list, tbase_list, pbase_list, norm = True)
     elif method == 'star':
         date12_list = nt.select_pairs_star(date_list)
     elif method == 'sequential':
