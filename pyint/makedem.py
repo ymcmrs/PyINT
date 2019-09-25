@@ -215,7 +215,8 @@ def main(argv):
         
         print('Research region: %s(west)  %s(south)  %s(east)  %s(north)' % (west,south,east,north))
         print('>>> Ready to download SRTM1 dem over research region.')
-        call_str='wget -q -O dem.tif "http://ot-data1.sdsc.edu:9090/otr/getdem?north=%f&south=%f&east=%f&west=%f&demtype=SRTMGL1"' % (north,south,east,west)
+        #call_str='wget -q -O dem.tif "http://ot-data1.sdsc.edu:9090/otr/getdem?north=%f&south=%f&east=%f&west=%f&demtype=SRTMGL1"' % (north,south,east,west)
+        call_str = 'eio --product SRTM1 clip -o dem.tif --bounds ' + str(west) + ' ' + str(south) + ' ' + str(east) + ' ' + str(north)
         os.system(call_str)
         print('>>> DEM download finished.')
         
