@@ -56,8 +56,8 @@ def main(argv):
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      
     ifgDir = projectDir + '/ifgrams'
-    unwFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
-    corFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
+    unwFile = projectDir + '/ifgrams/*/2*rlks.diff_filt.unw'
+    corFile = projectDir + '/ifgrams/*/2*rlks.diff_filt.cor'
     print(unwFile)
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
@@ -103,7 +103,7 @@ def main(argv):
     lt       = glob.glob(demDir + '/*_' + rlks + 'rlks.UTM_TO_RDC')[0] 
     
     strPro = 'mintpy.load.processor      = gamma'
-    strUNW = "mintpy.load.unwFile        = " + projectDir + "/ifgrams/*/*rlks.diff_filt.unw"
+    strUNW = "mintpy.load.unwFile        = " + unwFile
     print(strUNW)
     strCOR = 'mintpy.load.corFile        = ' + corFile
     strCon = 'mintpy.load.connCompFile   = auto'
