@@ -112,13 +112,13 @@ def main(argv):
     
     strDem = 'mintpy.load.demFile        = ' + dem_rdc
     strDemGeo = 'mintpy.load.demFile        = ' + dem_geo
-    StrLtY = 'mintpy.load.lookupYFile    = ' + lt
-    StrLtX = 'mintpy.load.lookupXFile    = ' + lt
-    StrInc = 'mintpy.load.incAngleFile   = auto'
-    StrAza = 'mintpy.load.azAngleFile    = auto'
-    StrSha = 'mintpy.load.shadowMaskFile = auto'
-    StrWat = 'mintpy.load.waterMaskFile  = auto'
-    StrBrp = 'mintpy.load.bperpFile      = auto'
+    strLtY = 'mintpy.load.lookupYFile    = ' + lt
+    strLtX = 'mintpy.load.lookupXFile    = ' + lt
+    strInc = 'mintpy.load.incAngleFile   = auto'
+    strAza = 'mintpy.load.azAngleFile    = auto'
+    strSha = 'mintpy.load.shadowMaskFile = auto'
+    strWat = 'mintpy.load.waterMaskFile  = auto'
+    strBrp = 'mintpy.load.bperpFile      = auto'
     
     if 'mintpy.load.processor' not in templateDict: write_template(strPro,templateFile)
     if 'mintpy.load.unwFile' not in templateDict: write_template(strUNW,templateFile)
