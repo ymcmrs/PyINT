@@ -143,7 +143,7 @@ def main(argv):
     ### geocode ifg
     if templateDict['geocode_all'] == '1':
         print('Start to geocode Ifgs ...')
-        print('Number of processor: %s' % str(templateDict['geocode_all_parallel'']))
+        print('Number of processor: %s' % str(templateDict['geocode_all_parallel']))
         call_str = 'geocode_gamma_all.py ' + projectName + ' --parallel ' + templateDict['geocode_all_parallel']
         os.system(call_str)
         
