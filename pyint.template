@@ -76,31 +76,31 @@ max_tb           =     50000                # temporal baseline threshold in day
 max_sb           =     50000                # spatial baseline threshold in meters
 exclude_date     =     20180601, 20180702   # exclude the date which will not be used
 
-# -------------------   time-series process [0: skip; 1: process]    --------------     
+# -------------------   time-series process    --------------     
 
-download_data   =      0                 # if 1, track, frame, or time informations should be provided 
+download_data   =      0                 # [0: skip; 1: process]
 down_parallel   =      1                 # multi-processor number used for downloading
 
-raw2slc_all     =      0                  # i.e., download2slc
+raw2slc_all     =      0                  # i.e., download2slc  [0: skip; 1: process]
 raw2slc_all_parallel = 1                  # multi-processor number used 
     
-extract_burst_all    = 0                  # for TOPS SLC only
+extract_burst_all    = 0                  # for TOPS SLC only  [0: skip; 1: process]
 extract_all_parallel = 1                  # multi-processor number used 
     
-coreg_all            = 1                  # do coregister 
+coreg_all            = 1                  # do coregister  [0: skip; 1: process]
 coreg_all_parallel   = 1                  # multi-processor number used [4 or 8]
      
 select_pairs         = 1                  # if 0: skip, and use the ifgram_list.txt under PROJECTNAME folder
     
-diff_all             = 1 
+diff_all             = 1                  # generate differential Ifg [0: skip; 1: process]
 diff_all_parallel    = 1                  # multi-processor number used  [4 or 8]
     
-unwrap_all           = 1 
+unwrap_all           = 1                  # unwrap Ifg [0: skip; 1: process]
 unwrap_all_parallel  = 1                  # multi-processor number used [8 or 10]
     
-geocode_all          = 0           
+geocode_all          = 0                  # geocode diff,unw products [0: skip; 1: process]
 geocode_all_parallel = 1                  # multi-processor number used
     
-load_data            = 0                  # loading data for mintpy processing
+load_data            = 0                  # loading data for mintpy processing [0: skip; 1: process]
 
 # -------------------  Good Luck  --------------
