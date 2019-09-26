@@ -104,8 +104,8 @@ def main(argv):
     lt       = glob.glob(demDir + '/*_' + rlks + 'rlks.UTM_TO_RDC')[0] 
     
     strPro = 'mintpy.load.processor      = gamma'
-    StrUNW = 'mintpy.load.unwFile        = ' + ifgDir + '/*/*rlks.diff_filt.unw'
-    StrCOR = 'mintpy.load.corFile        = ' + ifgDir + '/*/*rlks.diff_filt.cor'
+    strUNW = 'mintpy.load.unwFile        = ' + ifgDir + '/*/*rlks.diff_filt.unw'
+    strCOR = 'mintpy.load.corFile        = ' + ifgDir + '/*/*rlks.diff_filt.cor'
     strCon = 'mintpy.load.connCompFile   = auto'
     strInt = 'mintpy.load.intFile        = auto'
     strIon = 'mintpy.load.ionoFile       = auto'
