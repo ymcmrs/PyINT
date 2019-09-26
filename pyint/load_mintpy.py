@@ -50,13 +50,13 @@ def main(argv):
     
     inps = cmdLineParse()
     projectName = inps.projectName
-    
+    scratchDir = os.getenv('SCRATCHDIR')
     projectDir = scratchDir + '/' + projectName 
     demDir    = scratchDir + '/' + projectName  + '/DEM'
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      
     ifgDir = projectDir + '/ifgrams'
-    scratchDir = os.getenv('SCRATCHDIR')
+    
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
