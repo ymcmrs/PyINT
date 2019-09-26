@@ -18,8 +18,8 @@ import glob
 from pyint import _utils as ut
 
 def write_template(str0,templateFile):
-    call_str = 'echo ' + str0 + ' >> ' + templateFile
-    os.system(call_str)
+    with open(templateFile, 'a') as f:
+        f.write(str0 + '\n')
     return
 
 def cmdLineParse():
@@ -103,7 +103,7 @@ def main(argv):
     lt       = glob.glob(demDir + '/*_' + rlks + 'rlks.UTM_TO_RDC')[0] 
     
     strPro = 'mintpy.load.processor      = gamma'
-    strUNW = 'mintpy.load.unwFile        = ' + unwFile
+    strUNW = "mintpy.load.unwFile        = " + projectDir + "/ifgrams/*/*rlks.diff_filt.unw"
     print(strUNW)
     strCOR = 'mintpy.load.corFile        = ' + corFile
     strCon = 'mintpy.load.connCompFile   = auto'
