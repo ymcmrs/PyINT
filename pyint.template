@@ -70,10 +70,11 @@ geo_interp      =     0                #  [0: nearest; 1: bicubic spline]
 
 endDate          =     21000101
 startDate        =     19000101
-network_method   =     sbas             # sbas, sequential, delaunay, stars
-conNumb          =     2                # connect number for sequential
-max_tb           =     50000            # temporal baseline threshold in days 
-max_sb           =     50000            # spatial baseline threshold in meters
+network_method   =     sbas                 # sbas, sequential, delaunay, stars
+conNumb          =     2                    # connect number for sequential
+max_tb           =     50000                # temporal baseline threshold in days 
+max_sb           =     50000                # spatial baseline threshold in meters
+exclude_date     =     20180601, 20180702   # exclude the date which will not be used
 
 # -------------------   time-series process [0: skip; 1: process]    --------------     
 
