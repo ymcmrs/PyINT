@@ -85,52 +85,72 @@ def main(argv):
     ### download data
     
     if templateDict['download_data'] == '1':
+        print('Start to download SAR data using SSARA...')
         call_str = 'ssara_federated_query.py -p ' +  templateDict['sensor'] + ' -r ' + templateDict['track'] + ' -f ' + templateDict['frame'] + ' -s ' + templateDict['start_time'] + ' -e ' + templateDict['end_time'] + ' --print --download --parallel ' + templateDict['down_parallel']
+        print(call_str)
         os.system(call_str)
         
     ### raw 2 slc 
     if templateDict['raw2slc_all'] == '1':   # only for S1 data now
+        print('Start to convert downloaded-raw data into SLC ...')
+        print('Number of processor: %s' % str(templateDict['raw2slc_all_parallel']))
         call_str = 'down2slc_sen_all.py ' + projectName + ' --parallel ' + templateDict['raw2slc_all_parallel']
         os.system(call_str)
         
     ### extract bursts  
     if templateDict['extract_burst_all'] == '1':
+        print('Start to extract common bursts ...')
+        print('Number of processor: %s' % str(templateDict['extract_all_parallel']))
         call_str = 'extract_s1_bursts_all.py ' + projectName + ' --parallel ' + templateDict['extract_all_parallel']
         os.system(call_str)
         
     ### generate rdc_dem
     if not os.path.isfile(HGTSIM):
+        print('Start to generate geometry file ...')
         call_str = 'generate_rdc_dem.py ' + projectName 
         os.system(call_str)
     
     ### coreg SLC  
     if templateDict['coreg_all'] == '1':
+        print('Start to coregister SLCs ...')
+        print('Number of processor: %s' % str(templateDict['coreg_all_parallel']))
         call_str = 'coreg_gamma_all.py ' + projectName + ' --parallel ' + templateDict['coreg_all_parallel']
         os.system(call_str)
     
     ### select interferometric pairs 
     if templateDict['select_pairs'] == '1':
+        print('Start to select interferometric pairs ...')
+        print('Network selection method: %s' % templateDict['network_method'])
+        #print('Meximum temporal baseline threshold: %s' % templateDict['max_tb'])
+        #print('Meximum spatial baseline threshold: %s' % templateDict['max_sb'])
         call_str = 'select_pairs.py ' + projectName
         os.system(call_str)
     
     ### diff ifg
     if templateDict['diff_all'] == '1':
+        print('Start to generate differential interferograms ...')
+        print('Number of processor: %s' % str(templateDict['diff_all_parallel']))
         call_str = 'diff_gamma_all.py ' + projectName + ' --parallel ' + templateDict['diff_all_parallel']
         os.system(call_str)
     
     ### unw ifg
     if templateDict['unwrap_all'] == '1':
+        print('Start to unwrap interferometric phases ...')
+        print('Number of processor: %s' % str(templateDict['unwrap_all_parallel']))
         call_str = 'unwrap_gamma_all.py ' + projectName + ' --parallel ' + templateDict['unwrap_all_parallel']
         os.system(call_str)
         
     ### geocode ifg
     if templateDict['geocode_all'] == '1':
+        print('Start to geocode Ifgs ...')
+        print('Number of processor: %s' % str(templateDict['geocode_all_parallel'']))
         call_str = 'geocode_gamma_all.py ' + projectName + ' --parallel ' + templateDict['geocode_all_parallel']
         os.system(call_str)
         
     ### load data
     if templateDict['load_data'] == '1':
-        call_str = 'load_data_pyint.py ' + projectName
+        print('Start to load data for mintPy time-series analysis ...')                                                   
+        call_str = 'load_mintpy.py ' + projectName
         os.system(call_str)
     
     print("PyINT processing for project %s is done." % projectName)
