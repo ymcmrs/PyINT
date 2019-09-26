@@ -19,10 +19,10 @@ azimuth_looks  =    4           #  multi-look numbers in azimuth direction
 # -------------------         download data    -----------------------
 
 sensor         =   Sentinel-1A    # Envisat, ERS-1/2, ..  please check SSARA for details
-track          =    14
-frame          =    75
-start_time     =    1989-01-01
-end_time       =    2189-01-01
+track          =    14            # track number of the SAR image
+frame          =    75            # frame number of the SAR image [ defined according to ASF ]  
+start_time     =    1989-01-01    #
+end_time       =    2189-01-01    #
 
 # -------------------   basic parameters for interferometry    -----------------------
 
