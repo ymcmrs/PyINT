@@ -50,7 +50,6 @@ def main(argv):
     
     inps = cmdLineParse()
     projectName = inps.projectName
-    dataType = inps.dataType
     
     projectDir = scratchDir + '/' + projectName 
     demDir    = scratchDir + '/' + projectName  + '/DEM'
