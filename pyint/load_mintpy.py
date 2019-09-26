@@ -28,15 +28,14 @@ def cmdLineParse():
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
     parser.add_argument('projectName', help='name of the project.')  
-    parser.add_argument('--data-type', dest='dataType', type=str, default='big_endian',choices={'big_endian', 'little_endian'},
-                        help='data type, big endian or little endian. [default: big_endian]')
+    #parser.add_argument('--data-type', dest='dataType', type=str, default='big_endian',choices={'big_endian', 'little_endian'},help='data type, big endian or little endian. [default: big_endian]')
     inps = parser.parse_args()
 
     return inps
 
 
 INTRODUCTION = '''
---------------------------------------------------------------------------------------
+-----------------------------------------------------------------
    Loading pyint products for mintPy time-series analysis.
    
 '''
@@ -44,8 +43,7 @@ INTRODUCTION = '''
 EXAMPLE = """Usage:
   
         load_mintpy.py projectName
-        load_mintpy.py projectName --data-type little_endian
---------------------------------------------------------------------------------------- 
+-----------------------------------------------------------------
 """
 
 def main(argv):

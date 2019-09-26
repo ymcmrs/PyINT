@@ -157,9 +157,9 @@ def main(argv):
     #os.remove(SampPar)
     
     os.remove(Mrslc)
-    os.remove(MrslcPar)
+    #os.remove(MrslcPar)
     os.remove(Srslc)
-    os.remove(SrslcPar)
+    #os.remove(SrslcPar)
     
     os.remove(HGT)
     os.remove(MasterPar)
