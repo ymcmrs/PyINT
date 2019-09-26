@@ -75,12 +75,6 @@ conNumb          =     2                # connect number for sequential
 max_tb           =     50000            # temporal baseline threshold in days 
 max_sb           =     50000            # spatial baseline threshold in meters
 
-# -------------------   interferometry switch  --------------  
-
-diff_flag        =     1                # do diff
-unwrap_flag      =     1                # do unwrap
-geo_flag         =     1                # do geocode
-
 # -------------------   time-series process [0: skip; 1: process]    --------------     
 
 download_data   =      0                 # if 1, track, frame, or time informations should be provided 
