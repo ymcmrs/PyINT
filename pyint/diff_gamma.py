@@ -152,9 +152,9 @@ def main(argv):
     os.system(call_str)
     
     os.remove(Mamp)
-    os.remove(MampPar)
+    #os.remove(MampPar)
     os.remove(Samp)
-    os.remove(SampPar)
+    #os.remove(SampPar)
     
     os.remove(Mrslc)
     os.remove(MrslcPar)

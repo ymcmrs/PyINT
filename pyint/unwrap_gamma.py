@@ -107,8 +107,8 @@ def main(argv):
 
     os.remove(Mamp)
     os.remove(Samp)
-    os.remove(MampPar)
-    os.remove(SampPar)
+    #os.remove(MampPar)
+    #os.remove(SampPar)
     print("Uwrapping interferometric phase is done!")
     sys.exit(1)
 

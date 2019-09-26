@@ -122,7 +122,7 @@ def main(argv):
     os.system(call_str)
     
     os.remove(Mamp)
-    os.remove(MampPar)
+    #os.remove(MampPar)
     
     os.remove(UTMTORDC)
     os.remove(UTMDEMpar)
