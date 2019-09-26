@@ -56,13 +56,12 @@ def main(argv):
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      
     ifgDir = projectDir + '/ifgrams'
-    
+    unwFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
+    corFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
     
-    rlks = templateDict['range_looks']
-    azlks = templateDict['azimuth_looks']
     masterDate =  templateDict['masterDate']
     MampPar = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
     date_list = ut.get_project_slcList(projectName)
@@ -93,8 +92,8 @@ def main(argv):
     nWIDTH = ut.read_gamma_par(MampPar,'read', 'range_samples')
     nLINE = ut.read_gamma_par(MampPar,'read', 'azimuth_samples')
      
-    unw_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.unw')
-    cor_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.cor')
+    #unw_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.unw')
+    #cor_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.cor')
     
     dem_geo  = glob.glob(demDir + '/*rlks.utm.dem')[0]
     geo_par  = glob.glob(demDir + '/*rlks.utm.dem.par')[0]  
@@ -104,8 +103,9 @@ def main(argv):
     lt       = glob.glob(demDir + '/*_' + rlks + 'rlks.UTM_TO_RDC')[0] 
     
     strPro = 'mintpy.load.processor      = gamma'
-    strUNW = 'mintpy.load.unwFile        = ' + ifgDir + '/*/*rlks.diff_filt.unw'
-    strCOR = 'mintpy.load.corFile        = ' + ifgDir + '/*/*rlks.diff_filt.cor'
+    strUNW = 'mintpy.load.unwFile        = ' + unwFile
+    #print(strUNW)
+    strCOR = 'mintpy.load.corFile        = ' + corFile
     strCon = 'mintpy.load.connCompFile   = auto'
     strInt = 'mintpy.load.intFile        = auto'
     strIon = 'mintpy.load.ionoFile       = auto'
