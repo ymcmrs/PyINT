@@ -104,7 +104,7 @@ def main(argv):
     
     strPro = 'mintpy.load.processor      = gamma'
     strUNW = 'mintpy.load.unwFile        = ' + unwFile
-    #print(strUNW)
+    print(strUNW)
     strCOR = 'mintpy.load.corFile        = ' + corFile
     strCon = 'mintpy.load.connCompFile   = auto'
     strInt = 'mintpy.load.intFile        = auto'
@@ -137,13 +137,13 @@ def main(argv):
     if 'mintpy.load.bperpFile' not in templateDict: write_template(strBrp,templateFile)
     
     os.chdir(projectDir)
-    call_str = 'load_data.py -t ' + templateFile
-    os.system(call_str)
+    #call_str = 'load_data.py -t ' + templateFile
+    #os.system(call_str)
     
     os.chdir(projectDir)
     write_template(strDemGeo,templateFile)
-    call_str = 'load_data.py -t ' + templateFile
-    os.system(call_str)
+    #call_str = 'load_data.py -t ' + templateFile
+    #os.system(call_str)
     
     sys.exit(1)
     
