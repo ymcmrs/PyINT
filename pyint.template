@@ -68,9 +68,9 @@ geo_interp      =     0                #  [0: nearest; 1: bicubic spline]
 
 # -------------------   select interferometric pairs  --------------     
 
-endDate          =     21000101
-startDate        =     19000101
 network_method   =     sbas                 # sbas, sequential, delaunay, stars
+endDate          =     21000101             # date before this date will be excluded
+startDate        =     19000101             # date after this date will be excluded
 conNumb          =     2                    # connect number for sequential
 max_tb           =     50000                # temporal baseline threshold in days 
 max_sb           =     50000                # spatial baseline threshold in meters
