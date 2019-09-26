@@ -56,9 +56,9 @@ def main(argv):
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      
     ifgDir = projectDir + '/ifgrams'
-    unwFile = projectDir + '/ifgrams/*/2*rlks.diff_filt.unw'
+    unwFile = projectDir + '/ifgrams/*/2*rlks.diff_filt.unw'  # considering geocode unw file
     corFile = projectDir + '/ifgrams/*/2*rlks.diff_filt.cor'
-    print(unwFile)
+    #print(unwFile)
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
@@ -104,7 +104,6 @@ def main(argv):
     
     strPro = 'mintpy.load.processor      = gamma'
     strUNW = "mintpy.load.unwFile        = " + unwFile
-    print(strUNW)
     strCOR = 'mintpy.load.corFile        = ' + corFile
     strCon = 'mintpy.load.connCompFile   = auto'
     strInt = 'mintpy.load.intFile        = auto'
