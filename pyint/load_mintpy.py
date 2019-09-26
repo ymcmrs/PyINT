@@ -69,6 +69,27 @@ def main(argv):
     date_list = ut.get_project_slcList(projectName)
     date_list = sorted(date_list)
     slc_par_list = [rslcDir + '/' + date0 + '/' + date0 + '.rlsc.par' for date0 in date_list ]
+    ifgdir_list = glob.glob(ifgDir + '/*')
+    for k0 in ifgdir_list:
+        pair0 = os.path.basename(k0)
+        m0 = pair0.split('-')[0]
+        s0 = pair0.split('-')[1]
+        
+        workDir = k0
+        mamppar0 = rslcDir + '/' + m0 + '/' + m0 + '_' + rlks + 'rlks.amp.par'
+        samppar0 = rslcDir + '/' + s0 + '/' + s0 + '_' + rlks + 'rlks.amp.par'        
+        mrslcpar0 = rslcDir + '/' + m0 + '/' + m0 + '.rslc.par'
+        srslcpar0 = rslcDir + '/' + s0 + '/' + s0 + '.rslc.par'
+        
+        mamppar = workDir + '/' + m0 + '_' + rlks + 'rlks.amp.par'
+        samppar = workDir + '/' + s0 + '_' + rlks + 'rlks.amp.par'        
+        mrslcpar = workDir + '/' + m0 + '.rslc.par'
+        srslcpar = workDir + '/' + s0 + '.rslc.par'
+        
+        ut.copy_file(mamppar0, mamppar)
+        ut.copy_file(samppar0, samppar)
+        ut.copy_file(mrslcpar0,mrslcpar)
+        ut.copy_file(srslcpar0,srslcpar)
     
     nWIDTH = ut.read_gamma_par(MampPar,'read', 'range_samples')
     nLINE = ut.read_gamma_par(MampPar,'read', 'azimuth_samples')
@@ -119,7 +140,12 @@ def main(argv):
     os.chdir(projectDir)
     call_str = 'load_data.py -t ' + templateFile
     os.system(call_str)
-        
+    
+    os.chdir(projectDir)
+    write_template(strDemGeo,templateFile)
+    call_str = 'load_data.py -t ' + templateFile
+    os.system(call_str)
+    
     sys.exit(1)
     
 if __name__ == '__main__':
