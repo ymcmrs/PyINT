@@ -124,13 +124,14 @@ def main(argv):
     if 'mintpy.load.processor' not in templateDict: write_template(strPro,templateFile0)
     if 'mintpy.load.unwFile' not in templateDict: write_template(strUNW,templateFile0)
     if 'mintpy.load.corFile' not in templateDict: write_template(strCOR,templateFile0)
+    if 'mintpy.load.demFile' not in templateDict: write_template(strDem,templateFile0)
+    if 'mintpy.load.lookupYFile' not in templateDict: write_template(strLtY,templateFile0)
+    if 'mintpy.load.lookupXFile' not in templateDict: write_template(strLtX,templateFile0)
+    
     if 'mintpy.load.connCompFile' not in templateDict: write_template(strCon,templateFile0)
     if 'mintpy.load.intFile' not in templateDict: write_template(strInt,templateFile0)
     if 'mintpy.load.ionoFile' not in templateDict: write_template(strIon,templateFile0)
         
-    if 'mintpy.load.demFile' not in templateDict: write_template(strDem,templateFile0)
-    if 'mintpy.load.lookupYFile' not in templateDict: write_template(strLtY,templateFile0)
-    if 'mintpy.load.lookupXFile' not in templateDict: write_template(strLtX,templateFile0)
     if 'mintpy.load.incAngleFile' not in templateDict: write_template(strInc,templateFile0)
     if 'mintpy.load.azAngleFile' not in templateDict: write_template(strAza,templateFile0)
     if 'mintpy.load.shadowMaskFile' not in templateDict: write_template(strSha,templateFile0)
