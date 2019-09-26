@@ -13,8 +13,8 @@ end_swath      =    1           # [option (for Sentinel-1 only)]
 start_burst    =    1           # [option: bursts position is based on the master image (for Sentinel-1 only)]
 end_burst      =    4           # [option: bursts position is based on the master image (for Sentinel-1 only)]
 
-range_looks    =    20          #   Range_Looks : Azimuth_Looks ===== >>>   Tsx  1:1     ASAR 1:5     Sentinel   5:1
-azimuth_looks  =    4     
+range_looks    =    20          #  multi-look numbers in range direction
+azimuth_looks  =    4           #  multi-look numbers in azimuth direction 
 
 # -------------------         download data    -----------------------
 
