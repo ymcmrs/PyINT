@@ -68,13 +68,63 @@ def get_common_burst(Mslc_dir,Sslc_dir,common_burst_txt):
         La_M = MM[:,2]
         La_S = SM[:,2]
         
-        PP = common_burst(La_M,La_S)
+        PP = common_burst_Ref(La_M,La_S)
         
         print('Common bursts of swath' + str(kk+1) + ' : (master) ' + str(PP[0]) + ' ' + str(PP[1]) + ' (slave) ' + str(PP[2]) + ' ' + str(PP[3]))
         call_str = 'echo ' + str(PP[0]) + ' ' + str(PP[1]) + ' ' + str(PP[2]) + ' ' + str(PP[3]) + ' >>' +  common_burst_txt
         os.system(call_str)
                   
     return   
+
+def common_burst_Ref(La_M,La_S):
+    Min = max(min(La_M),min(La_S))
+    Max = min(max(La_M),max(La_S))
+    
+    M_min = []
+    M_max = []
+    for xm in La_M:
+        k0_min = float(xm) - float(Min)
+        k0_max = float(xm) - float(Max)
+        M_min.append(abs(k0_min))
+        M_max.append(abs(k0_max))
+    
+    M_Index_min = M_min.index(min(M_min)) + 1
+    M_Index_max = M_max.index(min(M_max)) + 1
+    Mindex =[M_Index_min,M_Index_max]
+    
+    S_min = []
+    S_max = []
+    for xs in La_S:
+        k0_min = float(xs) - float(Min)
+        k0_max = float(xs) - float(Max)
+        S_min.append(abs(k0_min))
+        S_max.append(abs(k0_max))
+    
+    S_Index_min = S_min.index(min(S_min)) + 1 
+    S_Index_max = S_max.index(min(S_max)) + 1
+    Sindex =[S_Index_min,S_Index_max]
+    #print La_M
+    #print La_S
+    #print min(M_min),min(M_max),min(S_min),min(S_max)
+    M1 = min(Mindex)
+    M2 = max(Mindex)
+    
+    S1 = min(Sindex)
+    S2 = max(Sindex)
+    
+    if M1==1: S1 = S1
+    else: 
+        S1=1-M1+1
+        M1=1
+        
+    
+    if M2 ==len(La_M): S2 = S2
+    else: 
+        S2 = S2 + len(La_M) - M2 
+        M2 = len(La_M)
+        
+    
+    return M1 , M2, S1, S2
 #########################################################################
 
 INTRODUCTION = '''
