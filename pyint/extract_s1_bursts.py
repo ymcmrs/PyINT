@@ -196,7 +196,7 @@ def main(argv):
         EB2=int(AA[ii-1,3])
         
         if not int(SB)==1:
-            SB2 = SB2 + int(SB)-1
+            SB2 = SB2 + int(SB)-int(SB1)
         if not int(EB)==20:
             EB2 = SB2 + int(EB) - int(SB)
         

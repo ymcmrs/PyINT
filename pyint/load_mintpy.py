@@ -62,7 +62,8 @@ def main(argv):
     date_list = sorted(date_list)
     amp_par_list = sorted(amp_par_list)
     
-    slc_par_list = glob.glob(rslcDir + '/*/*.rslc.par')
+    slc_par_list = [rslcDir + '/' + date0 + '/' + date0 + '.rlsc.par' for date0 in date_list ]
+
     
     unw_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.unw')
     cor_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.cor')
