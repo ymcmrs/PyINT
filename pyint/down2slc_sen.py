@@ -79,12 +79,7 @@ def main(argv):
         raw_file_dir = os.path.dirname(raw_file)
     
     raw_dir = raw_file.replace('.zip','.SAFE')
-          
-    measureDir = raw_dir + '/measurement'
-    annotatDir = raw_dir + '/annotation'
-    calibraDir = raw_dir + '/annotation/calibration'
-    
-    MM = glob.glob(measureDir + '/*vv*tiff')
+              
 #     MEASURE = glob.glob(measureDir + '/*vv*tiff')
 #    ANNOTAT = glob.glob(annotatDir + '/*vv*xml' )
 #    CALIBRA = glob.glob(calibraDir+'/calibration*vv*') 
@@ -97,7 +92,12 @@ def main(argv):
         if not os.path.isdir(raw_dir): 
             call_str = 'unzip ' + raw_file + ' -d ' + raw_file_dir
             os.system(call_str)
-            
+        
+        measureDir = raw_dir + '/measurement'
+        annotatDir = raw_dir + '/annotation'
+        calibraDir = raw_dir + '/annotation/calibration'
+        MM = glob.glob(measureDir + '/*vv*tiff')
+        
         if os.path.isfile(SLC_Tab):
             os.remove(SLC_Tab)
         for kk in range(len(MM)):
