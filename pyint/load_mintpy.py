@@ -62,6 +62,8 @@ def main(argv):
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
     
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
     masterDate =  templateDict['masterDate']
     MampPar = rslcDir + '/' + masterDate + '/' + masterDate + '_' + rlks + 'rlks.amp.par'
     date_list = ut.get_project_slcList(projectName)
