@@ -131,17 +131,17 @@ def main(argv):
             
             os.system(call_str)
             
-            call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
-            os.system(call_str)
-    
-    # orbit correction
-    slc_pars = glob.glob(slc_dir + '/*.IW*.slc.par')
-    orbit_file0 = ut.download_s1_orbit(date,slc_dir,satellite=satellite)
-    orbit_file = slc_dir + '/' + orbit_file0
-    
-    for i in range(len(slc_pars)):
-        call_str = 'S1_OPOD_vec ' + slc_pars[i] + ' ' + orbit_file
+        call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
         os.system(call_str)
+    
+        # orbit correction
+        slc_pars = glob.glob(slc_dir + '/*.IW*.slc.par')
+        orbit_file0 = ut.download_s1_orbit(date,slc_dir,satellite=satellite)
+        orbit_file = slc_dir + '/' + orbit_file0
+    
+        for i in range(len(slc_pars)):
+            call_str = 'S1_OPOD_vec ' + slc_pars[i] + ' ' + orbit_file
+            os.system(call_str)
     
     # generate amp file for check image quality
     #TSLC = slc_dir + '/' + date + '.slc'
@@ -159,9 +159,10 @@ def main(argv):
     #nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')
     #call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
     #os.system(call_str)
-
-    call_str = 'rm -rf ' + raw_dir
-    os.system(call_str)    
+    
+    if os.path.isdir(raw_dir):
+        call_str = 'rm -rf ' + raw_dir
+        os.system(call_str)    
 
     print("Down to SLC for %s is done! " % date)
     sys.exit(1)
