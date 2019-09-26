@@ -58,6 +58,7 @@ def main(argv):
     ifgDir = projectDir + '/ifgrams'
     unwFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
     corFile = projectDir + '/ifgrams/*/*rlks.diff_filt.unw'
+    print(unwFile)
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
@@ -90,9 +91,6 @@ def main(argv):
         ut.copy_file(samppar0, samppar)
         ut.copy_file(mrslcpar0,mrslcpar)
         ut.copy_file(srslcpar0,srslcpar)
-    
-    nWIDTH = ut.read_gamma_par(MampPar,'read', 'range_samples')
-    nLINE = ut.read_gamma_par(MampPar,'read', 'azimuth_samples')
      
     #unw_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.unw')
     #cor_list = glob.glob(ifgDir + '/*/*rlks.diff_filt.cor')
