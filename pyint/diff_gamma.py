@@ -64,8 +64,7 @@ def main(argv):
     demDir    = scratchDir + '/' + projectName  + '/DEM'
     
     slcDir    = scratchDir + '/' + projectName + '/SLC'
-    rslcDir   = scratchDir + '/' + projectName + '/RSLC'
-    
+    rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
     ifgDir = projectDir + '/ifgrams'
     if not os.path.isdir(ifgDir): os.mkdir(ifgDir)
     

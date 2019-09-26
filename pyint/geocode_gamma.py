@@ -94,8 +94,14 @@ def main(argv):
     GeoUNW     =  workDir + '/geo_' + Pair + '_' + rlks + 'rlks.diff_filt.unw'
     GeoDIFF    =  workDir + '/geo_' + Pair + '_' + rlks + 'rlks.diff_filt'
     
-    UTMTORDC = demDir + '/' + masterDate + '_' + rlks + 'rlks.UTM_TO_RDC'
-    UTMDEMpar = demDir + '/' + masterDate + '_' + rlks + 'rlks.utm.dem.par'
+    UTMTORDC0 = demDir + '/' + masterDate + '_' + rlks + 'rlks.UTM_TO_RDC'
+    UTMDEMpar0 = demDir + '/' + masterDate + '_' + rlks + 'rlks.utm.dem.par'
+    
+    UTMTORDC = workDir + '/' + masterDate + '_' + rlks + 'rlks.UTM_TO_RDC'
+    UTMDEMpar = workDir + '/' + masterDate + '_' + rlks + 'rlks.utm.dem.par'
+    
+    ut.copy_file(UTMTORDC0,UTMTORDC)
+    ut.copy_file(UTMDEMpar0,UTMDEMpar)
 
     nWidth = ut.read_gamma_par(MampPar, 'read', 'range_samples')
     nWidthUTMDEM = ut.read_gamma_par(UTMDEMpar, 'read', 'width')
@@ -117,6 +123,9 @@ def main(argv):
     
     os.remove(Mamp)
     os.remove(MampPar)
+    
+    os.remove(UTMTORDC)
+    os.remove(UTMDEMpar)
     
     print("Geocoding is done!") 
     sys.exit(1)

@@ -79,11 +79,7 @@ def main(argv):
         raw_file_dir = os.path.dirname(raw_file)
     
     raw_dir = raw_file.replace('.zip','.SAFE')
-    
-    if not os.path.isdir(raw_dir): 
-        call_str = 'unzip ' + raw_file + ' -d ' + raw_file_dir
-        os.system(call_str)
-      
+          
     measureDir = raw_dir + '/measurement'
     annotatDir = raw_dir + '/annotation'
     calibraDir = raw_dir + '/annotation/calibration'
@@ -95,9 +91,13 @@ def main(argv):
 #    NOISE = glob.glob(calibraDir+'/noise*vv*')
     
     SLC_Tab = slc_dir + '/' + date+'_SLC_Tab'   
-    TEST = slc_dir + '/' + date + '.IW1.slc'
+    TEST = slc_dir + '/' + date + '.IW3.slc'
     
     if not os.path.isfile(TEST):
+        if not os.path.isdir(raw_dir): 
+            call_str = 'unzip ' + raw_file + ' -d ' + raw_file_dir
+            os.system(call_str)
+            
         if os.path.isfile(SLC_Tab):
             os.remove(SLC_Tab)
         for kk in range(len(MM)):
