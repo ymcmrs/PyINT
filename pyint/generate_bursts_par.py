@@ -59,7 +59,7 @@ def main(argv):
     processDir = scratchDir + '/' + projectName + "/PROCESS"
     slcDir     = scratchDir + '/' + projectName + "/SLC"
     rslcDir     = scratchDir + '/' + projectName + "/RSLC"
-    dateList = ut.get_project_slcList(slcDir)
+    dateList = ut.get_project_slcList(projectName)
     
     for i in range(len(dateList)):
         slc_dir = slcDir + '/' + dateList[i]
