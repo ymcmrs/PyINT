@@ -15,6 +15,20 @@ import argparse
 from pyint import _utils as ut
 
 
+
+INTRODUCTION = '''
+-------------------------------------------------------------------  
+
+   Generate burst par files for a project.
+'''
+
+EXAMPLE = """Usage:
+  
+  generate_bursts_par.py projectName
+  
+------------------------------------------------------------------- 
+"""
+
 def cmdLineParse():
     parser = argparse.ArgumentParser(description='Check common busrts for TOPS data.',\
                                      formatter_class=argparse.RawTextHelpFormatter,\
