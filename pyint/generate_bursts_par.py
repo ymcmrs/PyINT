@@ -63,14 +63,14 @@ def main(argv):
     
     for i in range(len(dateList)):
         slc_dir = slcDir + '/' + dateList[i]
-            for j in range(3):
-                SLC    = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc'
-                SLCPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.par'
-                TOPPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.TOPS_par'
-                BURST = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.burst.par'
+        for j in range(3):
+            SLC    = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc'
+            SLCPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.par'
+            TOPPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.TOPS_par'
+            BURST = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.burst.par'
                 
-                call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
-                os.system(call_str)
+            call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
+            os.system(call_str)
                 
                 
     sys.exit(1)
