@@ -85,9 +85,13 @@ def main(argv):
 #    NOISE = glob.glob(calibraDir+'/noise*vv*')
     
     SLC_Tab = slc_dir + '/' + date+'_SLC_Tab'   
-    TEST = slc_dir + '/' + date + '.IW3.slc'
+    TEST = slc_dir + '/' + date + '.IW3.slc.par'
+    k0 = 0
+    if os.path.isfile(TEST):
+        if os.path.getsize(TEST) > 0:
+            k0 = 1
     
-    if not os.path.isfile(TEST):
+    if k0==0:
         if not os.path.isdir(raw_dir): 
             call_str = 'unzip ' + raw_file + ' -d ' + raw_file_dir
             os.system(call_str)
