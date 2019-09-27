@@ -63,6 +63,7 @@ def main(argv):
     
     for i in range(len(dateList)):
         slc_dir = slcDir + '/' + dateList[i]
+        print(slc_dir)
         for j in range(3):
             SLC    = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc'
             SLCPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.par'
