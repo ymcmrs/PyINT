@@ -136,60 +136,67 @@ def main(argv):
     #   os.system(call_str)
       
     os.chdir(workDir)
+    TEST = workDir + '/' + Sdate +'.rslc.par'
     
-    if not Mdate ==Sdate:
-        call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
-        os.system(call_str)
+    k0 = 0
+    if os.path.isfile(TEST):
+        if os.path.getsize(TEST) > 0:
+            k0 = 1
+    
+    if k0==0:
+        if not Mdate ==Sdate:
+            call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
+            os.system(call_str)
         
-        #### clean large file ####
-        mslc = workDir + '/' + Mdate + '.slc'
-        mrslc = workDir + '/' + Mdate + '.rslc'
-        sslc = workDir + '/' + Sdate + '.slc'
-        srslc = workDir + '/' + Sdate + '.rslc'
-        srslcPar = workDir + '/' + Sdate + '.rslc.par'
+            #### clean large file ####
+            mslc = workDir + '/' + Mdate + '.slc'
+            mrslc = workDir + '/' + Mdate + '.rslc'
+            sslc = workDir + '/' + Sdate + '.slc'
+            srslc = workDir + '/' + Sdate + '.rslc'
+            srslcPar = workDir + '/' + Sdate + '.rslc.par'
 
-        call_str = 'multi_look ' + srslc + ' ' + srslcPar + ' ' + Samp + ' ' + SampPar + ' ' + rlks + ' ' + azlks
-        os.system(call_str)
-        nWIDTH = ut.read_gamma_par(SampPar,'read', 'range_samples')
-        if os.path.isfile(mslc):  os.remove(mslc)
-        if os.path.isfile(mrslc): os.remove(mrslc)
-        if os.path.isfile(sslc): os.remove(sslc)
+            call_str = 'multi_look ' + srslc + ' ' + srslcPar + ' ' + Samp + ' ' + SampPar + ' ' + rlks + ' ' + azlks
+            os.system(call_str)
+            nWIDTH = ut.read_gamma_par(SampPar,'read', 'range_samples')
+            if os.path.isfile(mslc):  os.remove(mslc)
+            if os.path.isfile(mrslc): os.remove(mrslc)
+            if os.path.isfile(sslc): os.remove(sslc)
         
-        call_str = 'raspwr ' + Samp + ' ' + nWIDTH
-        os.system(call_str)
+            call_str = 'raspwr ' + Samp + ' ' + nWIDTH
+            os.system(call_str)
         
-        call_str = 'rm *mli*'
-        os.system(call_str)
+            call_str = 'rm *mli*'
+            os.system(call_str)
         
-        call_str = 'rm *IW*'
-        os.system(call_str)
+            call_str = 'rm *IW*'
+            os.system(call_str)
         
-        call_str = 'rm *off*'
-        os.system(call_str)
+            call_str = 'rm *off*'
+            os.system(call_str)
         
-        call_str = 'rm *diff'
-        os.system(call_str)
+            call_str = 'rm *diff'
+            os.system(call_str)
         
-        call_str = 'rm *diff_par*'
-        os.system(call_str)
+            call_str = 'rm *diff_par*'
+            os.system(call_str)
         
-        call_str = 'rm ' + Mdate + '.*'
-        os.system(call_str)
+            call_str = 'rm ' + Mdate + '.*'
+            os.system(call_str)
         
-    else:
-        call_str = 'cp ' + Mslc + ' ' + workDir + '/' + Mdate + '.rslc'
-        os.system(call_str)
+        else:
+            call_str = 'cp ' + Mslc + ' ' + workDir + '/' + Mdate + '.rslc'
+            os.system(call_str)
         
-        call_str = 'cp ' + Mslcpar + ' ' + workDir+ '/' + Mdate + '.rslc.par'
-        os.system(call_str)
+            call_str = 'cp ' + Mslcpar + ' ' + workDir+ '/' + Mdate + '.rslc.par'
+            os.system(call_str)
         
-        call_str = 'cp ' + Mamp + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp'
-        os.system(call_str)
+            call_str = 'cp ' + Mamp + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp'
+            os.system(call_str)
         
-        call_str = 'cp ' + MampPar + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-        os.system(call_str)
+            call_str = 'cp ' + MampPar + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+            os.system(call_str)
 
-        ut.copy_file(Mampbmp,Sampbmp)
+            ut.copy_file(Mampbmp,Sampbmp)
         
     ################   clean redundant files #############
     
