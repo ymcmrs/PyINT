@@ -36,7 +36,7 @@ Download the development version using git:
     
  2） Install gdal, elevation module using pip or conda for DEM processing.
  
- 3） Install [SSARA](https://github.com/bakerunavco/SSARA) and set account info for downloading data.
+ 3） Install [SSARA](https://github.com/bakerunavco/SSARA) and set account info for downloading data. [option]
  
        
 ### 3 Running PyINT
