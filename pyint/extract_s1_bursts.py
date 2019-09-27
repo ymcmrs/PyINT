@@ -51,7 +51,7 @@ def get_common_burst(Mslc_dir,Sslc_dir,common_burst_txt):
     Spar_list = sorted(glob.glob(Sslc_dir+'/*.IW*.burst.par'))
     if os.path.isfile(common_burst_txt):
         os.remove(common_burst_txt)
-    for kk in range(3):
+    for kk in range(len(Mpar_list)):
         MBURST = Mpar_list[kk]
         SBURST = Spar_list[kk]
         
