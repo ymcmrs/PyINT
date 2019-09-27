@@ -130,8 +130,8 @@ def main(argv):
             
             os.system(call_str)
             
-        call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
-        os.system(call_str)
+            call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
+            os.system(call_str)
     
         # orbit correction
         slc_pars = glob.glob(slc_dir + '/*.IW*.slc.par')
