@@ -61,7 +61,7 @@ def main(argv):
     rslcDir     = scratchDir + '/' + projectName + "/RSLC"
     dateList = ut.get_project_slcList(slcDir)
     
-    for i in range(dateList):
+    for i in range(len(dateList)):
             for j in range(3):
                 SLC    = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc'
                 SLCPar = slc_dir + '/' + dateList[i] + '.IW' + str(kk+1)+'.slc.par'
