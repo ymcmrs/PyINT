@@ -74,7 +74,13 @@ def main(argv):
     inps = cmdLineParse() 
     projectName = inps.projectName
     scratchDir = os.getenv('SCRATCHDIR')
-    projectDir = scratchDir + '/' + projectName 
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+    projectDir = scratchDir + '/' + projectName
+    ifgDir = scratchDir + '/' + projectName + '/ifgrams'
+    templateDict=ut.update_template(templateFile)
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
     
     if inps.ifgarmListTxt: ifgramList_txt = inps.ifgarmListTxt
     else: ifgramList_txt = scratchDir + '/' + projectName + '/ifgram_list.txt'
@@ -89,8 +95,15 @@ def main(argv):
         m0 = ut.yyyymmdd(ifgList[i].split('-')[0])
         s0 = ut.yyyymmdd(ifgList[i].split('-')[1])
         cmd0 = ['diff_gamma.py',projectName, m0, s0]
+        diff_file0 = ifgDir + '/' + ifgList[i] + '/' + ifgList[i] + '_' + rlks + 'rlks.diff_filt'
         data0 = [cmd0,err_txt]
-        data_para.append(data0)
+        
+        k00 = 0
+        if os.path.isfile(diff_file0):
+            if os.path.getsize(diff_file0) > 0:
+                k00 = 1
+        if k00==0:
+            data_para.append(data0)
     
     ut.parallel_process(data_para, work, n_jobs=inps.parallelNumb, use_kwargs=False)
     print("Generate differential interferograms for project %s is done! " % projectName)

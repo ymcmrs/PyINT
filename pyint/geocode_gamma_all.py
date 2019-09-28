@@ -73,7 +73,13 @@ def main(argv):
     inps = cmdLineParse() 
     projectName = inps.projectName
     scratchDir = os.getenv('SCRATCHDIR')
-    projectDir = scratchDir + '/' + projectName 
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+    projectDir = scratchDir + '/' + projectName
+    ifgDir = scratchDir + '/' + projectName + '/ifgrams'
+    templateDict=ut.update_template(templateFile)
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
     
     if inps.ifgarmListTxt: ifgramList_txt = inps.ifgarmListTxt
     else: ifgramList_txt = scratchDir + '/' + projectName + '/ifgram_list.txt'
@@ -89,6 +95,15 @@ def main(argv):
         #s0 = ut.yyyymmdd(ifgList[i].split('-')[1])
         cmd0 = ['geocode_gamma.py',projectName, ifgList[i]]
         data0 = [cmd0,err_txt]
+        geo_file0 = ifgDir + '/' + ifgList[i] + '/geo_' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.unw'
+   
+        k00 = 0
+        if os.path.isfile(geo_file0):
+            if os.path.getsize(geo_file0) > 0:
+                k00 = 1
+        if k00==0:
+            data_para.append(data0)
+        
         data_para.append(data0)
     
     ut.parallel_process(data_para, work, n_jobs=inps.parallelNumb, use_kwargs=False)
