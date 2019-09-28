@@ -91,7 +91,7 @@ def main(argv):
     MampPar = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
     HGTSIM      = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
     SLC1_INF_tab1 = SslcDir + '/' + Mdate + '_SLC_Tab'
-    
+    ut.copy_file(SLC1_INF_tab0,SLC1_INF_tab1) 
     ##############################################################################
     with open(SLC1_INF_tab1, "r") as f:
         lines = f.readlines()
@@ -143,7 +143,7 @@ def main(argv):
         ut.copy_file(Mamp0,Mamp)
         ut.copy_file(MampPar0,MampPar)
         ut.copy_file(HGTSIM0,HGTSIM)
-        ut.copy_file(SLC1_INF_tab0,SLC1_INF_tab1) 
+        
         
         if not Mdate ==Sdate:
             call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
