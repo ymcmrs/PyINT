@@ -95,7 +95,7 @@ def main(argv):
         #s0 = ut.yyyymmdd(ifgList[i].split('-')[1])
         cmd0 = ['geocode_gamma.py',projectName, ifgList[i]]
         data0 = [cmd0,err_txt]
-        geo_file0 = ifgDir + '/' + ifgList[i] + '/geo_' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.unw'
+        geo_file0 = ifgDir + '/' + ifgList[i] + '/geo_' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.unw.bmp'
    
         k00 = 0
         if os.path.isfile(geo_file0):

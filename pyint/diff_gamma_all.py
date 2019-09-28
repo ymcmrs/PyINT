@@ -95,7 +95,7 @@ def main(argv):
         m0 = ut.yyyymmdd(ifgList[i].split('-')[0])
         s0 = ut.yyyymmdd(ifgList[i].split('-')[1])
         cmd0 = ['diff_gamma.py',projectName, m0, s0]
-        diff_file0 = ifgDir + '/' + ifgList[i] + '/' + ifgList[i] + '_' + rlks + 'rlks.diff_filt'
+        diff_file0 = ifgDir + '/' + ifgList[i] + '/' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.bmp'
         data0 = [cmd0,err_txt]
         
         k00 = 0

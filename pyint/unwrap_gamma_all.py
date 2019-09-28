@@ -95,7 +95,7 @@ def main(argv):
         m0 = ut.yyyymmdd(ifgList[i].split('-')[0])
         s0 = ut.yyyymmdd(ifgList[i].split('-')[1])
         cmd0 = ['unwrap_gamma.py',projectName, m0, s0]
-        unw_file0 = ifgDir + '/' + ifgList[i] + '/' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.unw'
+        unw_file0 = ifgDir + '/' + ifgList[i] + '/' + ifgList[i] + '_' + rlks + 'rlks.diff_filt.unw.bmp'
         data0 = [cmd0,err_txt]
         
         k00 = 0
