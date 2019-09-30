@@ -130,7 +130,7 @@ def main(argv):
     #   os.system(call_str)
       
     os.chdir(workDir)
-    TEST = workDir + '/' + Sdate +'_' + rlks + '.amp.par'
+    TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
     
     k0 = 0
     if os.path.isfile(TEST):
