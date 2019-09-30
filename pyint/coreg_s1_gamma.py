@@ -107,12 +107,7 @@ def main(argv):
     M_IW = M_IW.flatten()
     S_IW = ut.read_txt2array(SLC1_INF_tab)  
     S_IW = S_IW.flatten()
-    
-    for i in range(len(M_IW)):
-        #print(M_IW[i])
-        #print(S_IW[i])
-        ut.copy_file(M_IW[i],S_IW[i])
-    
+        
     #RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
     #if os.path.isfile(RSLC_tab):
     #    os.remove(RSLC_tab)
@@ -138,6 +133,11 @@ def main(argv):
             k0 = 1
     
     if k0==0:
+        for i in range(len(M_IW)):
+        #print(M_IW[i])
+        #print(S_IW[i])
+            ut.copy_file(M_IW[i],S_IW[i])
+        
         ut.copy_file(Mslc0,Mslc)
         ut.copy_file(Mslcpar0,Mslcpar)
         ut.copy_file(Mamp0,Mamp)
