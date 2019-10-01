@@ -165,7 +165,7 @@ def cmdLineParse():
                        'stars - one master image network, like PS.')
     parser.add_argument('--conNumb', dest='conNumb', type=int, default=2,
                         help='Number of the neibour-connected SAR images at one side for sequential method.')
-    parser.add_argument('--coreg', dest='coreg', action='store_false', help='Using rslc/rslcPar to check orbit history.')
+    parser.add_argument('--coreg', dest='coreg', action='store_true', help='Using rslc/rslcPar to check orbit history.')
 
     inps = parser.parse_args()
     return inps
