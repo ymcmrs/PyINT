@@ -71,7 +71,7 @@ def main(argv):
         if os.path.getsize(ampPar) > 0:
             k0 =1
     
-    if k0==1:
+    if k0==0:
         call_str = 'multi_look ' + rslc + ' ' + rslcPar + ' ' + amp + ' ' + ampPar + ' ' + rlks + ' ' + azlks 
         os.system(call_str)
         
