@@ -215,7 +215,12 @@ def main(argv):
         slc0    = '.slc'
         slcpar0 = '.slc.par'
         
-    slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    slc_list0 = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
+    slc_list = []
+    for k0 in slc_list0:
+        if ut.is_number(k0):
+            slc_list.append(k0)
+    slc_list = sorted(slc_list)    
     
     SLCfile = []
     SLCParfile = []
