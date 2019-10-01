@@ -165,6 +165,7 @@ def cmdLineParse():
                        'stars - one master image network, like PS.')
     parser.add_argument('--conNumb', dest='conNumb', type=int, default=2,
                         help='Number of the neibour-connected SAR images at one side for sequential method.')
+    parser.add_argument('--coreg', dest='coreg', action='store_false', help='Using rslc/rslcPar to check orbit history.')
 
     inps = parser.parse_args()
     return inps
@@ -184,6 +185,7 @@ EXAMPLE = '''
             select_pairs.py PacayaT163TsxHhA --method sequential --conNumb 3
             select_pairs.py PacayaT163TsxHhA --method denaulay --max-tb 100 --max-sb 100
             select_pairs.py PacayaT163TsxHhA --method stars
+            select_pairs.py PacayaT163TsxHhA --coreg
 -------------------------------------------------------------------  
 '''
 
@@ -203,19 +205,27 @@ def main(argv):
     rslcDir    = scratchDir + '/' + projectName + '/RSLC'
     
     #slc_list = [os.path.basename(fname) for fname in sorted(glob.glob(slcDir + '/*'))]
-    slc_list = ut.get_project_slcList(projectName)
+    slc_list = ut.get_project_slcList(projectName)    
+    masterDate = templateDict['masterDate']
     
-    masterDate = templateDict['masterDate'] 
+    if inps.coreg: 
+        slcDir  = rslcDir
+        slc0    = '.rslc'
+        slcpar0 = '.rslc.par'
+    else:
+        slc0    = '.slc'
+        slcpar0 = '.slc.par'
+    
     
     SLCfile = []
     SLCParfile = []
     for kk in range(len(slc_list)):
-        str_slc = slcDir + "/" + slc_list[kk] +"/" + slc_list[kk] + ".slc"
-        str_slc_par = slcDir + "/" + slc_list[kk] +"/" + slc_list[kk] + ".slc.par"
+        str_slc = slcDir + "/" + slc_list[kk] +"/" + slc_list[kk] + slc0
+        str_slc_par = slcDir + "/" + slc_list[kk] +"/" + slc_list[kk] + slcpar0
         SLCfile.append(str_slc)
         SLCParfile.append(str_slc_par)       
 
-    RefPar = slcDir + "/" + masterDate +"/" + masterDate + ".slc.par"
+    RefPar = slcDir + "/" + masterDate +"/" + masterDate + slcpar0
     SLC_Tab = scratchDir + '/' + projectName  + "/SLC_Tab"
     
     SLC_Tab_all = processDir + "/SLC_Tab_all"
