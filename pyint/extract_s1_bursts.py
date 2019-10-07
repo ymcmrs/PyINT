@@ -259,19 +259,27 @@ def main(argv):
         call_str = 'echo ' + str(int(SB2)) + ' ' + str(int(EB2)) + ' >>' + BURST2_tab
         os.system(call_str)
 
+      
+    TEST = SamprlksPar
+    k0 = 0
+    if os.path.isfile(TEST):
+        if os.path.getsize(TEST) > 0:
+            k0 = 1
     
-    call_str = 'SLC_copy_S1_TOPS ' + SLC2_tab + ' ' + SLC2_INF_tab  + ' ' + BURST2_tab 
-    os.system(call_str)
+    if k0==0:
     
-    call_str = 'SLC_mosaic_S1_TOPS ' + SLC2_INF_tab + ' ' + SslcImg + ' ' + SslcPar + ' ' + rlks + ' ' +azlks
-    os.system(call_str)
+        call_str = 'SLC_copy_S1_TOPS ' + SLC2_tab + ' ' + SLC2_INF_tab  + ' ' + BURST2_tab 
+        os.system(call_str)
     
-    call_str = 'multi_look ' + SslcImg + ' ' + SslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
-    os.system(call_str) 
+        call_str = 'SLC_mosaic_S1_TOPS ' + SLC2_INF_tab + ' ' + SslcImg + ' ' + SslcPar + ' ' + rlks + ' ' +azlks
+        os.system(call_str)
     
-    nWidth = ut.read_gamma_par(SamprlksPar, 'read', 'range_samples')
-    call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
-    os.system(call_str)  
+        call_str = 'multi_look ' + SslcImg + ' ' + SslcPar + ' ' + SamprlksImg + ' ' + SamprlksPar + ' ' + rlks + ' ' + azlks
+        os.system(call_str) 
+    
+        nWidth = ut.read_gamma_par(SamprlksPar, 'read', 'range_samples')
+        call_str = 'raspwr ' + SamprlksImg + ' ' + nWidth 
+        os.system(call_str)  
     
     sys.exit(1)
 
