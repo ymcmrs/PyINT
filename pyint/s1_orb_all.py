@@ -90,17 +90,19 @@ def main(argv):
         rslcPar = rslcDir + '/' + slc_list[i] + '/' + slc_list[i] + '.rslc.par'
         #print(rslcPar)
         workDir0 = rslcDir + '/' + slc_list[i]
-        Sensor = ut.read_gamma_par(rslcPar,'read','sensor')
-        if 'A' in Sensor: satellite = 'A'
-        else: satellite = 'B'
-        ut.download_s1_orbit(slc_list[i],workDir0,satellite=satellite)
-        
         BB = glob.glob(workDir0 + '/*.EOF')
-        if len(BB) > 0:
-            orb_file = BB[0]
+        if len(BB)==0:   
+            Sensor = ut.read_gamma_par(rslcPar,'read','sensor')
+            if 'A' in Sensor: satellite = 'A'
+            else: satellite = 'B'
+            ut.download_s1_orbit(slc_list[i],workDir0,satellite=satellite)
+        
+            BB = glob.glob(workDir0 + '/*.EOF')
+            if len(BB) > 0:
+                orb_file = BB[0]
             
-            call_str = 'S1_OPOD_vec ' + rslcPar + ' ' + orb_file + ' 31'
-            os.system(call_str)
+                call_str = 'S1_OPOD_vec ' + rslcPar + ' ' + orb_file + ' 31'
+                os.system(call_str)
 
     print("Using precise orbit data for all rslcs is done! ")
     ut.print_process_time(start_time, time.time())
