@@ -88,8 +88,8 @@ def main(argv):
     #slc_list = ut.get_project_slcList(projectName)
     for i in range(len(slc_list)):
         rslcPar = rslcDir + '/' + slc_list[i] + '/' + slc_list[i] + '.rslc.par'
-        print(rslcPar)
-        workDir0 = rslcPar = rslcDir + '/' + slc_list[i]
+        #print(rslcPar)
+        workDir0 = rslcDir + '/' + slc_list[i]
         Sensor = ut.read_gamma_par(rslcPar,'read','sensor')
         if 'A' in Sensor: satellite = 'A'
         else: satellite = 'B'
