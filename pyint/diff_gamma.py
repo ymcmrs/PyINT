@@ -110,11 +110,8 @@ def main(argv):
         MrslcPar =   MrslcPar0
         Srslc    =   Srslc0
         SrslcPar =   SrslcPar0
-        
-    
-    
-    HGT      =   workDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
-    MasterPar = workDir + '/' + masterDate + '.rslc.par'
+        HGT = HGT0
+        MasterPar = MasterPar0
     
     ut.copy_file(Mamp0,Mamp)
     ut.copy_file(MampPar0,MampPar)
@@ -167,11 +164,10 @@ def main(argv):
     #os.remove(SampPar)
     
     if not templateDict['diff_all_parallel'] == '1':   
-        os.remove(Mrslc)
-        os.remove(Srslc)
+        if os.path.isfile(Mrslc): os.remove(Mrslc)
+        if os.path.isfile(Srslc):os.remove(Srslc)
     
-    os.remove(HGT)
-    os.remove(MasterPar)
+        if os.path.isfile(HGT):os.remove(HGT)
     
     print("Subtraction of topography and flattening phase is done!")
     ut.print_process_time(start_time, time.time())
