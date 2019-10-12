@@ -93,10 +93,25 @@ def main(argv):
     Samp     =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
     SampPar  =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
-    Mrslc    =   workDir + '/' + Mdate + '.rslc'
-    MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
-    Srslc    =   workDir + '/' + Sdate + '.rslc'
-    SrslcPar =   workDir + '/' + Sdate + '.rslc.par'
+    if not templateDict['diff_all_parallel'] == '1':   
+        
+        Mrslc    =   workDir + '/' + Mdate + '.rslc'
+        MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
+        Srslc    =   workDir + '/' + Sdate + '.rslc'
+        SrslcPar =   workDir + '/' + Sdate + '.rslc.par     
+        ut.copy_file(Mrslc0,Mrslc)
+        ut.copy_file(MrslcPar0,MrslcPar)
+        ut.copy_file(Srslc0,Srslc)
+        ut.copy_file(SrslcPar0,SrslcPar)   
+        
+    else:       
+        
+        Mrslc    =   Mrslc0
+        MrslcPar =   MrslcPar0
+        Srslc    =   Srslc0
+        SrslcPar =   SrslcPar0
+        
+    
     
     HGT      =   workDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
     MasterPar = workDir + '/' + masterDate + '.rslc.par'
@@ -105,11 +120,6 @@ def main(argv):
     ut.copy_file(MampPar0,MampPar)
     ut.copy_file(Samp0,Samp)
     ut.copy_file(SampPar0,SampPar)
-    
-    ut.copy_file(Mrslc0,Mrslc)
-    ut.copy_file(MrslcPar0,MrslcPar)
-    ut.copy_file(Srslc0,Srslc)
-    ut.copy_file(SrslcPar0,SrslcPar)
     
     ut.copy_file(HGT0,HGT)
     ut.copy_file(MasterPar0,MasterPar)
