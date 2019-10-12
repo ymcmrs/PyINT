@@ -79,7 +79,7 @@ def main(argv):
     SampPar0  = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
     Mrslc    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
-    MrslcPa = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
+    MrslcPar = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
     Srslc    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
     SrslcPar = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
     
@@ -134,12 +134,25 @@ def main(argv):
     Srslc_high    =   ionoDir + '/' + Sdate + '.high.rslc'
     SrslcPar_high =   ionoDir + '/' + Sdate + '.high.rslc.par'
 #########################################################
+    TEST0 = MrslcPar_high
+    k0 = 0 
+    if os.path.isfile(TEST0):
+        if os.path.getsize(TEST0) > 0:
+            k0 =1
     
-    call_str = 'bpf_ssi ' + Mrslc + ' ' + MrslcPar + ' ' + Mrslc_low + ' ' + MrslcPar_low + ' ' + Mrslc_high + ' ' + MrslcPar_high
-    os.system(call_str)
+    TEST1 = SrslcPar_high
+    k1 = 0 
+    if os.path.isfile(TEST1):
+        if os.path.getsize(TEST1) > 0:
+            k1 =1
     
-    call_str = 'bpf_ssi ' + Srslc + ' ' + SrslcPar + ' ' + Srslc_low + ' ' + SrslcPar_low + ' ' + Srslc_high + ' ' + MrslcPar_high
-    os.system(call_str)
+    if k0 ==0:
+        call_str = 'bpf_ssi ' + Mrslc + ' ' + MrslcPar + ' ' + Mrslc_low + ' ' + MrslcPar_low + ' ' + Mrslc_high + ' ' + MrslcPar_high
+        os.system(call_str)
+    
+    if k1==0:
+        call_str = 'bpf_ssi ' + Srslc + ' ' + SrslcPar + ' ' + Srslc_low + ' ' + SrslcPar_low + ' ' + Srslc_high + ' ' + SrslcPar_high
+        os.system(call_str)
     
  ################## interferometry #####################   
 
