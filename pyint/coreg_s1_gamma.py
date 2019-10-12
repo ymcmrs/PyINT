@@ -145,7 +145,7 @@ def main(argv):
       
     os.chdir(workDir)
     #TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
-    TEST = workDir + '/' + Sdate +'.rslc'
+    TEST = workDir + '/' + Sdate +'.rslc.par'
     
     k0 = 0
     if os.path.isfile(TEST):
