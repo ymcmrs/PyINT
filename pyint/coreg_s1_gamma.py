@@ -167,6 +167,8 @@ def main(argv):
             MampPar = MampPar0
             HGTSIM = HGTSIM0
             S_IW = M_IW
+            SLC1_INF_tab = SLC1_INF_tab1
+        
         
         if not Mdate ==Sdate:
             call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
