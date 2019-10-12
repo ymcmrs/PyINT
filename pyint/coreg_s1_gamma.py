@@ -142,7 +142,8 @@ def main(argv):
     #   os.system(call_str)
       
     os.chdir(workDir)
-    TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
+    #TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
+    TEST = workDir + '/' + Sdate +'.rslc'
     
     k0 = 0
     if os.path.isfile(TEST):
@@ -150,18 +151,22 @@ def main(argv):
             k0 = 1
     
     if k0==0:
-        for i in range(len(M_IW)):
-        #print(M_IW[i])
-        #print(S_IW[i])
-            ut.copy_file(M_IW[i],S_IW[i])
-
-        if not templateDict['coreg_all_parallel'] == '1':     
+        if not templateDict['coreg_all_parallel'] == '1':        
+            for i in range(len(M_IW)):
+                ut.copy_file(M_IW[i],S_IW[i])
+            
             ut.copy_file(Mslc0,Mslc)
             ut.copy_file(Mslcpar0,Mslcpar)
             ut.copy_file(Mamp0,Mamp)
             ut.copy_file(MampPar0,MampPar)
             ut.copy_file(HGTSIM0,HGTSIM)
-        
+        else:
+            Mslc = Mslc0
+            Mslcpar = Mslcpar0
+            Mamp = Mamp0
+            MampPar = MampPar0
+            HGTSIM = HGTSIM0
+            S_IW = M_IW
         
         if not Mdate ==Sdate:
             call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
@@ -220,16 +225,16 @@ def main(argv):
     ################   clean redundant files #############
     
     if not Mdate ==Sdate: 
-        for i in range(len(S_IW)):
-            if os.path.isfile(S_IW[i]):
-                os.remove(S_IW[i])
-    
-        if os.path.isfile(Mslc): os.remove(Mslc)
-        if os.path.isfile(Mslcpar): os.remove(Mslcpar)
-        if os.path.isfile(Mamp): os.remove(Mamp)   
-        if os.path.isfile(MampPar): os.remove(MampPar)       
-    
-    if os.path.isfile(HGTSIM): os.remove(HGTSIM)
+        
+        if not templateDict['diff_all_parallel'] == '1':              
+            for i in range(len(S_IW)):
+                if os.path.isfile(S_IW[i]):
+                    os.remove(S_IW[i])
+            if os.path.isfile(Mslc): os.remove(Mslc)
+            if os.path.isfile(Mslcpar): os.remove(Mslcpar)
+            if os.path.isfile(Mamp): os.remove(Mamp)        
+            if os.path.isfile(HGTSIM): os.remove(HGTSIM)
+            
     print("Coregister TOP SLC image to the reference TOPS image is done !!")
     sys.exit(1)
 

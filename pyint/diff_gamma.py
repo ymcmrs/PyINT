@@ -166,10 +166,9 @@ def main(argv):
     os.remove(Samp)
     #os.remove(SampPar)
     
-    os.remove(Mrslc)
-    #os.remove(MrslcPar)
-    os.remove(Srslc)
-    #os.remove(SrslcPar)
+    if not templateDict['diff_all_parallel'] == '1':   
+        os.remove(Mrslc)
+        os.remove(Srslc)
     
     os.remove(HGT)
     os.remove(MasterPar)
