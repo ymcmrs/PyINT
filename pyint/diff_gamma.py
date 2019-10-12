@@ -73,53 +73,53 @@ def main(argv):
     if not os.path.isdir(workDir): os.mkdir(workDir)
     
     #######################################################################
-    Mamp0     = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar0  = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    Samp0     = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampPar0  = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    Mamp     = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar  = rslcDir + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Samp     = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    SampPar  = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
-    Mrslc0    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
-    MrslcPar0 = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
-    Srslc0    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
-    SrslcPar0 = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
+    Mrslc    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
+    MrslcPar = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
+    Srslc    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
+    SrslcPar = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
     
-    HGT0      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
+    HGT      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
     
-    MasterPar0 = rslcDir  + '/' + masterDate + '/' + masterDate + '.rslc.par'
+    MasterPar = rslcDir  + '/' + masterDate + '/' + masterDate + '.rslc.par'
     
     ################# copy file for parallel processing ##########################
-    Mamp     =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar  =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-    Samp     =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
-    SampPar  =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
+    #Mamp     =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    #MampPar  =   workDir + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    #Samp     =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
+    #SampPar  =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
-    if not templateDict['diff_all_parallel'] == '1':   
+    #if not templateDict['diff_all_parallel'] == '1':   
         
-        Mrslc    =   workDir + '/' + Mdate + '.rslc'
-        MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
-        Srslc    =   workDir + '/' + Sdate + '.rslc'
-        SrslcPar =   workDir + '/' + Sdate + '.rslc.par'   
-        ut.copy_file(Mrslc0,Mrslc)
-        ut.copy_file(MrslcPar0,MrslcPar)
-        ut.copy_file(Srslc0,Srslc)
-        ut.copy_file(SrslcPar0,SrslcPar)   
+    #    Mrslc    =   workDir + '/' + Mdate + '.rslc'
+    #    MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
+    #    Srslc    =   workDir + '/' + Sdate + '.rslc'
+    #    SrslcPar =   workDir + '/' + Sdate + '.rslc.par'   
+    #    ut.copy_file(Mrslc0,Mrslc)
+    #    ut.copy_file(MrslcPar0,MrslcPar)
+    #    ut.copy_file(Srslc0,Srslc)
+    #    ut.copy_file(SrslcPar0,SrslcPar)   
         
-    else:       
+    #else:       
         
-        Mrslc    =   Mrslc0
-        MrslcPar =   MrslcPar0
-        Srslc    =   Srslc0
-        SrslcPar =   SrslcPar0
-        HGT = HGT0
-        MasterPar = MasterPar0
+    #    Mrslc    =   Mrslc0
+    #    MrslcPar =   MrslcPar0
+    #    Srslc    =   Srslc0
+    #    SrslcPar =   SrslcPar0
+    #    HGT = HGT0
+    #    MasterPar = MasterPar0
     
-    ut.copy_file(Mamp0,Mamp)
-    ut.copy_file(MampPar0,MampPar)
-    ut.copy_file(Samp0,Samp)
-    ut.copy_file(SampPar0,SampPar)
+    #ut.copy_file(Mamp0,Mamp)
+    #ut.copy_file(MampPar0,MampPar)
+    #ut.copy_file(Samp0,Samp)
+    #ut.copy_file(SampPar0,SampPar)
     
-    ut.copy_file(HGT0,HGT)
-    ut.copy_file(MasterPar0,MasterPar)
+    #ut.copy_file(HGT0,HGT)
+    #ut.copy_file(MasterPar0,MasterPar)
     
     ############################################################################    
         
@@ -158,16 +158,16 @@ def main(argv):
     call_str = 'rascc ' + COHFILT + ' ' + Mamp + ' ' + nWIDTH
     os.system(call_str)
     
-    os.remove(Mamp)
+    #os.remove(Mamp)
     #os.remove(MampPar)
-    os.remove(Samp)
+    #os.remove(Samp)
     #os.remove(SampPar)
     
-    if not templateDict['diff_all_parallel'] == '1':   
-        if os.path.isfile(Mrslc): os.remove(Mrslc)
-        if os.path.isfile(Srslc):os.remove(Srslc)
+    #if not templateDict['diff_all_parallel'] == '1':   
+    #    if os.path.isfile(Mrslc): os.remove(Mrslc)
+    #    if os.path.isfile(Srslc):os.remove(Srslc)
     
-        if os.path.isfile(HGT):os.remove(HGT)
+    #    if os.path.isfile(HGT):os.remove(HGT)
     
     print("Subtraction of topography and flattening phase is done!")
     ut.print_process_time(start_time, time.time())

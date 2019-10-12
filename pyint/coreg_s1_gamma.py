@@ -68,10 +68,10 @@ def main(argv):
     SampPar = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     Sampbmp = rslcDir  + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.bmp'
     
-    Mslc0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
-    Mslcpar0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
-    Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    Mslc = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
+    Mslcpar = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
+    Mamp = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    MampPar = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
     Mampbmp = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.bmp'
     
     SLC1_INF_tab0 = MslcDir + '/' + Mdate + '_SLC_Tab'
@@ -79,27 +79,27 @@ def main(argv):
     RSLC_tab = SslcDir + '/' + Sdate + '_RSLC_Tab'
     SLC1_INF_tab = SslcDir + '/' + Mdate + '_SLC_Tab_coreg'
     
-    HGTSIM0      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    HGTSIM      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
     if not os.path.isfile(HGTSIM0):
         call_str = 'generate_rdc_dem.py ' + projectName
         os.system(call_str)
     
     ############## copy master files into slave folder for parallel process ###########
     
-    if not templateDict['coreg_all_parallel'] == '1':
-        Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
-        Mslcpar = slcDir  + '/' + Sdate + '/' + Mdate + '.slc.par'
-        Mamp = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-        MampPar = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
-        HGTSIM      = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    #if not templateDict['coreg_all_parallel'] == '1':
+    #    Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
+    #    Mslcpar = slcDir  + '/' + Sdate + '/' + Mdate + '.slc.par'
+    #    Mamp = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    #    MampPar = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    #    HGTSIM      = slcDir  + '/' + Sdate + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
         
-    else:
+    #else:
         
-        Mslc = Mslc0
-        Mslcpar = Mslcpar0
-        Mamp = Mamp0
-        MampPar = MampPar0
-        HGTSIM  = HGTSIM0
+    #    Mslc = Mslc0
+    #    Mslcpar = Mslcpar0
+    #    Mamp = Mamp0
+    #    MampPar = MampPar0
+    #    HGTSIM  = HGTSIM0
         
         
     #Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
@@ -120,10 +120,12 @@ def main(argv):
             lines_coreg.append(k00)
             fw.write(k00)
     
-    M_IW = ut.read_txt2array(SLC1_INF_tab1)
-    M_IW = M_IW.flatten()
-    S_IW = ut.read_txt2array(SLC1_INF_tab)  
-    S_IW = S_IW.flatten()
+    S_IW = ut.read_txt2array(SLC1_INF_tab1)
+    S_IW = M_IW.flatten()
+    #M_IW = ut.read_txt2array(SLC1_INF_tab1)
+    #M_IW = M_IW.flatten()
+    #S_IW = ut.read_txt2array(SLC1_INF_tab)  
+    #S_IW = S_IW.flatten()
         
     #RSLC_tab = workDir + '/' + Sdate + '_RSLC_tab'
     #if os.path.isfile(RSLC_tab):
@@ -151,25 +153,6 @@ def main(argv):
             k0 = 1
     
     if k0==0:
-        if not templateDict['coreg_all_parallel'] == '1':        
-            for i in range(len(M_IW)):
-                ut.copy_file(M_IW[i],S_IW[i])
-            
-            ut.copy_file(Mslc0,Mslc)
-            ut.copy_file(Mslcpar0,Mslcpar)
-            ut.copy_file(Mamp0,Mamp)
-            ut.copy_file(MampPar0,MampPar)
-            ut.copy_file(HGTSIM0,HGTSIM)
-        else:
-            Mslc = Mslc0
-            Mslcpar = Mslcpar0
-            Mamp = Mamp0
-            MampPar = MampPar0
-            HGTSIM = HGTSIM0
-            S_IW = M_IW
-            SLC1_INF_tab = SLC1_INF_tab1
-        
-        
         if not Mdate ==Sdate:
             call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
             os.system(call_str)
@@ -226,16 +209,16 @@ def main(argv):
         
     ################   clean redundant files #############
     
-    if not Mdate ==Sdate: 
+    #if not Mdate ==Sdate: 
         
-        if not templateDict['diff_all_parallel'] == '1':              
-            for i in range(len(S_IW)):
-                if os.path.isfile(S_IW[i]):
-                    os.remove(S_IW[i])
-            if os.path.isfile(Mslc): os.remove(Mslc)
-            if os.path.isfile(Mslcpar): os.remove(Mslcpar)
-            if os.path.isfile(Mamp): os.remove(Mamp)        
-            if os.path.isfile(HGTSIM): os.remove(HGTSIM)
+    #    if not templateDict['diff_all_parallel'] == '1':              
+    #        for i in range(len(S_IW)):
+    #            if os.path.isfile(S_IW[i]):
+    #                os.remove(S_IW[i])
+    #        if os.path.isfile(Mslc): os.remove(Mslc)
+    #        if os.path.isfile(Mslcpar): os.remove(Mslcpar)
+    #        if os.path.isfile(Mamp): os.remove(Mamp)        
+    #        if os.path.isfile(HGTSIM): os.remove(HGTSIM)
             
     print("Coregister TOP SLC image to the reference TOPS image is done !!")
     sys.exit(1)
