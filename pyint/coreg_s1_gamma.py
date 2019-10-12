@@ -98,8 +98,8 @@ def main(argv):
         Mslc = Mslc0
         Mslcpar = Mslcpar0
         Mamp = Mamp0
-        MampPar = MampPar
-        HGTSIM  = HGTSIM
+        MampPar = MampPar0
+        HGTSIM  = HGTSIM0
         
         
     #Mslc = slcDir  + '/' + Sdate + '/' + Mdate + '.slc'
