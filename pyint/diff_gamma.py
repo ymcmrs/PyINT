@@ -98,7 +98,7 @@ def main(argv):
         Mrslc    =   workDir + '/' + Mdate + '.rslc'
         MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
         Srslc    =   workDir + '/' + Sdate + '.rslc'
-        SrslcPar =   workDir + '/' + Sdate + '.rslc.par     
+        SrslcPar =   workDir + '/' + Sdate + '.rslc.par'   
         ut.copy_file(Mrslc0,Mrslc)
         ut.copy_file(MrslcPar0,MrslcPar)
         ut.copy_file(Srslc0,Srslc)
