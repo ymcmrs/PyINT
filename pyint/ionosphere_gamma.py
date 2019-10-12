@@ -78,10 +78,10 @@ def main(argv):
     Samp0     = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
     SampPar0  = rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
-    Mrslc0    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
-    MrslcPar0 = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
-    Srslc0    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
-    SrslcPar0 = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
+    Mrslc    = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc'
+    MrslcPa = rslcDir  + '/' + Mdate + '/' + Mdate + '.rslc.par'
+    Srslc    = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc'
+    SrslcPar = rslcDir  + '/' + Sdate + '/' + Sdate + '.rslc.par'
     
     HGT0      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
     
@@ -93,10 +93,10 @@ def main(argv):
     Samp     =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp'
     SampPar  =   workDir + '/' + Sdate + '_' + rlks + 'rlks.amp.par'
     
-    Mrslc    =   workDir + '/' + Mdate + '.rslc'
-    MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
-    Srslc    =   workDir + '/' + Sdate + '.rslc'
-    SrslcPar =   workDir + '/' + Sdate + '.rslc.par'
+    #Mrslc    =   workDir + '/' + Mdate + '.rslc'
+    #MrslcPar =   workDir + '/' + Mdate + '.rslc.par'
+    #Srslc    =   workDir + '/' + Sdate + '.rslc'
+    #SrslcPar =   workDir + '/' + Sdate + '.rslc.par'
     
     HGT      =   workDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
     MasterPar = workDir + '/' + masterDate + '.rslc.par'
@@ -106,10 +106,10 @@ def main(argv):
     if not os.path.isfile(Samp):ut.copy_file(Samp0,Samp)
     if not os.path.isfile(SampPar):ut.copy_file(SampPar0,SampPar)
     
-    if not os.path.isfile(Mrslc): ut.copy_file(Mrslc0,Mrslc)
-    if not os.path.isfile(MrslcPar): ut.copy_file(MrslcPar0,MrslcPar)
-    if not os.path.isfile(Srslc):ut.copy_file(Srslc0,Srslc)
-    if not os.path.isfile(SrslcPar):ut.copy_file(SrslcPar0,SrslcPar)
+    #if not os.path.isfile(Mrslc): ut.copy_file(Mrslc0,Mrslc)
+    #if not os.path.isfile(MrslcPar): ut.copy_file(MrslcPar0,MrslcPar)
+    #if not os.path.isfile(Srslc):ut.copy_file(Srslc0,Srslc)
+    #if not os.path.isfile(SrslcPar):ut.copy_file(SrslcPar0,SrslcPar)
     
     if not os.path.isfile(HGT):ut.copy_file(HGT0,HGT)
     if not os.path.isfile(MasterPar):ut.copy_file(MasterPar0,MasterPar)
