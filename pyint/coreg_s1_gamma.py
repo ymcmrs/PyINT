@@ -174,20 +174,20 @@ def main(argv):
             call_str = 'raspwr ' + Samp + ' ' + nWIDTH
             os.system(call_str)
         
-            call_str = 'rm *mli*'
-            os.system(call_str)
+            #call_str = 'rm *mli*'
+            #os.system(call_str)
         
-            call_str = 'rm *IW*'
-            os.system(call_str)
+            #call_str = 'rm *IW*'
+            #os.system(call_str)
         
             #call_str = 'rm *off*'
             #os.system(call_str)
         
-            call_str = 'rm *diff'
-            os.system(call_str)
+            #call_str = 'rm *diff'
+            #os.system(call_str)
         
-            call_str = 'rm *diff_par*'
-            os.system(call_str)
+            #call_str = 'rm *diff_par*'
+            #os.system(call_str)
         
             #call_str = 'rm ' + Mdate + '.*'
             #os.system(call_str)
