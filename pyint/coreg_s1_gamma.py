@@ -121,7 +121,7 @@ def main(argv):
             fw.write(k00)
     
     S_IW = ut.read_txt2array(SLC1_INF_tab1)
-    S_IW = M_IW.flatten()
+    S_IW = S_IW.flatten()
     #M_IW = ut.read_txt2array(SLC1_INF_tab1)
     #M_IW = M_IW.flatten()
     #S_IW = ut.read_txt2array(SLC1_INF_tab)  
