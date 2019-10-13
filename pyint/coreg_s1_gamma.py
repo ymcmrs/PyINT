@@ -154,7 +154,7 @@ def main(argv):
     
     if k0==0:
         if not Mdate ==Sdate:
-            call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
+            call_str = 'S1_coreg_TOPS ' + SLC1_INF_tab1 + ' ' + Mdate + ' ' + SLC2_INF_tab + ' ' + Sdate + ' ' + RSLC_tab + ' ' + HGTSIM + ' ' + rlks + ' ' + azlks + ' - - 0.6 0.01 1.2 1'
             os.system(call_str)
         
             #### clean large file ####
