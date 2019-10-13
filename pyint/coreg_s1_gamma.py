@@ -80,7 +80,7 @@ def main(argv):
     SLC1_INF_tab = SslcDir + '/' + Mdate + '_SLC_Tab_coreg'
     
     HGTSIM      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
-    if not os.path.isfile(HGTSIM0):
+    if not os.path.isfile(HGTSIM):
         call_str = 'generate_rdc_dem.py ' + projectName
         os.system(call_str)
     
