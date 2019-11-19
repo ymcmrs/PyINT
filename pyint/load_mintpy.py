@@ -51,7 +51,9 @@ def main(argv):
     inps = cmdLineParse()
     projectName = inps.projectName
     scratchDir = os.getenv('SCRATCHDIR')
+    scratchDir0 = os.getenv('SCRATCHDIR0')
     projectDir = scratchDir + '/' + projectName 
+    projectDir0 = scratchDir0 + '/' + projectName 
     demDir    = scratchDir + '/' + projectName  + '/DEM'
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      
@@ -138,11 +140,11 @@ def main(argv):
     if 'mintpy.load.waterMaskFile' not in templateDict: write_template(strWat,templateFile0)
     if 'mintpy.load.bperpFile' not in templateDict: write_template(strBrp,templateFile0)
     
-    os.chdir(projectDir)
+    os.chdir(projectDir0)
     call_str = 'load_data.py -t ' + templateFile0
     os.system(call_str)
     
-    os.chdir(projectDir)
+    os.chdir(projectDir0)
     write_template(strDemGeo,templateFile0)
     call_str = 'load_data.py -t ' + templateFile0
     os.system(call_str)
