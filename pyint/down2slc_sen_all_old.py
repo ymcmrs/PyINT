@@ -18,12 +18,6 @@ import subprocess
 from pyint import _utils as ut
 
 
-def get_s1_date(raw_file):
-    file0 = os.path.basename(raw_file)
-    date = file0[17:25]
-    return date
-
-
 def work(data0):
     cmd = data0[0]
     err_txt = data0[1]
@@ -84,24 +78,16 @@ def main(argv):
     downDir    = scratchDir + '/' + projectName + "/DOWNLOAD"
     raw_file_list = glob.glob(downDir + '/S1*.zip')
     
-    date_list = []
-    for kk in range(len(raw_file_list)):
-        date0 = get_s1_date(os.path.basename(raw_file_list[kk]))
-        date_list.append(date0)
-        
-    date_list = set(date_list)
-    date_list = sorted(date_list)
-    
-    print('Date to be processed:')
-    for k0 in date_list:
-        print(k0)
+    slc_dir = scratchDir + '/' + projectName + '/SLC'
+    if not os.path.isdir(slc_dir):
+        os.mkdir(slc_dir)
     
     err_txt = scratchDir + '/' + projectName + '/down2slc_sen_all.err'
     if os.path.isfile(err_txt): os.remove(err_txt)
-    
+        
     data_para = []
-    for i in range(len(date_list)):
-        cmd0 = ['down2slc_sen.py',projectName,date_list[i]]
+    for i in range(len(raw_file_list)):
+        cmd0 = ['down2slc_sen.py',raw_file_list[i],slc_dir]
         data0 = [cmd0,err_txt]
         data_para.append(data0)
     

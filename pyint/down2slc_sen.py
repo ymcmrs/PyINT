@@ -36,8 +36,8 @@ def cmdLineParse():
                                      formatter_class=argparse.RawTextHelpFormatter,\
                                      epilog=INTRODUCTION+'\n'+EXAMPLE)
 
-    parser.add_argument('s1_raw', help='raw Sentinel-1 file. e.g., S1A*.zip')
-    parser.add_argument('root_path',help='root path for saving the SLC files')
+    parser.add_argument('projectName', help='project name. e.g., ChangningT55S1A')
+    parser.add_argument('date',help='date to be processed. e.g., 20180101')
        
     inps = parser.parse_args()
 
@@ -47,13 +47,15 @@ def cmdLineParse():
 INTRODUCTION = '''
 -------------------------------------------------------------------  
 
-   Generate SLC from Sentinel-1 raw data with orbit correction using GAMMA.
+   Generate SLC from Sentinel-1 raw data using S1_import_SLC_from_zipfiles with orbit correction.
    [Precise orbit data will be downloaded automatically]
 '''
 
 EXAMPLE = """Usage:
   
-  down2slc_sen.py S1A_IW_SLC_XXXX.zip /Yunmeng/S1_test
+  down2slc_sen.py projectName date
+  
+  down2slc_sen.py ChangningT55S1A 20180517
   
 ------------------------------------------------------------------- 
 """
@@ -61,111 +63,89 @@ EXAMPLE = """Usage:
 def main(argv):
     
     inps = cmdLineParse() 
-    raw_file = inps.s1_raw
-    root_dir = inps.root_path
-    satellite = get_satellite(raw_file)
-    date = get_s1_date(raw_file)
-    if not os.path.isdir(root_dir):
-        os.mkdir(root_dir)
+    projectName = inps.projectName
+    date = inps.date
+    scratchDir = os.getenv('SCRATCHDIR')
+    projectDir = scratchDir + '/' + projectName 
     
-    slc_dir = root_dir + '/' + date
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+    templateDict=ut.update_template(templateFile)
+    
+    slc_dir =  projectDir + '/SLC'
+    down_dir = projectDir + '/DOWNLOAD'
+    opod_dir = projectDir + '/OPOD'
+    
     if not os.path.isdir(slc_dir):
         os.mkdir(slc_dir)
-    
-    if len(os.path.dirname(raw_file))==0:
-        raw_file_dir = os.getcwd()
-    else:
-        raw_file_dir = os.path.dirname(raw_file)
-    
-    raw_dir = raw_file.replace('.zip','.SAFE')
-              
-#     MEASURE = glob.glob(measureDir + '/*vv*tiff')
-#    ANNOTAT = glob.glob(annotatDir + '/*vv*xml' )
-#    CALIBRA = glob.glob(calibraDir+'/calibration*vv*') 
-#    NOISE = glob.glob(calibraDir+'/noise*vv*')
-    
-    SLC_Tab = slc_dir + '/' + date+'_SLC_Tab'   
-    TEST = slc_dir + '/' + date + '.IW3.slc.par'
-    k0 = 0
-    if os.path.isfile(TEST):
-        if os.path.getsize(TEST) > 0:
-            k0 = 1
-    
-    if k0==0:
-        if not os.path.isdir(raw_dir): 
-            call_str = 'unzip ' + raw_file + ' -d ' + raw_file_dir
-            os.system(call_str)
+    if not os.path.isdir(opod_dir):
+        os.mkdir(opod_dir)
         
-        measureDir = raw_dir + '/measurement'
-        annotatDir = raw_dir + '/annotation'
-        calibraDir = raw_dir + '/annotation/calibration'
-        MM = glob.glob(measureDir + '/*vv*tiff')
+    work_dir = slc_dir + '/' + date
+    if not os.path.isdir(work_dir):
+        os.mkdir(work_dir)
+    
+    os.chdir(work_dir)
+    
+    t_date = 't_' + date
+    
+    call_str = 'ls ' + down_dir + '/S1*' + date + '* > ' + t_date
+    os.system(call_str)
+    
+    start_swath = templateDict['start_swath']
+    end_swath = templateDict['end_swath']
+    
+    
+    if (start_swath == '1') and (end_swath == '1'):
+        k_swath = '1'
+    elif (start_swath == '2') and (end_swath == '2'):
+        k_swath = '2'
+    elif (start_swath == '3') and (end_swath == '3'):
+        k_swath = '3'
+    elif (start_swath == '1') and (end_swath == '2'):
+        k_swath = '4'
+    elif (start_swath == '2') and (end_swath == '3'):
+        k_swath = '5' 
+    elif (start_swath == '2') and (end_swath == '3'):
+        k_swath = '-' 
+    
+    
+    raw_files = ut.read_txt2list(t_date)
+    satellite = get_satellite(raw_files[0])
+    
+    orbit_file = ut.download_s1_orbit(date,opod_dir,satellite=satellite)
+    
+    call_str = 'S1_import_SLC_from_zipfiles ' + t_date + ' - vv 0 ' + k_swath + ' ' + opod_dir + ' 1 1 '
+    os.system(call_str)
+    
+    os.chdir(work_dir)
+    
+    call_str = "rename 's/vv.slc.iw1/IW1.slc/g' *"
+    os.system(call_str)
+    call_str = "rename 's/vv.slc.iw2/IW2.slc/g' *"
+    os.system(call_str)
+    call_str = "rename 's/vv.slc.iw3/IW3.slc/g' *"
+    os.system(call_str)
+    
+    
+    SLC_Tab = work_dir + '/' + date+'_SLC_Tab'
+    
+    SLC_list = glob.glob(work_dir + '/*IW*.slc') 
+    SLC_par_list = glob.glob(work_dir + '/*IW*.slc.par') 
+    TOP_par_list = glob.glob(work_dir + '/*IW*.slc.tops_par') 
+    
+    
+    if os.path.isfile(SLC_Tab):
+        os.remove(SLC_Tab)
+    
+    for kk in range(len(SLC_list)):
+        call_str = 'echo ' + SLC_list[kk] + ' ' + SLC_par_list[kk] + ' ' + TOP_par_list[kk] + ' >> ' + SLC_Tab
+        os.system(call_str)
         
-        if os.path.isfile(SLC_Tab):
-            os.remove(SLC_Tab)
-        for kk in range(len(MM)):
-            SLC    = slc_dir + '/' + date + '.IW' + str(kk+1)+'.slc'
-            SLCPar = slc_dir + '/' + date + '.IW' + str(kk+1)+'.slc.par'
-            TOPPar = slc_dir + '/' + date + '.IW' + str(kk+1)+'.slc.TOPS_par'
-            BURST = slc_dir + '/' + date + '.IW' + str(kk+1)+'.burst.par'
-        
-            if os.path.isfile(BURST):
-                os.remove(BURST)
-            call_str = 'echo ' + SLC + ' ' + SLCPar + ' ' + TOPPar + ' >> ' + SLC_Tab
-            os.system(call_str)
-        
-            MEASURE = glob.glob(measureDir + '/*iw' + str(kk+1) + '*vv*tiff')
-            ANNOTAT = glob.glob(annotatDir + '/*iw' + str(kk+1) + '*vv*xml' )
-            CALIBRA = glob.glob(calibraDir+'/calibration*'+ 'iw' + str(kk+1) + '*vv*') 
-            NOISE = glob.glob(calibraDir+'/noise*' + 'iw' + str(kk+1) + '*vv*')
-        
-            #call_str = 'S1_burstloc ' + ANNOTAT[0] + '> ' +BURST
-            #os.system(call_str)
-            
-            if not os.path.isfile(NOISE[0]):
-                call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' - ' + SLCPar + ' ' + SLC + ' ' + TOPPar
-            else:
-                call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
-                
-            #if int(date) > 180311:
-            #    call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' - ' + SLCPar + ' ' + SLC + ' ' + TOPPar
-            #else:
-            #    call_str = 'par_S1_SLC ' + MEASURE[0] + ' ' + ANNOTAT[0] + ' ' + CALIBRA[0] + ' ' + NOISE[0] + ' ' + SLCPar + ' ' + SLC + ' ' + TOPPar
-            
-            os.system(call_str)
-            
-            call_str = 'SLC_burst_corners ' + SLCPar + ' ' +  TOPPar + ' > ' +BURST
-            os.system(call_str)
-    
-        # orbit correction
-        slc_pars = glob.glob(slc_dir + '/*.IW*.slc.par')
-        orbit_file0 = ut.download_s1_orbit(date,slc_dir,satellite=satellite)
-        orbit_file = slc_dir + '/' + orbit_file0
-    
-        for i in range(len(slc_pars)):
-            call_str = 'S1_OPOD_vec ' + slc_pars[i] + ' ' + orbit_file
-            os.system(call_str)
-    
-    # generate amp file for check image quality
-    #TSLC = slc_dir + '/' + date + '.slc'
-    #TSLCPar = slc_dir + '/' + date + '.slc.par'
-    
-    #TMLI =  slc_dir + '/' + date + '_40rlks.amp'
-    #TMLIPar = slc_dir + '/' + date + '_40rlks.amp.par'
-    
-    #call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' 10 2'
-    #os.system(call_str)
-   
-    #call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' 40 8' 
-    #os.system(call_str)
-    
-    #nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')
-    #call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
-    #os.system(call_str)
-    
-    if os.path.isdir(raw_dir):
-        call_str = 'rm -rf ' + raw_dir
-        os.system(call_str)    
+        BURST = SLC_par_list[kk].replace('slc.par','burst.par')
+        call_str = 'SLC_burst_corners ' + SLC_par_list[kk] + ' ' +  TOP_par_list[kk] + ' > ' +BURST
+        os.system(call_str)
+ 
 
     print("Down to SLC for %s is done! " % date)
     sys.exit(1)

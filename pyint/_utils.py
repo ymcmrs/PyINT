@@ -174,6 +174,14 @@ def yyyymmdd2yyyyddd(date):
     
     return year, doy
 
+def get_txt_lines(txt):
+    count=0
+    myfile=open(txt,"r")
+    for line in myfile:
+        count=count+1
+    
+    return count
+    
 def read_txt2list(txt):
     A = np.loadtxt(txt,dtype=np.str)
     if isinstance(A[0],bytes):
