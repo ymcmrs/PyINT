@@ -176,6 +176,8 @@ def yyyymmdd2yyyyddd(date):
 
 def read_txt2list(txt):
     A = np.loadtxt(txt,dtype=np.str)
+    if np.array(A).size ==1:
+        A = [A]
     if isinstance(A[0],bytes):
         A = A.astype(str)
     A = list(A)    
@@ -183,6 +185,8 @@ def read_txt2list(txt):
 
 def read_txt2array(txt):
     A = np.loadtxt(txt,dtype=np.str)
+    if np.array(A).size ==1:
+        A = [A]
     if isinstance(A[0],bytes):
         A = A.astype(str)
     #A = list(A)    
