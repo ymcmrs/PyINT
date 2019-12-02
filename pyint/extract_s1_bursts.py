@@ -205,6 +205,11 @@ def main(argv):
     
     get_common_burst(MslcDir,SslcDir,BURST)
     AA = ut.read_txt2array(BURST)
+    NL = ut.get_txt_lines(BURST)
+    
+    if NL ==1:
+        AA = AA.reshape(1,len(AA))
+    
     
     SW = templateDict['start_swath']
     EW = templateDict['end_swath']             
@@ -246,8 +251,8 @@ def main(argv):
         EB2=int(AA[ii-1,3])
         
         if not int(SB)==1:
-            SB2 = SB2 + int(SB)-int(SB1)
-        if not int(EB)==20:
+            SB2 = SB2 + int(SB) - int(SB1)
+        if not int(EB)==100:
             EB2 = SB2 + int(EB) - int(SB)
         
         call_str = 'echo ' + workDir + '/'+ Sdate+ '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+str(int(SW)+kk)+ '.slc' + ' ' + workDir + '/' + Sdate + '_'+ str(int(SB2)) + str(int(EB2)) +'.IW'+ str(int(SW)+kk)+ '.slc.par' + ' ' + workDir + '/'+ Sdate+'_'+ str(int(SB2)) + str(int(EB2)) + '.IW'+str(int(SW)+kk)+ '.slc.TOPS_par >>' + SLC2_INF_tab
@@ -268,7 +273,7 @@ def main(argv):
     
     if k0==0:
     
-        call_str = 'SLC_copy_S1_TOPS ' + SLC2_tab + ' ' + SLC2_INF_tab  + ' ' + BURST2_tab 
+        call_str = 'SLC_copy_ScanSAR ' + SLC2_tab + ' ' + SLC2_INF_tab  + ' ' + BURST2_tab 
         os.system(call_str)
     
         call_str = 'SLC_mosaic_S1_TOPS ' + SLC2_INF_tab + ' ' + SslcImg + ' ' + SslcPar + ' ' + rlks + ' ' +azlks
