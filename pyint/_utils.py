@@ -368,12 +368,17 @@ def download_s1_orbit(date,save_path,satellite='A'):
     os.system(call_str)
     
     SS=linecache.getline(tt000, 1)
-    SS = SS.split('"')[1]
-    filename = os.path.basename(SS)
-    call_str = 'wget -q --no-check-certificate ' + SS + ' -O ' + save_path + '/' +filename
-    os.system(call_str)
     
-    filename = os.path.basename(SS)
+    if len(SS) > 0:
+        SS = SS.split('"')[1]
+        filename = os.path.basename(SS)
+        call_str = 'wget -q --no-check-certificate ' + SS + ' -O ' + save_path + '/' +filename
+        os.system(call_str)
+    
+        filename = os.path.basename(SS)
+    else:
+        filename = ''    
+
     os.remove(tt)
     os.remove(tt0)
     os.remove(tt00)

@@ -106,8 +106,8 @@ def main(argv):
         k_swath = '4'
     elif (start_swath == '2') and (end_swath == '3'):
         k_swath = '5' 
-    elif (start_swath == '2') and (end_swath == '3'):
-        k_swath = '-' 
+    elif (start_swath == '1') and (end_swath == '3'):
+        k_swath = '0' 
     
     
     raw_files = ut.read_txt2list(t_date)
