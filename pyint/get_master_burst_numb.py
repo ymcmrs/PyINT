@@ -72,6 +72,8 @@ def main(argv):
     if not os.path.isdir(work_dir):
         os.mkdir(work_dir)
     
+    work_dir = down_dir
+    os.chdir(work_dir)
     
     t_date = down_dir +  '/t_' + date
     t_burst_numb = down_dir + '/t_burst_numb_' + date 
