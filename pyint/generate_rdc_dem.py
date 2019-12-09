@@ -149,19 +149,22 @@ def main(argv):
         DF_type = '2'
     
         
-    tmp_dem = dem + '_tmp'
+    #tmp_dem = dem + '_tmp'
     
-    if not os.path.isfile(tmp_dem):
-        call_str = 'replace_values ' + dem + ' -10000 0 ' + tmp_dem + ' ' + nWidthUTMDEM0 + ' 2 ' + DF_type
-        os.system(call_str)
-        call_str = 'cp ' + tmp_dem + ' ' + dem
-        os.system(call_str)
+    #if not os.path.isfile(tmp_dem):
+    #    #call_str = 'replace_values ' + dem + ' -10000 0 ' + tmp_dem + ' ' + nWidthUTMDEM0 + ' 2 ' + DF_type
+    #    call_str = 'replace_values ' + dem + ' -10000 0 ' + tmp_dem + ' ' + nWidthUTMDEM0 + ' 2 ' + DF_type + ' 1 ' 
+    #    os.system(call_str)
+    #    call_str = 'cp ' + tmp_dem + ' ' + dem
+    #    os.system(call_str)
 
     call_str = "multi_look " + MslcImg + " " + MslcPar + " " + MamprlksImg + " " + MamprlksPar + " " + rlks + " " + azlks
     os.system(call_str)
         
     #call_str = 'gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
-    call_str = 'gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
+    #call_str = 'gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 3 128' 
+    
+    call_str = 'gc_map ' + MamprlksPar + ' ' + '-' + ' ' + demPar + ' ' + dem + ' ' + UTMDEMpar + ' ' + UTMDEM + ' ' + UTM2RDC + ' ' + latovrSimphase + ' ' + lonovrSimphase + ' ' + SIMSARUTM + ' - - - - ' + PIX + ' ' + LSMAP + ' - 1'    
     os.system(call_str)
 
     nWidthUTMDEM = ut.read_gamma_par(UTMDEMpar, 'read', 'width')

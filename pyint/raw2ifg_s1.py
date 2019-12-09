@@ -90,11 +90,11 @@ def main(argv):
     os.system(call_str)
     
     ########## extract common bursts ##
-    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
-    os.system(call_str)
+    #call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
+    #os.system(call_str)
     
-    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
-    os.system(call_str)
+    #call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
+    #os.system(call_str)
     
     ######### generate rdc_dem ##########
     call_str = 'generate_rdc_dem.py ' + projectName

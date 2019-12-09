@@ -79,6 +79,43 @@ def main(argv):
     rslcDir    = scratchDir + '/' + projectName + '/RSLC'   
     if not os.path.isdir(rslcDir): os.mkdir(rslcDir)
     
+    
+    templateDir = os.getenv('TEMPLATEDIR')
+    templateFile = templateDir + "/" + projectName + ".template"
+    templateDict=ut.update_template(templateFile)
+    
+    demDir = scratchDir + '/' + projectName + '/DEM' 
+    
+    Mdate = templateDict['masterDate']
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
+    
+    
+    ################## generate SLC of the mater date for S1
+    
+    if 'S1' in projectName:
+        
+        SLC_Tab = slcDir + '/' + Mdate + '/' + Mdate + '_SLC_Tab'
+        TSLC = slcDir + '/' + Mdate + '/' + Mdate + '.slc'
+        TSLCPar = slcDir + '/' + Mdate + '/' + Mdate + '.slc.par'
+        
+        k0 = 0
+        if os.path.isfile(TSLCPar):
+            if os.path.getsize(TSLCPar) > 0:
+                k0 = 1
+        
+        if k0 ==0:    
+            call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' ' + rlks + ' ' + azlks
+            os.system(call_str)
+    
+    ######################################################
+    
+    HGTSIM      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):
+        call_str = 'generate_rdc_dem.py ' + projectName
+        os.system(call_str)
+    
+    
     if 'S1' in projectName: cmd_command = 'coreg_s1_gamma.py'
     else: cmd_command = 'coreg_gamma.py'
         

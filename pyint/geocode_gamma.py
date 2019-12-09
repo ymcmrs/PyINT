@@ -11,7 +11,7 @@ import argparse
 
 from pyint import _utils as ut
         
-def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp='0'):
+def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp):
     
     if '.unw' in os.path.basename(inFile):
         call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' ' + geo_interp + ' 0'
@@ -20,7 +20,7 @@ def geocode(inFile, outFile, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_in
     elif '.cor' in os.path.basename(inFile):
         call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' ' + geo_interp + ' 0'
     else:
-        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM+ ' ' + geo_interp + ' 1'
+        call_str = 'geocode_back ' + inFile + ' ' + nWidth + ' ' + UTMTORDC + ' ' + outFile + ' ' + nWidthUTMDEM + ' ' + nLineUTMDEM + ' ' + geo_interp + ' 1'
 
     os.system(call_str)
     
@@ -106,11 +106,15 @@ def main(argv):
     nWidth = ut.read_gamma_par(MampPar, 'read', 'range_samples')
     nWidthUTMDEM = ut.read_gamma_par(UTMDEMpar, 'read', 'width')
     nLineUTMDEM = ut.read_gamma_par(UTMDEMpar, 'read', 'nlines')
-
-    geocode(Mamp, GeoMamp, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp = templateDict['geo_interp'])
-    geocode(CORIFG, GeoCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp = templateDict['geo_interp'])
-    geocode(DIFFIFG, GeoDIFF, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp = templateDict['geo_interp'])
-    geocode(UNWIFG, GeoUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp = templateDict['geo_interp'])
+    print(nWidth)
+    
+    if 'geo_interp' in templateDict: geo_interp = templateDict['geo_interp']
+    else: geo_interp = '0'
+    
+    geocode(Mamp, GeoMamp, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp)
+    geocode(CORIFG, GeoCOR, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp)
+    geocode(DIFFIFG, GeoDIFF, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp)
+    geocode(UNWIFG, GeoUNW, UTMTORDC, nWidth, nWidthUTMDEM, nLineUTMDEM, geo_interp)
 
     call_str = 'rasmph_pwr ' + GeoDIFF + ' ' + GeoMamp + ' ' + nWidthUTMDEM + ' - - - - - - - - - ' + GeoCOR + ' - - ' 
     os.system(call_str)

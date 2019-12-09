@@ -185,7 +185,7 @@ def get_txt_lines(txt):
 def read_txt2list(txt):
     A = np.loadtxt(txt,dtype=np.str)
     if np.array(A).size ==1:
-        A = [A]
+        A = [str(A)]
     if isinstance(A[0],bytes):
         A = A.astype(str)
     A = list(A)    
