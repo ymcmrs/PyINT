@@ -54,6 +54,10 @@ def main(argv):
     scratchDir0 = os.getenv('SCRATCHDIR0')
     projectDir = scratchDir + '/' + projectName 
     projectDir0 = scratchDir0 + '/' + projectName 
+    
+    if not os.path.isdir(projectDir0):
+        os.mkdir(projectDir0)
+    
     demDir    = scratchDir + '/' + projectName  + '/DEM'
     rslcDir   = scratchDir + '/' + projectName + '/RSLC' 
      

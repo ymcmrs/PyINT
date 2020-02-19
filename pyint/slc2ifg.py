@@ -89,17 +89,22 @@ def main(argv):
     #os.system(call_str)
     
     ########## extract common bursts ##
-    if 'S1' in projectName:
-        call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
-        os.system(call_str)
+    #if 'S1' in projectName:
+    #    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Mdate
+    #    os.system(call_str)
     
-        call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
-        os.system(call_str)
+    #    call_str = 'extract_s1_bursts.py ' + projectName + ' ' + Sdate
+    #    os.system(call_str)
     
     ######### generate rdc_dem ##########
-    call_str = 'generate_rdc_dem.py ' + projectName
-    os.system(call_str)
+
     
+    demDir = scratchDir + '/' + projectName + '/DEM' 
+    HGTSIM      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):
+        call_str = 'generate_rdc_dem.py ' + projectName
+        os.system(call_str)
+
     ########## coregister SLC ########
     if 'S1' in projectName:
         call_str = 'coreg_s1_gamma.py ' + projectName + ' ' + Mdate

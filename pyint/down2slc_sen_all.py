@@ -84,6 +84,10 @@ def main(argv):
     downDir    = scratchDir + '/' + projectName + "/DOWNLOAD"
     raw_file_list = glob.glob(downDir + '/S1*.zip')
     
+    # get the burst number table of the mater date
+    call_str = 'get_master_burst_numb.py ' + projectName
+    os.system(call_str)
+    
     date_list = []
     for kk in range(len(raw_file_list)):
         date0 = get_s1_date(os.path.basename(raw_file_list[kk]))

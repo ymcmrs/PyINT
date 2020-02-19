@@ -73,6 +73,7 @@ def main(argv):
     templateDict=ut.update_template(templateFile)
     
     slc_dir =  projectDir + '/SLC'
+    rslc_dir =  projectDir + '/RSLC'
     down_dir = projectDir + '/DOWNLOAD'
     opod_dir = projectDir + '/OPOD'
     
@@ -86,12 +87,17 @@ def main(argv):
         os.mkdir(work_dir)
     
     os.chdir(work_dir)
+    master_burst_numb = down_dir + '/master.burst_numb_table'
+    if not os.path.isfile(master_burst_numb):
+        call_str = 'get_master_burst_numb.py ' + projectDir
+        os.system(call_str)
+        
     
     t_date = 't_' + date
     
-    call_str = 'ls ' + down_dir + '/S1*' + date + '* > ' + t_date
+    call_str = 'ls ' + down_dir + '/S1*' + date + '*.zip > ' + t_date
     os.system(call_str)
-    
+  
     start_swath = templateDict['start_swath']
     end_swath = templateDict['end_swath']
     
@@ -106,8 +112,8 @@ def main(argv):
         k_swath = '4'
     elif (start_swath == '2') and (end_swath == '3'):
         k_swath = '5' 
-    elif (start_swath == '2') and (end_swath == '3'):
-        k_swath = '-' 
+    elif (start_swath == '1') and (end_swath == '3'):
+        k_swath = '0' 
     
     
     raw_files = ut.read_txt2list(t_date)
@@ -115,7 +121,7 @@ def main(argv):
     
     orbit_file = ut.download_s1_orbit(date,opod_dir,satellite=satellite)
     
-    call_str = 'S1_import_SLC_from_zipfiles ' + t_date + ' - vv 0 ' + k_swath + ' ' + opod_dir + ' 1 1 '
+    call_str = 'S1_import_SLC_from_zipfiles ' + t_date + ' ' + master_burst_numb + ' vv 0 ' + k_swath + ' ' + opod_dir + ' 1 1 '
     os.system(call_str)
     
     os.chdir(work_dir)
@@ -127,23 +133,38 @@ def main(argv):
     call_str = "rename 's/vv.slc.iw3/IW3.slc/g' *"
     os.system(call_str)
     
+    call_str = "rename 's/.tops_par/.TOPS_par/g' *"
+    os.system(call_str)
+    
     
     SLC_Tab = work_dir + '/' + date+'_SLC_Tab'
+    RSLC_Tab = work_dir + '/' + date+'_RSLC_Tab'
     
     SLC_list = glob.glob(work_dir + '/*IW*.slc') 
     SLC_par_list = glob.glob(work_dir + '/*IW*.slc.par') 
-    TOP_par_list = glob.glob(work_dir + '/*IW*.slc.tops_par') 
+    TOP_par_list = glob.glob(work_dir + '/*IW*.slc.TOPS_par') 
     
     
     if os.path.isfile(SLC_Tab):
         os.remove(SLC_Tab)
+    if os.path.isfile(RSLC_Tab):
+        os.remove(RSLC_Tab)
+    
+    SLC_list = sorted(SLC_list)
+    SLC_par_list = sorted(SLC_par_list)
+    TOP_par_list = sorted(TOP_par_list)
+    
     
     for kk in range(len(SLC_list)):
         call_str = 'echo ' + SLC_list[kk] + ' ' + SLC_par_list[kk] + ' ' + TOP_par_list[kk] + ' >> ' + SLC_Tab
         os.system(call_str)
         
+        call_str = 'echo ' + rslc_dir + '/' + date + '/' + os.path.basename(SLC_list[kk]).replace('.slc','.rslc') + ' ' + rslc_dir + '/' + date + '/'+ os.path.basename(SLC_par_list[kk]).replace('.slc','.rslc') + ' ' + rslc_dir + '/' + date + '/' + os.path.basename(TOP_par_list[kk]).replace('.slc','.rslc') + ' >> ' + RSLC_Tab
+        os.system(call_str)
+        
         BURST = SLC_par_list[kk].replace('slc.par','burst.par')
-        call_str = 'SLC_burst_corners ' + SLC_par_list[kk] + ' ' +  TOP_par_list[kk] + ' > ' +BURST
+        KML = SLC_par_list[kk].replace('slc.par','kml')
+        call_str = 'ScanSAR_burst_corners ' + SLC_par_list[kk] + ' ' +  TOP_par_list[kk] + ' ' + KML + ' > ' +BURST
         os.system(call_str)
  
 

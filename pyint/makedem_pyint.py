@@ -59,7 +59,10 @@ def main(argv):
     masterDate = templateDict['masterDate']
     SLC_PAR = slcDir + '/' + masterDate + '/'+ masterDate + '.slc.par'
     
-    demDir = os.getenv('DEMDIR') 
+    demDir = os.getenv('DEMDIR')
+    if not os.path.isdir(demDir):
+        os.mkdir(demDir)
+ 
     demDir1 = demDir + '/' + projectName
     if not os.path.isdir(demDir1):
         os.mkdir(demDir1)

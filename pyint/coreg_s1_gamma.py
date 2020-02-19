@@ -123,7 +123,10 @@ def main(argv):
     S_IW = ut.read_txt2array(SLC1_INF_tab1)
     S_IW = S_IW.flatten()
     #M_IW = ut.read_txt2array(SLC1_INF_tab1)
-    #M_IW = M_IW.flatten()
+    #M_IW = M_IW.flatten()TSLC = slc_dir + '/' + date + '.slc'
+        #TSLCPar = slc_dir + '/' + date + '.slc.par'
+    
+        #
     #S_IW = ut.read_txt2array(SLC1_INF_tab)  
     #S_IW = S_IW.flatten()
         
@@ -144,8 +147,8 @@ def main(argv):
     #   os.system(call_str)
       
     os.chdir(workDir)
-    #TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
-    TEST = workDir + '/' + Sdate +'.rslc.par'
+    TEST = workDir + '/' + Sdate +'_' + rlks + 'rlks.amp.par'
+    #TEST = workDir + '/' + Sdate +'.rslc.par'
     
     k0 = 0
     if os.path.isfile(TEST):
@@ -193,19 +196,24 @@ def main(argv):
             #os.system(call_str)
         
         else:
-            call_str = 'cp ' + Mslc + ' ' + workDir + '/' + Mdate + '.rslc'
+            
+        #generate amp file for check image quality
+            TSLC = rslcDir + '/' + Sdate + '/' + Sdate + '.rslc'
+            TSLCPar = rslcDir + '/' + Sdate + '/' + Sdate + '.rslc.par'
+    
+            TMLI =  rslcDir + '/' + Sdate + '/' + Sdate + '_' + rlks + 'rlks.amp'
+            TMLIPar = rslcDir + '/' + Sdate + '/' + Sdate +  '_' + rlks + 'rlks.amp.par'
+    
+            call_str = 'SLC_mosaic_S1_TOPS ' +  SLC2_INF_tab + ' ' + TSLC + ' ' + TSLCPar + ' ' + rlks + ' ' + azlks
             os.system(call_str)
-        
-            call_str = 'cp ' + Mslcpar + ' ' + workDir+ '/' + Mdate + '.rslc.par'
+   
+            call_str = 'multi_look ' + TSLC + ' ' + TSLCPar + ' ' + TMLI + ' ' + TMLIPar + ' ' + rlks + ' ' + azlks
             os.system(call_str)
-        
-            call_str = 'cp ' + Mamp + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp'
-            os.system(call_str)
-        
-            call_str = 'cp ' + MampPar + ' ' + workDir+ '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    
+            nWidth = ut.read_gamma_par(TMLIPar, 'read','range_samples:')
+            call_str = 'raspwr ' + TMLI + ' ' + nWidth + ' - - - - - - - '
             os.system(call_str)
 
-            ut.copy_file(Mampbmp,Sampbmp)
         
     ################   clean redundant files #############
     
