@@ -107,17 +107,18 @@ def main(argv):
         os.mkdir(downDir)
         
     os.chdir(downDir)
-    call_str = 'ssara_federated_query.py -p Sentinel-1A,Sentinel-1B -r ' + track + ' -f ' + frame + ' --date ' + Mdate + ',' + Sdate + ' --print --download --parallel 2'
+    call_str = 'ssara_federated_query.py -p Sentinel-1A,Sentinel-1B -r ' + track + ' -f ' + frame + ' --date ' + Mdate + ',' + Sdate + ' --print --download --parallel 10'
+    print(call_str)
     os.system(call_str)
     
     ######### down 2 slc #############
-    M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
-    S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
+    #M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
+    #S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
     
-    call_str = 'down2slc_sen.py ' + M_raw + ' ' + slcDir
+    call_str = 'down2slc_sen.py ' + projectName + ' ' + Mdate
     os.system(call_str)
     
-    call_str = 'down2slc_sen.py ' + S_raw + ' ' + slcDir
+    call_str = 'down2slc_sen.py ' + projectName + ' ' + Sdate
     os.system(call_str)
     
     ########## extract common bursts ##
