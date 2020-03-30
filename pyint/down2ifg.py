@@ -98,6 +98,9 @@ def main(argv):
     downDir = scratchDir + '/' + projectName + '/DOWNLOAD'
     slcDir    = scratchDir + '/' + projectName + '/SLC'
     
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
+    demDir = scratchDir + '/' + projectName + '/DEM'
     ######### download data ############
     print('Start to download data ...')
     
@@ -129,8 +132,13 @@ def main(argv):
     #os.system(call_str)
     
     ######### generate rdc_dem ##########
-    call_str = 'generate_rdc_dem.py ' + projectName
-    os.system(call_str)
+    Masterdate = templateDict['masterDate']
+    HGTSIM      = demDir + '/' + Masterdate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):
+        call_str = 'generate_rdc_dem.py ' + projectName
+        os.system(call_str)
+    #call_str = 'generate_rdc_dem.py ' + projectName
+    #os.system(call_str)
     
     ########## coregister SLC ########
     
