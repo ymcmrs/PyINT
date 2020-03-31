@@ -89,7 +89,7 @@ def main(argv):
     os.chdir(work_dir)
     master_burst_numb = down_dir + '/master.burst_numb_table'
     if not os.path.isfile(master_burst_numb):
-        call_str = 'get_master_burst_numb.py ' + projectDir
+        call_str = 'get_master_burst_numb.py ' + projectName
         os.system(call_str)
         
     
