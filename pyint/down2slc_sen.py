@@ -72,6 +72,10 @@ def main(argv):
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
     
+    Mdate = templateDict['masterDate']
+    rlks = templateDict['range_looks']
+    azlks = templateDict['azimuth_looks']
+    
     slc_dir =  projectDir + '/SLC'
     rslc_dir =  projectDir + '/RSLC'
     down_dir = projectDir + '/DOWNLOAD'
@@ -165,8 +169,17 @@ def main(argv):
             KML = SLC_par_list[kk].replace('slc.par','kml')
             call_str = 'ScanSAR_burst_corners ' + SLC_par_list[kk] + ' ' +  TOP_par_list[kk] + ' ' + KML + ' > ' +BURST
             os.system(call_str)
- 
-
+        
+        if date == Mdate:
+            TSLC = workDir + '/' + date + '.slc'
+            TSLCPar = workDir + '/' + date + '.slc.par'
+    
+            call_str = 'SLC_mosaic_S1_TOPS ' +  SLC_Tab + ' ' + TSLC + ' ' + TSLCPar + ' ' + rlks + ' ' + azlks
+            os.system(call_str)
+        
+        
+        
+    
     print("Down to SLC for %s is done! " % date)
     sys.exit(1)
     
