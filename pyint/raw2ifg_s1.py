@@ -73,20 +73,21 @@ def main(argv):
     templateDir = os.getenv('TEMPLATEDIR')
     templateFile = templateDir + "/" + projectName + ".template"
     templateDict=ut.update_template(templateFile)
+    
     rlks = templateDict['range_looks']
     azlks = templateDict['azimuth_looks']
     masterDate = templateDict['masterDate']
     downDir = scratchDir + '/' + projectName + '/DOWNLOAD'
-    M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
-    S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
+    #M_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Mdate)+'*')[0]
+    #S_raw = glob.glob(downDir + '/S1*_' + ut.yyyymmdd(Sdate)+'*')[0]
     slcDir    = scratchDir + '/' + projectName + '/SLC'
     
     
     ######### down 2 slc #############
-    call_str = 'down2slc_sen.py ' + M_raw + ' ' + slcDir
+    call_str = 'down2slc_sen.py ' + projectName + ' ' + Mdate
     os.system(call_str)
     
-    call_str = 'down2slc_sen.py ' + S_raw + ' ' + slcDir
+    call_str = 'down2slc_sen.py ' + projectName + ' ' + Sdate
     os.system(call_str)
     
     ########## extract common bursts ##
@@ -97,8 +98,11 @@ def main(argv):
     #os.system(call_str)
     
     ######### generate rdc_dem ##########
-    call_str = 'generate_rdc_dem.py ' + projectName
-    os.system(call_str)
+    demDir = scratchDir + '/' + projectName + '/DEM'
+    HGTSIM      = demDir + '/' + masterDate + '_' + rlks + 'rlks.rdc.dem'
+    if not os.path.isfile(HGTSIM):
+        call_str = 'generate_rdc_dem.py ' + projectName
+        os.system(call_str)
     
     ########## coregister SLC ########
     
