@@ -123,7 +123,7 @@ def main(argv):
     
     kml_list = glob.glob(work_dir + '/*IW*.kml') 
     if not len(kml_list) > 0:
-        call_str = 'S1_import_SLC_from_zipfiles ' + t_date + ' ' + master_burst_numb + ' vv 0 ' + k_swath + ' ' + opod_dir + ' 
+        call_str = 'S1_import_SLC_from_zipfiles ' + t_date + ' ' + master_burst_numb + ' vv 0 ' + k_swath + ' ' + opod_dir + ' 1 1 '
         os.system(call_str)
         
         os.chdir(work_dir)
