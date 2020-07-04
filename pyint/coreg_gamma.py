@@ -73,19 +73,19 @@ def main(argv):
     
     SrslcDir = rslcDir + "/" + Sdate
 
-    Srslc    = rslcDir + "/" + Sdate + ".rslc"
-    SrslcPar = rslcDir + "/" + Sdate + ".rslc.par"
+    Srslc    = SrslcDir + "/" + Sdate + ".rslc"
+    SrslcPar = SrslcDir + "/" + Sdate + ".rslc.par"
     
-    Srslc0    = rslcDir + "/" + Sdate + ".rslc0"
-    SrslcPar0 = rslcDir + "/" + Sdate + ".rslc0.par"
+    Srslc0    = SrslcDir + "/" + Sdate + ".rslc0"
+    SrslcPar0 = SrslcDir + "/" + Sdate + ".rslc0.par"
 
 #####################################################
 ## copy all of the master files into slave folder for parallel processing
     remove_file = []
     Mslc0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc'
     MslcPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '.slc.par'
-    Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
-    MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
+    #Mamp0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp'
+    #MampPar0 = slcDir  + '/' + Mdate + '/' + Mdate + '_' + rlks + 'rlks.amp.par'
     HGTSIM0      = demDir + '/' + Mdate + '_' + rlks + 'rlks.rdc.dem'
     if not os.path.isfile(HGTSIM0):
         call_str = 'generate_rdc_dem.py ' + projectName
@@ -100,11 +100,12 @@ def main(argv):
     ut.copy_file(HGTSIM0,HGTSIM)
     ut.copy_file(Mslc0,Mslc)
     ut.copy_file(MslcPar0,MslcPar)
-    ut.copy_file(Mamp0,Mamp)
-    ut.copy_file(MampPar0,MampPar)
+    #ut.copy_file(Mamp0,Mamp)
+    #ut.copy_file(MampPar0,MampPar)
     
 #######################################################    
 #   define process files #
+    offStd = workDir + "/" + Sdate + '_offstd'
     lt0 = workDir + "/lt0" 
     lt1 = workDir + "/lt1"
     mli0 = workDir + "/mli0" 
@@ -114,14 +115,21 @@ def main(argv):
     offsets0 = workDir + "/offsets0"
     coffs0 = workDir + "/coffs0"
     coffsets0 = workDir + "/coffsets0"
-    off = workDir + "/" + IFGPair + ".off"
+    off = workDir + "/off"
     offs = workDir + "/offs"
     snr = workDir + "/snr"
     offsets = workDir + "/offsets"
     coffs = workDir + "/coffs"
     coffsets = workDir + "/coffsets"
 ##############################################
-    
+
+    if not os.path.isfile(MampPar):    
+        call_str = 'multi_look ' + Mslc + ' ' + MslcPar + ' ' + Mamp + ' ' + MampPar + ' ' + rlks + ' ' + azlks
+        os.system(call_str)
+    if not os.path.isfile(SampPar):
+        call_str = 'multi_look ' + Sslc + ' ' + SslcPar + ' ' + Samp + ' ' + SampPar + ' ' + rlks + ' ' + azlks
+        os.system(call_str)    
+
     call_str = "rdc_trans " + MampPar + " " + HGTSIM + " " + SampPar + " " + lt0
     os.system(call_str)
 
@@ -129,7 +137,7 @@ def main(argv):
     width_Samp = ut.read_gamma_par(SampPar, 'read', 'range_samples')
     line_Samp = ut.read_gamma_par(SampPar, 'read', 'azimuth_lines')
 
-    call_str = "geocode " + lt0 + " " + MamprlksImg + " " + width_Mamp + " " + mli0 + " " + width_Samp + " " + line_Samp + " 2 0"
+    call_str = "geocode " + lt0 + " " + Mamp + " " + width_Mamp + " " + mli0 + " " + width_Samp + " " + line_Samp + " 2 0"
     os.system(call_str)
 
     call_str = "create_diff_par " + SampPar + " - " + diff0 + " 1 0"
@@ -148,13 +156,13 @@ def main(argv):
     os.system(call_str)
     
     
-    call_str = "SLC_interp_lt " + Sslc + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MampPar + " " + SampPar + " - " + Srslc0 + " " + Srslc0Par
+    call_str = "SLC_interp_lt " + Sslc + " " + MslcPar + " " + SslcPar + " " + lt1 + " " + MampPar + " " + SampPar + " - " + Srslc0 + " " + SrslcPar0
     os.system(call_str)
 
 
 # further refinement processing for resampled SLC
 
-    call_str = "create_offset " + MslcPar + " " + Srslc0Par + " " + off + " 1 - - 0"
+    call_str = "create_offset " + MslcPar + " " + SrslcPar0 + " " + off + " 1 - - 0"
     os.system(call_str)
 
     #call_str = "offset_pwr " + MslcImg + " " + Srslc0Img + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " 128 128 " + offsets + " 2 32 64"
@@ -163,7 +171,7 @@ def main(argv):
     #call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
     #os.system(call_str)
     
-    call_str = "offset_pwr " + Mslc + " " + Srslc0 + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + templateDict['rwin4cor'] + " " + templateDict['azwin4cor'] + " " + offsets + " 2 " + templateDict['rsample4cor'] + " " + templateDict['azsample4cor']
+    call_str = "offset_pwr " + Mslc + " " + Srslc0 + " " + MslcPar + " " + SrslcPar0 + " " + off + " " + offs + " " + snr + " " + templateDict['rwin4cor'] + " " + templateDict['azwin4cor'] + " " + offsets + " 2 " + templateDict['rsample4cor'] + " " + templateDict['azsample4cor']
     os.system(call_str)
 
     call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3" 
@@ -175,10 +183,10 @@ def main(argv):
     rfsample4cor = str(2*int(templateDict['rsample4cor']))
     azfsample4cor = str(2*int(templateDict['azsample4cor']))
     
-    call_str = "offset_pwr " + MslcImg + " " + Srslc0 + " " + MslcPar + " " + Srslc0Par + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
+    call_str = "offset_pwr " + Mslc + " " + Srslc0 + " " + MslcPar + " " + SrslcPar0 + " " + off + " " + offs + " " + snr + " " + rfwin4cor + " " + azfwin4cor + " " + offsets + " 2 " + rfsample4cor + " " + azfsample4cor
     os.system(call_str)
     
-    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + OFFSTD 
+    call_str = "offset_fit "  + offs + " " + snr + " " + off + " " + coffs + " " + coffsets + " - 3 >" + offStd 
     os.system(call_str)
     
 ############################################     Resampling     ############################################    
@@ -193,27 +201,29 @@ def main(argv):
     call_str = 'raspwr ' + Sramp + ' ' + nWidth 
     os.system(call_str)
 
-    os.remove(lt0)
-    os.remove(lt1)
-    os.remove(mli0)
-    os.remove(diff0)
-    os.remove(offs0)
-    os.remove(snr0)
-    os.remove(offsets0)
-    os.remove(coffs0)
-    os.remove(coffsets0)
-    os.remove(off)
-    os.remove(offs)
-    os.remove(snr)
-    os.remove(offsets)
-    os.remove(coffs)
-    os.remove(coffsets)
-    os.remove(Srslc0)
-    os.remove(Srslc0Par)
+    if os.path.isfile(mli0): os.remove(mli0)
+    if os.path.isfile(lt0): os.remove(lt0)
+    if os.path.isfile(lt1): os.remove(lt1)
+    if os.path.isfile(diff0): os.remove(diff0)
+    if os.path.isfile(offs0): os.remove(offs0)
+    if os.path.isfile(snr0): os.remove(snr0)
+    if os.path.isfile(offsets0): os.remove(offsets0)
+    if os.path.isfile(coffs0): os.remove(coffs0)
+    if os.path.isfile(coffsets0): os.remove(coffsets0)
+    if os.path.isfile(off): os.remove(off)
+    if os.path.isfile(offs): os.remove(offs)
+    if os.path.isfile(snr): os.remove(snr)
+    if os.path.isfile(offsets): os.remove(offsets)
+    if os.path.isfile(coffs): os.remove(coffs)
+    if os.path.isfile(coffsets): os.remove(coffsets)
+    if os.path.isfile(Srslc0): os.remove(Srslc0)
+    if os.path.isfile(SrslcPar0): os.remove(SrslcPar0)
     
-    os.remove(Mslc)
-    os.remove(Mamp)
-    os.remove(HGTSIM)
+    if os.path.isfile(Mslc): os.remove(Mslc)
+    if os.path.isfile(MslcPar): os.remove(MslcPar)
+    if os.path.isfile(Mamp): os.remove(Mamp)
+    if os.path.isfile(HGTSIM): os.remove(HGTSIM)
+    if os.path.isfile(MampPar): os.remove(MampPar)    
 
     print("Coregistration with DEM is done!")
  
